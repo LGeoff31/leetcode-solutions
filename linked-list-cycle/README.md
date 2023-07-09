@@ -6,8 +6,8 @@ Loops through all the nodes, checks if current node is visited, otherwise sets t
 
 ### analysis
 
-Time Complexity: O(n)
-Space Complexity: O(n)
+- Time Complexity: `O(n)`
+- Space Complexity: `O(n)`
 
 ## Solution 2
 
@@ -15,9 +15,9 @@ Same solution 1, except setting node to None rather than setting it to visited i
 
 ### analysis
 
-Time Complexity: O(n)
-Space Complexity: O(1)
-**Mutates the linked list**
+- Time Complexity: `O(n)`
+- Space Complexity: `O(1)`
+- **Mutates the linked list**
 
 ## Solution 3
 
@@ -25,6 +25,6 @@ Slow and Fast pointers initialized at the head, one goes to next while other goe
 
 ### analysis
 
-Time Complexity: O(n)
-Space Complexity: O(1)
-**Best Solution**
+- Time Complexity: `O(n)`
+- Space Complexity: `O(1)`
+- **Best Solution**
