@@ -8,3 +8,12 @@ Converts Linked list into a array, reverses the array, converts back to a linked
 
 - Time Complexity: `O(n)`
 - Space Complexity: `O(n)`
+
+## Solution 2
+
+Same as Solution 1 but the functons to transform linked list to array and vice versa are done recursively
+
+### Analysis
+
+- Time Complexity: `O(n)`
+- Space Complexity: `O(n)`
