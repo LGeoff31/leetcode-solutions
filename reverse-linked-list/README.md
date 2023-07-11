@@ -17,3 +17,12 @@ Same as Solution 1 but the functons to transform linked list to array and vice v
 
 - Time Complexity: `O(n)`
 - Space Complexity: `O(n)`
+
+## Solution 3
+
+Uses two pointers, reverses the link between two consective nodes throughout the loop then returns the last head
+
+### Analysis
+
+- Time Complexity: `O(n)`
+- Space Complexity: `O(1)`
