@@ -1,4 +1,4 @@
-Link to question: https://leetcode.com/problems/determine-if-a-cell-is-reachable-at-a-given-time/description
+Link to question: https://leetcode.com/problems/count-number-of-homogenous-substrings/description/
 
 ## Solution 1
 
