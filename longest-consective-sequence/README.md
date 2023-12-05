@@ -12,19 +12,3 @@ Put all elements in set eliminaiting dups. Look through array, check for startin
 ## Solution 2
 
 Sort the array, traverse the array and find the length of any consective section in the array (using fact nums[i+1] - nums[i] = 1 for consective), and for each of the sections, make max_length the max_length of all the lengths of the consective secions.
-
-### analysis
-
-- Time Complexity: `O(n)`
-- Space Complexity: `O(1)`
-- **Mutates the linked list**
-
-## Solution 3
-
-Slow and Fast pointers initialized at the head, one goes to next while other goes next twice, if fast node meets slow node, must be cycle
-
-### analysis
-
-- Time Complexity: `O(n)`
-- Space Complexity: `O(1)`
-- **Best Solution**
