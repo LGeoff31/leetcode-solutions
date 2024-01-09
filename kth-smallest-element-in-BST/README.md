@@ -9,7 +9,7 @@ Run a dfs through all nodes while appending to list, sort the list, return the (
 - Time Complexity: `O(nlogn)`
 - Space Complexity: `O(n)`
 
-## Solution 1
+## Solution 2
 
 Run a dfs in order, left to right, through all nodes while appending to list, sort the list, return the (k-1)th element
 
