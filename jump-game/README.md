@@ -7,4 +7,4 @@ Backtracking bottom up algorithm. Start from the end and to see if a index can j
 ### Analysis
 
 - Time Complexity: `O(n)`
-- Space Complexity: `O(n)`
+- Space Complexity: `O(1)`
