@@ -7,5 +7,5 @@ class Solution:
             if a[key] in visited:
                 return False
             visited.add(a[key])
-        return True 
+        return True
         
