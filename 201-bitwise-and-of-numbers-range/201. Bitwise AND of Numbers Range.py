@@ -3,7 +3,7 @@ class Solution:
     def rangeBitwiseAnd(self, left: int, right: int) -> int:
         if left == 0: return 0
         if left == right: return left
-        if left == right - 1: return left & right
+        # if left == right - 1: return left & right
         if math.floor(math.log(left, 2)) !=  math.floor(math.log(right, 2)): return 0
         res = 2 ** math.floor(math.log(left, 2))
         currPower = math.floor(math.log(left, 2))
