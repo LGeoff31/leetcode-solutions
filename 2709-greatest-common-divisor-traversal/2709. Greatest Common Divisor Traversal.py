@@ -2,6 +2,7 @@ from functools import cache
 from collections import defaultdict
 
 class Solution:
+    # DIDNT DO MYSELF
     def canTraverseAllPairs(self, nums: List[int]) -> bool: 
         if len(nums) == 1:
             return True
