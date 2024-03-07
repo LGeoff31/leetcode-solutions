@@ -1,22 +1,19 @@
 class Solution:
-    def jump(self, nums: List[int]) -> int:
-        if nums[0] == 0: return 0
-        if len(nums) == 1: return 0
-
-        dp = [1e9] * len(nums)
-        #dp[i] represents the minimum amount steps to get there
-
-        #[1,3,4,5,2,6]
-        dp[0] = 0
-        dp[1] = 1
-        for i in range(2, len(nums)): #O(N)
-            for j in range(i): #O(N)
-                if j + nums[j] >= i:
-                    dp[i] = min(dp[i], dp[j]+1)
-
-
-        print(dp)
-        return dp[-1]
-
-
-     
+    def jump(self, nums):
+        # Initialize reach (maximum reachable index), count (number of jumps), and last (rightmost index reached)
+        reach, count, last = 0, 0, 0
+        
+        # Loop through the array excluding the last element
+        for i in range(len(nums)-1):    
+            # Update reach to the maximum between reach and i + nums[i]
+            reach = max(reach, i + nums[i])
+        
+            # If i has reached the last index that can be reached with the current number of jumps
+            if i == last:
+                # Update last to the new maximum reachable index
+                last = reach
+                # Increment the number of jumps made so far
+                count += 1
+        
+        # Return the minimum number of jumps required
+        return count
