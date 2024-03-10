@@ -16,9 +16,9 @@ class Solution:
         for i in range(2, len(triangle)): #2 -> 3
             for j in range(i+1): #0 -> 2
                 if j == 0:
-                    dp[i][j] = triangle[i][j] + dp[i-1][0]
+                    dp[i][j] = triangle[i][j] + dp[i-1][j]
                 elif j == i:
-                    dp[i][j] = triangle[i][j] + dp[i-1][-1]
+                    dp[i][j] = triangle[i][j] + dp[i-1][j-1]
                 else:
                     dp[i][j] = min(triangle[i][j] + dp[i-1][j-1], triangle[i][j] + dp[i-1][j])
         res = 1e9
