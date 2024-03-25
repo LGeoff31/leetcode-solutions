@@ -10,19 +10,31 @@ class TrieNode:
                 curr.children[c] = TrieNode()
             curr = curr.children[c]
         curr.word = True
+class Trie:
+    def __init__(self, words):
+        self.root = TrieNode()
+        for word in words:
+            curr = self.root
+            for c in word:
+                if c not in curr.children:
+                    curr.children[c] = TrieNode()
+                curr = curr.children[c]
+            curr.word=True
+
 
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         rows, cols = len(board), len(board[0])
-        root = TrieNode()
+        root = Trie(words).root
         res = []
         visited = set()
-        for word in words:
-            root.addWord(word)
+        # for word in words:
+        #     root.addWord(word)
+        
         
         
         def dfs(r,c, node, word):
-            #nase cases
+            #base cases
             if r < 0 or c < 0 or r >= rows or c >= cols: return
             if (r,c) in visited: return
             if board[r][c] not in node.children: return
@@ -33,12 +45,11 @@ class Solution:
             word+=board[r][c]
 
             if node.word: res.append(word)
-
+            
             #recursion
-            dfs(r+1,c,node,word)
-            dfs(r-1,c,node,word)
-            dfs(r,c+1,node,word)
-            dfs(r,c-1,node,word)
+            direction = [(0,1), (0,-1), (1,0), (-1,0)]
+            for dr, dc in direction:
+                dfs(r+dr, c+dc, node, word)
 
             #remove
             visited.remove((r,c))
