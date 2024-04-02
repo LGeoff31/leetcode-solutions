@@ -1,7 +1,9 @@
 class Solution:
     def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        #union find algorithm
         n = len(s)
         parent = list(range(n))
+    
         def find(a):
             if parent[a] != a:
                 parent[a] = find(parent[a])
@@ -16,21 +18,18 @@ class Solution:
         group_i = defaultdict(list)
         group_ch = defaultdict(list)
 
-        for i in range(len(s)):
+        for i in range(n):
             group = find(i)
             group_i[group].append(i)
             group_ch[group].append(s[i])
-        for key in group_ch:
-            group_ch[key] = sorted(group_ch[key], reverse=True)
-        a = ["@"] * len(s)
-        res = ""
-        for i in parent:
-            res += group_ch[i][-1]
-            group_ch[i].pop()
-        return res
+        res = [""] * n
 
-
-
-        print(group_i)
-        print(group_ch)
-
+        for key in group_i:
+            char_arr = group_ch[key]
+            char_arr.sort()
+            i = 0
+            for idx in group_i[key]:
+                res[idx] = char_arr[i]
+                i+=1
+        return "".join(res)
+        # print(res)
