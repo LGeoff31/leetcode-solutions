@@ -3,7 +3,7 @@ class Solution:
     def minimumDistance(self, points: List[List[int]]) -> int:
         n = len(points)
         points = [(x + y, x - y) for x, y in points]
-        points.sort()
+        # points.sort()
         xs = SortedList([x for x, y in points])
         ys = SortedList([y for x, y in points])
         res = float('inf')
