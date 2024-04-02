@@ -10,17 +10,15 @@ class Solution:
             parent[find(a)] = find(b)
         
         n = len(source)
-        parent = [i for i in range(n)]
+        parent = list(range(len(source)))
         for e in allowedSwaps:
             union(e[0], e[1])
 
         d = defaultdict(dict)
         for i in range(n):
             p = find(i)
-            if source[i] in d[p]:
-                d[p][source[i]] += 1
-            else:
-                d[p][source[i]] = 1
+            d[p][source[i]] = 1 + d[p].get(source[i], 0)
+        print(d)
 
         ans = 0
         for i in range(n):
