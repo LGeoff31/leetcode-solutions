@@ -13,7 +13,8 @@ class Solution:
                 sub.append(lst[i] - lst[i-1])
             for i in range(x):
                 sub[-(i+1)] -= 1
-            for i in accumulate(list(accumulate(sub))):
+            # print(sub, x)
+            for i in accumulate(accumulate(sub)):
                 if i < 0:
                     return False
             return True
