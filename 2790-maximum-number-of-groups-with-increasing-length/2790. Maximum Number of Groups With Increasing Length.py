@@ -11,8 +11,8 @@ class Solution:
             sub = [lst[0]]
             for i in range(1, n):
                 sub.append(lst[i] - lst[i-1])
-            for i in range(-x, 0, 1):
-                sub[i] -= 1
+            for i in range(x):
+                sub[-(i+1)] -= 1
             for i in accumulate(list(accumulate(sub))):
                 if i < 0:
                     return False
