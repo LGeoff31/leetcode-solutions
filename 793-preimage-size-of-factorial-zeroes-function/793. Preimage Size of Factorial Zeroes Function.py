@@ -3,18 +3,17 @@ class Solution:
     def preimageSizeFZF(self, k: int) -> int:
         def zeros(n) -> int:
             total = 0
-            base = 5
-            while base <= n:
-                total += n // base
-                base *= 5
+            start = 5
+            while start <= n: #34 -> 5: 6, 25: 1
+                total += n // start
+                start *= 5
             return total
         
         if k == 0: return 5
-        l, r = 0, 10 * k
+        l, r = 0, 6 * k
         while l < r:
             mid = (l+r) // 2
             if zeros(mid) == k:
-                # print(mid, math.factorial(mid))
                 return 5
             elif zeros(mid) > k:
                 r = mid - 1
