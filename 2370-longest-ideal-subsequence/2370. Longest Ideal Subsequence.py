@@ -5,14 +5,16 @@ class Solution:
             lst.append(ord(s[i]) - ord("a"))
         
         m = defaultdict(int)
-        dp = [1 for _ in range(len(s))]
+        res = 0
 
         for i in range(len(s)):
+            local = 0
             for j in range(max(0, lst[i] - k), min(25, lst[i] + k) + 1):
                 if j not in m:
                     continue
-                if m[j] + 1 > dp[i]:
-                    dp[i] = m[j] + 1
-            m[lst[i]] = max(m[lst[i]], dp[i])
+                res = max(res, m[j] + 1)
+                local = max(local, m[j] + 1)
+            
+            m[lst[i]] = max(m[lst[i]], local)
 
-        return max(dp)
+        return res + 1
