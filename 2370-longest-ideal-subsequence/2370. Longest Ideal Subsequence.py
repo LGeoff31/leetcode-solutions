@@ -5,10 +5,10 @@ class Solution:
             lst.append(ord(s[i]) - ord("a"))
         
         m = defaultdict(int)
-        res = 0
+        res = 1
 
         for i in range(len(s)):
-            local = 0
+            local = 1
             for j in range(max(0, lst[i] - k), min(25, lst[i] + k) + 1):
                 if j not in m:
                     continue
@@ -17,4 +17,5 @@ class Solution:
             
             m[lst[i]] = max(m[lst[i]], local)
 
-        return res + 1
+        return res 
+
