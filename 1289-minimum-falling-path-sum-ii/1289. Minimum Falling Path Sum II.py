@@ -1,16 +1,12 @@
 class Solution:
     def minFallingPathSum(self, grid: List[List[int]]) -> int:
-        n = len(grid)
-        dp = [[1e9] * n for _ in range(n)]
-
-        #fill in first row
-        for c in range(n):
-            dp[0][c] = grid[0][c]
-        
-
-        for r in range(1, n):
-            for c in range(n):
-                for new_c in range(n):
-                    if c != new_c: dp[r][c] = min(dp[r][c], dp[r-1][new_c] + grid[r][c])
-        return min(dp[-1])
-        
+        n=len(grid)
+        m=len(grid[0])
+        for i in range(1,n):
+            ans=heapq.nsmallest(2,grid[i-1])
+            for j in range(m):
+                if grid[i-1][j]==ans[0]:
+                    grid[i][j]+=ans[1]
+                else:
+                    grid[i][j]+=ans[0]
+        return min(grid[-1])                
