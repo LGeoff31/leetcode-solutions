@@ -2,19 +2,18 @@ class Solution:
     def wonderfulSubstrings(self, word: str) -> int:
         freq = {}
         freq[0] = 1
-        mask = 0
-        res = 0
-        lst = [ord(x) - ord("a") for x in word]
-        print(lst)
-        for i in range(len(lst)):
-            mask ^= (1 << lst[i])
+        mask, res = 0, 0
+        lst = [ord(letter) - ord("a") for letter in word]
+
+        for num in lst:
+            mask ^= (1 << num) #a -> 0001, b -> 0010
             if mask in freq:
-                res += freq[mask]
+                res += freq[mask] #0010, 0010 
                 freq[mask] += 1
             else:
                 freq[mask] = 1
             
-            for j in range(0, 10):
-                if mask ^ (1 << j) in freq:
-                    res += freq[mask ^ (1 << j)]
+            for i in range(10): #a -> j
+                if mask ^ (1 << i) in freq:
+                    res += freq[mask ^ (1 << i)]
         return res
