@@ -22,8 +22,6 @@ class Solution:
                 for next_num in next_loc(current_num): #[2,3,6]
                     if next_num <= amount:
                         if next_num not in visited:
-                            if next_num == amount:
-                                return stage + 1
                             queue.append(next_num)
                             visited.add(next_num)
                         
