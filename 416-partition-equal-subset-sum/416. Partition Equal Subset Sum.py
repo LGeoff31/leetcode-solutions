@@ -4,19 +4,15 @@ class Solution:
 
         targetSum = sum(nums) // 2
 
-        #What are we caching???
-        #If we reach a idx and currSum which we know is fale we can cache that
-        @cache
-        def dfs(idx, currSum):
-            if currSum == targetSum: 
-                return True
-            if idx >= len(nums):
-                return False
-            
-            return dfs(idx+1, currSum) or dfs(idx+1, currSum + nums[idx])
+        dp = set()
+        dp.add(0)
+        for i in range(len(nums)):
+            new_dp = set()
+            for elem in dp:
+                new_dp.add(elem)
+                new_dp.add(elem + nums[i])
+            dp = new_dp
+        return targetSum in dp
 
 
-        return dfs(0, 0)
 
-
-        
