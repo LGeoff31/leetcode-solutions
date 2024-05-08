@@ -10,7 +10,8 @@ class Solution:
             new_dp = set()
             for elem in dp:
                 new_dp.add(elem)
-                new_dp.add(elem + nums[i])
+                if elem + nums[i] <= targetSum:
+                    new_dp.add(elem + nums[i])
             dp = new_dp
         return targetSum in dp
 
