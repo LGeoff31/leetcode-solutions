@@ -19,7 +19,7 @@ class Solution:
         while currB:
             lst2.append(currB)
             currB = currB.next
-        
+        lst2 = set(lst2)
         for elem in lst1:
             if elem in lst2:
                 return elem
