@@ -16,14 +16,12 @@ class Solution:
                 nums1[curr_idx] = nums2[n]
                 n -= 1
             curr_idx -= 1
-        if m == -1:
-            while n >= 0:
-                nums1[curr_idx] = nums2[n]
-                n -= 1
-                curr_idx -= 1
-        else:
-            while m >= 0:
-                nums1[curr_idx] = nums1[m]
-                m -= 1
-                curr_idx -= 1
+        #fill in whats remaining of non-empty array
+
+
+        while n >= 0:
+            nums1[curr_idx] = nums2[n]
+            n -= 1
+            curr_idx -= 1
+        
         
