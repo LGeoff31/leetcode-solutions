@@ -1,13 +1,13 @@
 class Solution:
     def subsetXORSum(self, nums: List[int]) -> int:
-        def XOR(arr):
+        def XOR(arr): #O(n)
             res = 0
             for n in arr:
                 res ^= n
             return res
         
         self.subsequences = []
-        def dfs(idx, arr):
+        def dfs(idx, arr): #O(2^n)
             if idx == len(nums):
                 self.subsequences.append(arr)
                 return
@@ -20,5 +20,6 @@ class Solution:
         res = 0
         for arr in self.subsequences:
             res += XOR(arr)
-        # print(self.subsequences)
+
+        #O(n * 2^n)
         return res
