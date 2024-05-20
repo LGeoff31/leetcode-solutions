@@ -1,37 +1,43 @@
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
-        def works(length):
-            dic = {}
-            l, r = 0, length - 1
-            for i in range(l, r+1):
-                dic[s[i]] = 1 + dic.get(s[i], 0)
-            # print(dic, length)
-            while r < len(s):
-                # print(dic)
-                if length - max(dic.values()) <= k:
-                    return True
-                
-                r+=1
-                if r == len(s): break
-                dic[s[r]] = 1 + dic.get(s[r], 0)
-                dic[s[l]] -= 1
-                if dic[s[l]] == 0:
-                    del dic[s[l]]
-                l+=1
-            
-            return False
-        
-        l, r = 1, len(s)
-        res = 0
-        while l <= r:
-            mid = (l+r) // 2
-            if works(mid):
-                res = mid
-                l = mid + 1
+        max_substring = 0
+        left = 0
+        #case s == ""
+        #case s == 1
+        dic = {}
+        dic[s[left]] = 1
+        for right in range(1, len(s)):
+
+            if s[right] in dic:
+                dic[s[right]] += 1
+                while sum(dic.values()) - max(dic.values()) > k:
+                    dic[s[left]] -= 1
+                    left += 1
             else:
-                r = mid - 1
-        return res
-
-
+                dic[s[right]] = 1
+                while sum(dic.values()) - max(dic.values()) > k:
+                    dic[s[left]] -= 1
+                    left += 1
             
+            max_substring = max(max_substring, sum(dic.values()))
+        return max_substring
+
+
+        #         else:
+        #             max_substring = max(max_substring, curr_substring)
+        #     else:
+        #         number_distinct_elements += 1
+        #         dic[s[right]] = 1
+        #     if number_distinct_elements > k:
+
+
+        #     max_substring = max(max_substring, curr_substring)
+
+
+                
+
+
+
+
+
         
