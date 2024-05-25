@@ -53,7 +53,6 @@ class NumArray:
                 return rangeSum(root.left, left, right)
             elif left >= mid + 1:
                 return rangeSum(root.right, left, right)
-            #otherwise the interval is split between both
             else:
                 return rangeSum(root.left, left, mid) + rangeSum(root.right, mid+1 ,right)
         return rangeSum(self.root, left, right)
