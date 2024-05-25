@@ -1,20 +1,20 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
-        self.res = []
         words = set(wordDict)
-        @cache
-        def dfs(idx, currWords):
+
+        def dfs(idx):
             if idx == len(s):
-                self.res.append(currWords)
+                res.append(" ".join(curr))
 
             for i in range(idx, len(s)):
                 substring = s[idx:i+1]
                 if substring in words:
-                    print(i+1, currWords + substring)
-                    if currWords == "":
-                        dfs(i+1, substring)
-                    else:
-                        dfs(i+1, currWords + " " + substring)
-        dfs(0, "")
-        return self.res
+                    curr.append(substring)
+                    dfs(i+1)
+                    curr.pop()
+
+        curr = []
+        res = []
+        dfs(0)
+        return res
         
