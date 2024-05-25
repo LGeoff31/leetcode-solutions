@@ -2,7 +2,7 @@ class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         self.res = []
         words = set(wordDict)
-
+        @cache
         def dfs(idx, currWords):
             if idx == len(s):
                 self.res.append(currWords)
