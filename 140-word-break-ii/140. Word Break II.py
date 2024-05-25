@@ -2,12 +2,11 @@ class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         words = set(wordDict)
 
-        cache = {}
+        @cache
         def dfs(idx):
             if idx == len(s):
                 return [""]
-            if idx in cache:
-                return cache[idx]
+
             res = []
             for i in range(idx, len(s)):
                 substring = s[idx:i+1]
@@ -21,7 +20,7 @@ class Solution:
                     if substr:
                         sentence += " " + substr
                     res.append(sentence)
-            cache[idx] = res
+
             return res
 
         return dfs(0)
