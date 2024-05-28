@@ -11,8 +11,6 @@ class Solution:
         for num in a:
             for idx in dic[num]:
                 s.append(speed[idx])
-        print(efficiency)
-        print(s)
 
         minHeap = []
         res = 0
@@ -21,12 +19,9 @@ class Solution:
             num_pop = 1 + len(minHeap) - k
             if num_pop <= 0:
                 num_pop = 0
-
             for j in range(num_pop): #heap will have at most k elements
-                if minHeap:
-                    sumHeap -= heapq.heappop(minHeap)
-                else:
-                    break
+                sumHeap -= heapq.heappop(minHeap)
+
             res = max(res, efficiency[i] * (s[i] + sumHeap))
             heapq.heappush(minHeap, s[i])
             sumHeap += s[i]
