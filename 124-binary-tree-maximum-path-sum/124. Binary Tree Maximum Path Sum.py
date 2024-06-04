@@ -6,28 +6,18 @@
 #         self.right = right
 class Solution:
     def maxPathSum(self, root: Optional[TreeNode]) -> int: 
-        #note if all negative, return the largest node value
-        cache = {}
-        def dfs(node):
-            if node in cache:
-                return cache[node]
-            if node is None:
-                return 0
-            if node.left is None and node.right is None: #leave node
-                return node.val
-            max_path_at_node = node.val +  max(dfs(node.left), dfs(node.right), 0) #choose max path eihter left or right
-            cache[node] = max(max_path_at_node, 0) #if leaf node is negative, you dont want to really take it
-            return cache[node]
-        self.res = -1e9
-        
-        def traversal(node):
-            if node is None:
-                return
-            self.res = max(self.res, node.val + max(dfs(node.left),0) + max(dfs(node.right), 0))
-            # print("cache", cache)
-            traversal(node.left)
-            traversal(node.right)
-        traversal(root)
-        return self.res
+        ans = [root.val]
 
-        
+
+        def dfs(node):
+            if node is None: return 0
+
+
+            l_max = max(0, dfs(node.left))
+            r_max = max(0, dfs(node.right))
+
+            ans[0] = max(ans[0], node.val + l_max + r_max)
+
+            return node.val + max(l_max, r_max)
+        dfs(root)
+        return ans[0]
