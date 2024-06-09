@@ -1,5 +1,5 @@
 class Solution:
-    def calculate(self, s: str) -> int:
+    def calculate(self, s: str) -> int: #2-3/2 -> 1
         num, preSign, stack = 0, "+", []
         for c in s+"+":
             if c.isdigit():
