@@ -1,50 +1,19 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        operation = "+"
-        currNum = ""
-        stack = [] 
-        s = s.strip()
-        if len(s) == 1 or ("+" not in s and "-" not in s and "*" not in s and "/" not in s):
-            return int(s)
-
-        for i, c in enumerate(s):
+        num, preSign, stack = 0, "+", []
+        for c in s+"+":
             if c.isdigit():
-                if i == len(s) - 1:
-                    currNum += c
-                    z = stack.pop()
-                    # print("last", stack, z, currNum, operation)
-                    if operation == "*":
-                        stack.append(int(z) * int(currNum))
-                    elif operation == "/":
-                        if (int(z) < 0 or int(currNum) < 0) and not (int(z) < 0 and int(currNum) < 0):
-                            stack.append( - (abs(int(z)) // abs(int(currNum))))
-                        else:
-                            stack.append(int(z) // int(currNum))
-                    elif operation == "-":
-                        stack.append(int(z) - int(currNum))
-                    else:
-                        stack.append(int(z) + int(currNum))
-                else:
-                    currNum += c
+                num = num * 10 + int(c)
             elif c in "+-*/":
-                if operation == "*":
-                    z = stack.pop()
-                    stack.append(int(z) * int(currNum))
-                elif operation == "/":
-                    z = stack.pop()
-                    if (int(z) < 0 or int(currNum) < 0) and not (int(z) < 0 and int(currNum) < 0):
-                        stack.append( - (abs(int(z)) // abs(int(currNum))))
-                    else:
-                        stack.append(int(z) // int(currNum))
-                    # stack.append(int(z) // int(currNum))
-                elif operation == '-':
-                    stack.append(-int(currNum))
-                else:
-                    stack.append(int(currNum))
-
-                currNum = ""
-                operation = c
-            # print(stack, c)
-
-        return sum([int(num) for num in stack])
-
+                if preSign == "+":
+                    stack.append(num)
+                elif preSign == "-":
+                    stack.append(-num)
+                elif preSign == "*":
+                    stack.append(stack.pop() * num)
+                elif preSign == "/":
+                    stack.append(math.trunc(stack.pop() / num))
+                
+                preSign = c
+                num = 0
+        return sum(stack)
