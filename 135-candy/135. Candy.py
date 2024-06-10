@@ -1,16 +1,12 @@
 class Solution:
     def candy(self, ratings: List[int]) -> int:
-        lst = [1] * len(ratings)
-
-        #forward
-        for i in range(len(ratings)-1):
-            if ratings[i] < ratings[i+1]:
-                lst[i+1] = lst[i] + 1
-        #backward
-        print(lst)
+        candies = [1] * len(ratings)
+        for i in range(len(ratings) - 1):
+            if ratings[i+1] > ratings[i]:
+                candies[i+1] = 1 + candies[i]
+        
         for i in range(len(ratings)-1, 0, -1):
-            if ratings[i] < ratings[i-1] and lst[i-1] <= lst[i]:
-                lst[i-1] = lst[i] + 1
-        print(lst)
-        return sum(lst)
-
+            if ratings[i-1] > ratings[i] and candies[i-1] <= candies[i]:
+                candies[i-1] = 1 + candies[i]
+        return sum(candies)
+        
