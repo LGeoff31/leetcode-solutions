@@ -1,40 +1,21 @@
-from sortedcontainers import SortedList
 class Solution:
     def findMaximizedCapital(self, k: int, w: int, profits: List[int], capitals: List[int]) -> int:
-        #your heap will have the elements you have enough capital to start, thus, you will remove the element with the highest profit using the heap
-
-        #repeat this process k times
-        #have a dictionary mapping capital to its avaialbe profits
-        #lets say you currently have w, binary search for the largest capital you can afford with w
-        #loop through the capitals up to that index and find the largest profit you can obtain, remove it from the map and update your w value
-
-        #Overall time complexity: O(k * nlogn)
-
-        #note that capital can become a set thats sorted after mapping
-        dic = defaultdict(list)
+        minHeap = []
         n = len(profits)
-        for i in range(len(profits)):
-            dic[capitals[i]].append(-profits[i])
-        for key in dic:
-            heapq.heapify(dic[key])
-        capitals = list(set(capitals))
-        capitals.sort()
-        a = SortedList()
-        # print(capitals)
-        # print(dic)
-        res = w
-        prevIdx = 0
-        for i in range(k):
-            idx = bisect.bisect_right(capitals, res) #log
-            print(idx)
-            for c in capitals[prevIdx:idx]: #the cumulative sum of this will only add a up to 10^5 elements
-                for elem in dic[c]:
-                    a.add(elem) #log
+        lst = [(c, p) for c,p in zip(capitals, profits)]
+        lst.sort()
+        visited = set()
+        print(lst)
+        i = 0
+        for j in range(k): #O(K)
+            while i < n and w >= lst[i][0]:
+                if i not in visited:
+                    visited.add(i) 
+                    heapq.heappush(minHeap, -lst[i][1])
+                i += 1
+            #w should change
+            if not len(minHeap):
+                break
+            w += -heapq.heappop(minHeap)
 
-            if a: 
-                res+=-a[0]
-                a.discard(a[0])
-            prevIdx = idx
-
-        return res
-        
+        return w
