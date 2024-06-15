@@ -25,11 +25,11 @@ class Solution:
         res = w
         prevIdx = 0
         for i in range(k):
-            idx = bisect.bisect_right(capitals, res)
+            idx = bisect.bisect_right(capitals, res) #log
             print(idx)
-            for c in capitals[prevIdx:idx]:
+            for c in capitals[prevIdx:idx]: #the cumulative sum of this will only add a up to 10^5 elements
                 for elem in dic[c]:
-                    a.add(elem)
+                    a.add(elem) #log
 
             if a: 
                 res+=-a[0]
