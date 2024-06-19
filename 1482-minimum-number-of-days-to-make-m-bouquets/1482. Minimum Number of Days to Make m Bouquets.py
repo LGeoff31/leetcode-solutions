@@ -4,11 +4,11 @@ class Solution:
             return -1
         
         def calc(day):
-            print(day)
-            if k == 1:
-                bloomDay.sort()
-                # print(bloomDay, day, bisect.bisect_right(bloomDay, day))
-                return bisect.bisect_right(bloomDay, day)  >= m
+            # print(day)
+            # if k == 1:
+            #     bloomDay.sort()
+            #     # print(bloomDay, day, bisect.bisect_right(bloomDay, day))
+            #     return bisect.bisect_right(bloomDay, day)  >= m
             res = 0
             below_day = 0
             l = r = 0
