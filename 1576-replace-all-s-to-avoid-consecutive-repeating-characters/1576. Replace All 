@@ -1,0 +1,30 @@
+class Solution:
+    def modifyString(self, s: str) -> str:
+        if len(s) == 1:
+            return s[0] if s[0] != "?" else "a"
+        selection = list(chr(z+97) for z in range(0, 26) )
+        print(selection)
+        res = ""
+        for i in range(len(s)):
+            if s[i] == "?":
+                if i == 0:
+                    for p in selection:
+                        if s[i+1] != p:
+                            res += p
+                            break
+                elif i == len(s) - 1:
+                    for p in selection:
+                        if res[i-1] != p:
+                            res += p
+                            break
+                else:
+                    for p in selection:
+                        print(res, i-1)
+                        if s[i+1] != p and res[i-1] != p:
+                            res += p
+                            break
+            else:
+                res += s[i]
+            print(res)
+        return res
+            
