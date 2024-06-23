@@ -15,13 +15,10 @@ class Solution:
             return dfs(node.left, currSum + node.val) + dfs(node.right, currSum + node.val) 
         def traverse(node):
             if not node:
-                return
-            self.res += dfs(node, 0)
-            traverse(node.left)
-            traverse(node.right)
+                return 0
+            return dfs(node, 0) + traverse(node.left) + traverse(node.right)
 
-        traverse(root)
-        return self.res
+        return traverse(root)
 
 
 
