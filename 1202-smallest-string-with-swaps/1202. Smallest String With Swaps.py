@@ -12,7 +12,7 @@ class Solution:
         
         for a,b in pairs:
             union(a,b)
-        
+        print(parent)
         group_i = defaultdict(list)
         group_ch = defaultdict(list)
 
@@ -21,16 +21,16 @@ class Solution:
             group_i[group].append(i)
             group_ch[group].append(s[i])
         for key in group_ch:
-            group_ch[key] = sorted(group_ch[key], reverse=True)
-        a = ["@"] * len(s)
-        res = ""
-        for i in parent:
-            res += group_ch[i][-1]
-            group_ch[i].pop()
-        return res
-
-
-
+            group_ch[key].sort()
+        # a = ["@"] * len(s)
         print(group_i)
         print(group_ch)
+
+        res = ["2"] * n
+        for key in group_i:
+            indicies = group_i[key]
+            for idx, val in enumerate(indicies):
+                res[val] = group_ch[key][idx]
+    
+        return "".join(res)
 
