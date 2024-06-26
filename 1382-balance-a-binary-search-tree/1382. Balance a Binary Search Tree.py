@@ -10,11 +10,10 @@ class Solution:
         
         def traverse(node):
             if node:
-                lst.append(node.val)
                 traverse(node.left)
+                lst.append(node.val)
                 traverse(node.right)
         traverse(root)
-        lst.sort()
         #[1,2,3,4]
         def bst(l, r):
             if l > r:
