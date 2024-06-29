@@ -6,7 +6,7 @@ class Solution:
         dp[1] = 5
         width = 3
         for i in range(2, n):
-            dp[i] = dp[i-1] + 2*width + 2*(width-2)
+            dp[i] = dp[i-1] + 4*width-4
             width += 1
         # print(dp)
         return dp[-1]
