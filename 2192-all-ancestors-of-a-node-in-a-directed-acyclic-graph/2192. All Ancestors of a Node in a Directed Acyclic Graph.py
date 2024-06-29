@@ -4,18 +4,14 @@ class Solution:
         graph = defaultdict(list)
         for u, v in edges: #O(E)
             graph[v].append(u)
-        cache = {}    
+        @cache
         def dfs(node): #O(V)
-            if node in cache:
-                return cache[node]
             if not graph[node]:
                 return []
             ans = []
             for child in graph[node]:
                 ans += [child] + dfs(child)
-            cache[node] = list(set(ans))
-            # print(cache)
-            return cache[node]
+            return list(set(ans))
 
         for i in range(n): #O(V)
             res.append(sorted(dfs(i)))#O(VlogV)
