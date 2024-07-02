@@ -3,7 +3,8 @@ class Solution:
         # In the subsequence, it must follow all pairs have odd sum or even sum
         # For all odd sum, must be odd + even or even + odd
         # For all even sum, must be even + even or odd + odd
-
+        for i in range(len(nums)):
+            nums[i] = nums[i] % 2
         res = 0 
         # Consider all even numbers
         even = sum([num%2==0 for num in nums])
