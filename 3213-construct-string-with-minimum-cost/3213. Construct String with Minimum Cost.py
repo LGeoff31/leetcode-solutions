@@ -4,6 +4,7 @@ class Node:
         self.endWord = False
         self.cost = 1e9
 
+
 class Solution:
     def minimumCost(self, target: str, words: List[str], costs: List[int]) -> int:
         trie = Node()
@@ -32,4 +33,5 @@ class Solution:
                     res = min(res, node.cost + dfs(idx+1))
             return res
         res = dfs(0)
+        dfs.cache_clear()
         return res if res != 1e9 else -1
