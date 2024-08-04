@@ -1,29 +1,24 @@
 class Solution:
-    def __init__(self):
-        self.graph = []
-    
-    def dijkstra(self, n):
-        dist = [1e9] * n
-        dist[0] = 0
-        pq = [(0, 0)] #distance, node
-        while pq:
-            cd, node = heapq.heappop(pq)
-            if node == n-1:
-                return dist[n-1]
-            if cd > dist[node]:
-                continue
-            for nei, wt in self.graph[node]:
-                if wt + cd < dist[nei]:
-                    dist[nei] = wt+cd
-                    heapq.heappush(pq, (wt+cd, nei))
-        return dist[-1]
     def shortestDistanceAfterQueries(self, n: int, queries: List[List[int]]) -> List[int]:
-        self.graph = [[] for _ in range(n)]
+        # Connect a path with adjacent numbers
+        adj = defaultdict(list)
         for i in range(n-1):
-            self.graph[i].append((i+1, 1))
+            adj[i].append(i+1)
+        
+        def dfs(node, cache):
+            if node == n-1:
+                return 0
+            if node in cache:
+                return cache[node]
+            res = 1e9
+            # print(adj)
+            for nei in adj[node]:
+                res = min(res, 1 + dfs(nei, cache))
+            cache[node] = res
+            return res
+
         res = []
         for u,v in queries:
-            self.graph[u].append((v,1))
-            res.append(self.dijkstra(n))
-        return res
-        
+            adj[u].append(v)
+            res.append(dfs(0, {}))
+        return res 
