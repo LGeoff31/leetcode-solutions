@@ -1,26 +1,22 @@
 class Solution:
-    def combinationSum2(self, nums: List[int], target: int) -> List[List[int]]:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
         res = []
+        candidates.sort()
 
-        nums.sort()
-        def dfs(i, subset):
-            if sum(subset) == target:
-                res.append(subset.copy())
+        def dfs(i, arr):
+            if sum(arr) == target:
+                res.append(arr.copy())
                 return
-
-            if sum(subset) > target or i >= len(nums):
+            if sum(arr) > target or i >= len(candidates):
                 return
-            #include number
-            subset.append(nums[i])
-            dfs(i + 1, subset)
-            subset.pop()
+           
+            arr.append(candidates[i])
+            dfs(i+1, arr)
+            arr.pop()
 
-            #dont include number
-            while i+1 < len(nums) and nums[i] == nums[i+1]:
+            while i+1 < len(candidates) and candidates[i] == candidates[i+1]:
                 i += 1
-            dfs(i+1, subset)
+            dfs(i+1, arr)
+            
         dfs(0, [])
         return res
-
-            
-        
