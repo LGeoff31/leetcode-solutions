@@ -9,14 +9,14 @@ class Node:
 class Solution:
     def postorder(self, root: 'Node') -> List[int]:
         # Left, Right, current: Postorder
-        self.res = []
+        res = []
         def dfs(node):
             if node:
                 for nei in node.children:
                     dfs(nei)
-                self.res.append(node.val)
+                res.append(node.val)
         
         dfs(root)
-        return self.res
+        return res
 
         
