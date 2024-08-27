@@ -1,24 +1,20 @@
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        res = 0
+        # Idea: Dijkstra's algorithm, where you stop when each node has been explored
+        # Technically return max element in the dictionary
 
-        graph = defaultdict(list)
-        for u, v, t in times:
-            graph[u].append((v, t))
-
-        h = []
-        heapq.heappush(h, (0, k))
-
-        times = [1e9] * n
-        times[k-1] = 0
-        while len(h) > 0:
-            t, node = heapq.heappop(h)
-
-            if t > times[node-1]: continue
-            for new_pos, new_time in graph[node]:
-                if t + new_time < times[new_pos-1]:
-                    times[new_pos-1] = t + new_time
-                    heapq.heappush(h, (t+new_time, new_pos))
-        print(times)
-        return max(times) if max(times) != 1e9 else -1
+        visited = {}
+        minHeap = [(0, k)] # Weight: Node
+        adj = defaultdict(list)
+        for u, v, w in times:
+            adj[u].append((v, w)) # Node: Weight
         
+        while minHeap:
+            w1, n1 = heapq.heappop(minHeap)
+            if n1 in visited:
+                continue
+            visited[n1] = w1
+            for n2, w2 in adj[n1]:
+                if n2 not in visited:
+                    heapq.heappush(minHeap, (w1+w2, n2))
+        return max(visited.values()) if len(visited) == n else -1
