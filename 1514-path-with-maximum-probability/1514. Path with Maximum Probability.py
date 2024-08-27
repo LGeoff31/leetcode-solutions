@@ -3,9 +3,9 @@ class Solution:
         # Idea: Start from start node, and perform Dikjstra's algorithm on each node until you get to end
         # If all nodes are visited and end is not within it, return 0
         # Each node should have (num, probability value)
-
-        adj = defaultdict(list)
-        for i in range(len(edges)):
+        # O(V + ElogV)
+        adj = defaultdict(list) 
+        for i in range(len(edges)): #O(E)
             u,v = edges[i]
             adj[u].append((v, succProb[i]))
             adj[v].append((u, succProb[i]))
@@ -13,13 +13,13 @@ class Solution:
         minHeap = [(-1, start_node)] #Weight : node
         visited = {}
 
-        while minHeap:
-            w1, n1 = heapq.heappop(minHeap)
+        while minHeap: #O(V)
+            w1, n1 = heapq.heappop(minHeap) #O(logV)
             w1 *= -1
             if n1 in visited:
                 continue
             visited[n1] = w1
-            for n2, w2 in adj[n1]:
+            for n2, w2 in adj[n1]: #O(E)
                 if n2 not in visited:
                     heapq.heappush(minHeap, (-1*w1*w2, n2))
         if end_node in visited:
