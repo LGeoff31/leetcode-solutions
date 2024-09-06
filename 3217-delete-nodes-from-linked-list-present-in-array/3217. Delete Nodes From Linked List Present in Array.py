@@ -5,23 +5,15 @@
 #         self.next = next
 class Solution:
     def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:
-        lst = set(nums)
-
-        a = []
+        remove_nodes = set(nums)
+        # Ensure the head if valid
+        while head and head.val in remove_nodes:
+            head = head.next
         curr = head
         while curr:
-            a.append(curr.val)
+            # Check if the next node is not valid
+            while curr.next and curr.next.val in remove_nodes:
+                curr.next = curr.next.next
             curr = curr.next
+        return head
         
-        b = []
-        for elem in a:
-            if elem not in lst:
-                b.append(elem)
-        
-        head = ListNode()
-        curr_head = head
-        for elem in b:
-            node = ListNode(elem)
-            curr_head.next = node
-            curr_head = curr_head.next
-        return head.next
