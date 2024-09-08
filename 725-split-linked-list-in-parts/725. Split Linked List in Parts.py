@@ -21,12 +21,10 @@ class Solution:
             lst[i] += 1
         curr = head
         while curr:
-            for elem in lst: #[1, 1, 1, 0, 0]
+            for elem in lst: 
                 if elem == 0:
                     res.append(None)
                     continue
-                if not curr:
-                    break
 
                 temp_head = curr
                 for i in range(elem-1):
