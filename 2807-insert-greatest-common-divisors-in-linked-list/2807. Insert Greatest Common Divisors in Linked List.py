@@ -6,15 +6,9 @@
 class Solution:
     def insertGreatestCommonDivisors(self, head: Optional[ListNode]) -> Optional[ListNode]:
         def gcd(num1, num2): #O(log(min(a,b)))
-            # Use Euclidean Algorithm
-            if num1 < num2:
-                gcd(num2, num1)
-            # num1 will always be larger
-            while num2:
-                quotient = num1 // num2
-                remainder = num1 - num2 * quotient
-                num1, num2 = num2, remainder
-            return num1
+            if num2 == 0:
+                return num1
+            return gcd(num2, num1 % num2)
                 
         curr = head
         while curr.next:
