@@ -1,6 +1,13 @@
 class Solution:
     def minBitFlips(self, start: int, goal: int) -> int:
-        return str(bin(start ^ goal)).count("1")
+        result = 0
+
+        while start > 0 or goal > 0:
+            if start % 2 != goal % 2:
+                result += 1
+            start //= 2
+            goal //= 2
         
-        # 0000 0101
-        # 0000 1000
+        return result
+
+        
