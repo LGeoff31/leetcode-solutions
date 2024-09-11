@@ -22,8 +22,8 @@ class MyQueue:
         
 
     def empty(self) -> bool: #O(1)
-        while self.s1:
-            self.s2.append(self.s1.pop()) 
+        # while self.s1:
+        #     self.s2.append(self.s1.pop()) 
         return len(self.s1) == 0 and len(self.s2) == 0
 
         
