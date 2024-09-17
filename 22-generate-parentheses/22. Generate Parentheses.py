@@ -1,24 +1,30 @@
-from collections import deque
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-        queue = deque(["("])
+        self.res = []
 
-        while queue:
-            if len(queue[0]) == n * 2:
-                break
-            for i in range(len(queue)):
-                curr = queue.popleft()
-                number_open = curr.count("(")
-                number_closed = curr.count(")")
-                
-                if number_open < n:
-                    queue.append(curr + "(")
-                if number_open > number_closed:
-                    queue.append(curr + ")")
+        def valid_brackets(string):
+            stack = []
+            for char in string:
+                if char == ")":
+                    if not stack:
+                        return False 
+                    stack.pop()
+                else:
+                    stack.append(char)
+            return not stack
+        def dfs(string):
+            if string.count(")") > string.count("("):
+                return 
+            if len(string) > 2*n:
+                return
+            if len(string) == 2*n:
+                if valid_brackets(string):
+                    print('string', string)
+                    self.res.append(string)
 
+            dfs(string + "(")
+            dfs(string + ")")
 
+        dfs("(")
 
-        # print(queue)
-        return queue
-
-        
+        return self.res
