@@ -9,8 +9,8 @@ class Solution:
         for i in range(len(height)-1):
             maxRight.append(max(height[i+1:]))
         maxRight.append(0)
-        print(maxLeft)
-        print(maxRight)
+        # print(maxLeft)
+        # print(maxRight)
 
         water = 0
         for i in range(len(height)):
