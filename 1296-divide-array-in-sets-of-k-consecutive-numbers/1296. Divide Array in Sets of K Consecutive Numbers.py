@@ -1,35 +1,18 @@
 class Solution:
-    def isPossibleDivide(self, hand: List[int], groupSize: int) -> bool:
-        if len(hand) % groupSize != 0:
-            return False
-        
-        hand.sort()
-
-        dic = Counter(hand)
-        idx = 0
-        #[1,2,2,3,3,4,6,7,8]
-        #[1,2,3,4,6,7,8], 3
-        #{2:1, 3:1, 4:1, 6:1, 7:1, 8:1}
-        unique = sorted(list(set(hand)))
-        print("unique", unique)
-        while idx < len(unique):
-            for i in range(groupSize):
-                if unique[idx] + i not in dic:
-                    return False
-                dic[unique[idx]+i] -= 1
-                if dic[unique[idx] + i] == 0:
-                    del dic[unique[idx] + i]
-                # print(dic)
-                # break
+    def isPossibleDivide(self, nums: List[int], k: int) -> bool:
+        if len(nums) % k != 0: return False 
+        nums.sort()
+        dic = Counter(nums)
+        print(nums)
+        a = sorted(list(set(nums)))
+        print('a', a)
+        for i in range(len(a)):
+            while a[i] in dic:
+                for p in range(a[i], a[i] + k):
+                    if p not in dic:
+                        return False 
+                    dic[p] -= 1
+                    if dic[p] == 0:
+                        del dic[p]
             # print(dic)
-            while idx < len(unique) and unique[idx] not in dic:
-                idx+=1
-            # if unique[idx] not in dic:
-                # idx += 1
-            # print(idx)
-            # break
-            
-
         return True
-        
-        
