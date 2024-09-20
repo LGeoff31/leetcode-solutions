@@ -6,8 +6,8 @@ class Solution:
             return string == string[::-1]
         
         idx = -1
-        for i in range(len(s), -1, -1):
-            if isPalindrome(s[: i]):
+        for i in range(len(s), -1, -1): #O(n)
+            if isPalindrome(s[: i]): #O(n)
                 idx = i 
                 break 
         print(idx)
