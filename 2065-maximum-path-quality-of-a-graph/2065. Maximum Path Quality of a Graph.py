@@ -15,13 +15,13 @@ class Solution:
 
             adj2[u].append(v)
             adj2[v].append(u)
-        res = 0
+        self.res = 0
         def dfs(root, t, visited, currSum):
             if t > maxTime:
                 return
             if root == 0:
-                nonlocal res
-                res = max(res, currSum)
+                # nonlocal res
+                self.res = max(self.res, currSum)
             visited.add(root)
             for nei in adj2[root]:
                 if nei not in visited:
@@ -29,4 +29,4 @@ class Solution:
                 else:
                     dfs(nei, t+adj1[(root, nei)], set(visited), currSum)
         dfs(0, 0, set(), values[0])
-        return res
+        return self.res
