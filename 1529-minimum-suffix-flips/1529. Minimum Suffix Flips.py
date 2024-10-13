@@ -4,7 +4,7 @@ class Solution:
         # Your second flip must toggle out the leftmost zero
 
         # Greedy algorithm
-
+        @cache
         def dfs(i, zeros):
             if i >= len(target):
                 return 0
