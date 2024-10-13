@@ -6,16 +6,12 @@
 #         self.right = right
 class Solution:
     def kthLargestPerfectSubtree(self, root: Optional[TreeNode], k: int) -> int:
+        # Time complexity: O(n^2)
+        # Space complexity: O(n)
+        
         res = []
 
-        def valid_power_2(num): #O(logn)
-            while num != 1:
-                if num%2!=0:
-                    return False 
-                num//=2
-            return True
-
-        def evaluate(node):
+        def evaluate(node): #O(N)
             queue = deque([node])
             total_nodes = 0
             height = 0
@@ -34,8 +30,8 @@ class Solution:
                 height += 1
             return total_nodes
 
-        def dfs(node):
-            if not node:
+        def dfs(node): # O(n)
+            if not node: 
                 return 
 
             ans = evaluate(node)
