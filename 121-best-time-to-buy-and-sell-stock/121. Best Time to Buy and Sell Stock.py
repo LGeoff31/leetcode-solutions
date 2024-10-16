@@ -1,18 +1,23 @@
 class Solution:
+    def noProfit(self, prices):
+        for i in range(len(prices)-1):
+            if prices[i] < prices[i+1]:
+                return False
+        return True
+
     def maxProfit(self, prices: List[int]) -> int:
-        global_max = 0
-        left, right = 0, 1
-        
-        while right < len(prices):
-            if prices[right] - prices[left]  > 0:
-                curr_max = prices[right] - prices[left]
-                global_max = max(global_max, curr_max)
+        if self.noProfit(prices):
+            return 0 #O(N) => funciton scans through prices
+        max_profit = -99999
+        #kandaine algorithm
+        l, r = 0, 1
+        while r < len(prices):
+            if prices[r] - prices[l] < 0: #negative profit
+                l = r
+                r += 1
             else:
-                left = right
-            right += 1
-        return global_max            
+                profit = prices[r] - prices[l]
+                max_profit = max(max_profit, profit)
+                r += 1
+        return max_profit
 
-
-
-
-        
