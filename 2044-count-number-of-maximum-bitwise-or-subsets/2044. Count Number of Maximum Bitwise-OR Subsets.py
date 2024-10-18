@@ -9,6 +9,7 @@ class Solution:
         for num in nums:
             target |= num
         print(target)
+        @cache
         def dfs(i, curr):
             if i == len(nums):
                 return target == curr
