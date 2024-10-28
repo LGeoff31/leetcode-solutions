@@ -3,6 +3,7 @@ class Solution:
         nums.sort()
         visited = set(nums)
         res = -1
+        @cache
         def dfs(num):
             if num not in visited:
                 return 0
