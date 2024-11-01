@@ -1,12 +1,11 @@
 class Solution:
     def maximumEnergy(self, energy: List[int], k: int) -> int:
-        @cache
-        def dfs(i): #O(n)
-            if i >= len(energy):
-                return 0
-            
-            return energy[i] + dfs(i+k)
-        res = min(energy)
-        for i in range(len(energy)): #O(n)
-            res = max(res, dfs(i))
-        return res
+        dp = [-1e9] * len(energy)
+        dp[-1] = energy[-1]
+
+        for i in range(len(energy) -2, -1, -1):
+            if i + k < len(energy):
+                dp[i] = energy[i] + dp[i+k]
+            else:
+                dp[i] = energy[i]
+        return max(dp)
