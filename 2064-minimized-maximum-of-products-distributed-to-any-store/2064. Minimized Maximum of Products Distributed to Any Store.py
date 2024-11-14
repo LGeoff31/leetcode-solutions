@@ -5,9 +5,10 @@ class Solution:
         while l < r:
             mid = (l + r) // 2
             curr = 0
+            print('trying', mid)
             for num in quantities:
-                curr += ceil((num  + mid - 1) // mid)
-            
+                curr += ceil(num / mid)
+            print(mid, curr)
             if curr <= n:
                 r = mid 
             else:
