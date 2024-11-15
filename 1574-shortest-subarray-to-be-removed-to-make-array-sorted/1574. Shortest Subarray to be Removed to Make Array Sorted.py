@@ -22,5 +22,5 @@ class Solution:
         for i in range(len(prefix)):
             res = min(res, n - ((i+1) + len(suffix) - bisect_left(suffix, prefix[i])))
         for i in range(len(suffix) -1, -1, -1):
-            res = min(res, n - ((len(suffix) - i) + bisect_right(prefix, suffix[i])))
+            res = min(res, n - ((len(suffix) - i) + bisect_left(prefix, suffix[i])))
         return res
