@@ -4,7 +4,7 @@ class Solution:
         for i in range(len(moveFrom)):
             if moveFrom[i] == moveTo[i]:
                 continue
-            dic[moveTo[i]] = dic[moveFrom[i]] 
+            dic[moveTo[i]] = 1
             del dic[moveFrom[i]]
             # print(dic)
         res = set()
