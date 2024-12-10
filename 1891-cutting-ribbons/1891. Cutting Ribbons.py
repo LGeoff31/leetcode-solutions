@@ -1,6 +1,6 @@
 class Solution:
     def maxLength(self, ribbons: List[int], k: int) -> int:
-        if sum(ribbons) < k: return 0
+        # if sum(ribbons) < k: return 0
 
         l, r = 1, max(ribbons)
         res = 0
