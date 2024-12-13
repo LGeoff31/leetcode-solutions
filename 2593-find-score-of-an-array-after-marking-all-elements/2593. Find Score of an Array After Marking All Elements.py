@@ -6,7 +6,7 @@ class Solution:
 
         idx = 0
         res = 0
-        print(lst)
+        
         while idx < len(nums):
             num, i = lst[idx]
             if i not in visited:
