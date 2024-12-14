@@ -1,13 +1,5 @@
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        graph = defaultdict(list)
-        for u, v in prerequisites:
-            graph[u].append(v)
-        for i in range(numCourses):
-            if i not in graph:
-                graph[i] = []
-        print('graph', graph)
-        #{1: 0}
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:       
         def dfs(currCourse, visited):
             if currCourse in visited:
                 return False
@@ -21,6 +13,10 @@ class Solution:
             visited.remove(currCourse)
             return True        
         
+        graph = defaultdict(list)
+        for u, v in prerequisites:
+            graph[u].append(v)
+            
         for i in range(numCourses): #run a dfs on each i
             # print(i, graph, dfs(i, set()))
             if not dfs(i, set()): 
