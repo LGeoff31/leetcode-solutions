@@ -7,17 +7,8 @@ class Solution:
                 idx, val = stack.pop()
                 ans[idx] = val - num
             stack.append((i, num))
+        # Remains which don't have any discounts
         while stack:
             idx, val = stack.pop()
             ans[idx] = val
         return ans
-
-
-
-# [8, 4]
-
-# []
-
-
-# [(3,2), (4,3)]
-# [4, 2, 4, 0, 0]
