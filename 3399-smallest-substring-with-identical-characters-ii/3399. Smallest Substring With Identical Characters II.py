@@ -22,7 +22,7 @@ class Solution:
                 return min(count, len(a) - count)
             return sum(val // (k+1) for val in b)
                         
-        l, r = 1, 100000
+        l, r = 1, 1001000
         while l < r:
             mid = (l+r) // 2
             print('trying', mid, check(mid))
