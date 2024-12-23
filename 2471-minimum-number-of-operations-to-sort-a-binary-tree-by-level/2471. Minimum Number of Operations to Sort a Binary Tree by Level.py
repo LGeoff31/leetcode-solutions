@@ -8,51 +8,24 @@ class Solution:
     def minimumOperations(self, root: Optional[TreeNode]) -> int:
         res = 0
         queue = deque([root])
-        def calc(arr):
-            n = len(arr)
-            # Create a sorted version of the array with indices
-            sorted_arr = sorted([(value, index) for index, value in enumerate(arr)])
-            
-            # Track visited nodes
-            visited = [False] * n
-            swaps = 0
-            
-            for i in range(n):
-                # If already visited or already in the correct position, skip
-                if visited[i] or sorted_arr[i][1] == i:
-                    continue
-                
-                # Count the size of the cycle
-                cycle_size = 0
-                j = i
-                while not visited[j]:
-                    visited[j] = True
-                    j = sorted_arr[j][1]  # Move to the next node in the cycle
-                    cycle_size += 1
-                
-                # Add (cycle_size - 1) to the swap count
-                if cycle_size > 1:
-                    swaps += cycle_size - 1
-            
-            return swaps
-        # def calc(lst):
-        #     count = 0
-        #     sorted_lst = sorted(lst)
-        #     for i in range(len(lst)):
-        #         expected_idx = sorted_lst.index(lst[i])
-        #         if expected_idx != i:
-        #             while lst[expected_idx] == lst[i]:
-        #                 expected_idx += 1
-        #             lst[i], lst[expected_idx] = lst[expected_idx], lst[i]
-        #             count += 1
-        #     return count
+
+        def calc(lst):
+            count = 0
+            sorted_lst = sorted(lst)
+            value_to_index = {value: i for i, value in enumerate(sorted_lst)}  # Map of value to correct index
+
+            for i in range(len(lst)):
+                while lst[i] != sorted_lst[i]:  # While the current element is not in the correct position
+                    correct_idx = value_to_index[lst[i]]  # Get the index where it should be
+                    # Swap the current element with the element at its correct position
+                    lst[i], lst[correct_idx] = lst[correct_idx], lst[i]
+                    count += 1
+
+            return count
 
         while queue:
             lst = [node.val for node in queue]
-            print(lst)
-            count = calc(lst)
-            print(count)
-            res += count
+            res += calc(lst)
             for i in range(len(queue)):
                 node = queue.popleft()
                 if node.left: queue.append(node.left)
