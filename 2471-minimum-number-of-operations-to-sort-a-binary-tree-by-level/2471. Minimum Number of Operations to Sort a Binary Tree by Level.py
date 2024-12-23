@@ -12,12 +12,12 @@ class Solution:
         def calc(lst):
             count = 0
             sorted_lst = sorted(lst)
-            value_to_index = {value: i for i, value in enumerate(sorted_lst)}  # Map of value to correct index
+            # value_to_index = {value: i for i, value in enumerate(sorted_lst)}  # Map of value to correct index
 
             for i in range(len(lst)):
                 while lst[i] != sorted_lst[i]:  # While the current element is not in the correct position
-                    correct_idx = value_to_index[lst[i]]  # Get the index where it should be
-                    # Swap the current element with the element at its correct position
+                    correct_idx = sorted_lst.index(lst[i])  # Get the index where it should be
+                    # Swap the current element with the element asort its correct position
                     lst[i], lst[correct_idx] = lst[correct_idx], lst[i]
                     count += 1
 
