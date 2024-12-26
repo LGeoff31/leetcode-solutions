@@ -2,7 +2,7 @@ class Solution:
     def lastRemaining(self, n: int) -> int:
 
         def f(start, size, skip, forward):
-            print(start, size, skip, forward)
+            # print(start, size, skip, forward)
             if size == 1:
                 return start
             
