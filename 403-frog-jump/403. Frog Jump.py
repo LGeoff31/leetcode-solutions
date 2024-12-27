@@ -5,6 +5,7 @@ class Solution:
         # @cache
         print(indicies)
         visited = set()
+        @cache
         def dfs(idx, curr, prevJump):
             print(idx, curr, prevJump)
             if idx == len(stones) - 1:
