@@ -1,30 +1,33 @@
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
-        adj = defaultdict(list)
-        for i, (u,v) in enumerate(equations):
-            adj[u].append((v, values[i]))
-            adj[v].append((u, 1/values[i]))
+        adj = collections.defaultdict(list) #maps a -> list of [b, a/b]
+        for i, eq in enumerate(equations):
+            a,b = eq
+            adj[a].append([b, values[i]])
+            adj[b].append([a, 1/values[i]])
         
-        def bfs(start, end):
-            if start == end and start in adj: return 1
-            # -1 if start or end do no exist in graph
-
-            queue = deque([(start, 1)])
-            visited = set()
-            visited.add(start)
-            while queue:
-                for i in range(len(queue)):
-                    node, weight = queue.popleft()
-                    if node not in adj: return -1
-                    if node == end:
-                        return weight
-                    for n, w in adj[node]:
+        def bfs(src, target):
+            if src not in adj or target not in adj:
+                return -1
+            q, visited = deque(), set()
+            q.append([src, 1])
+            visited.add(src )
+            while q:
+                for i in range(len(q)):
+                    currElem, val = q.popleft()
+                    if currElem == target: return val
+                    for n, w in adj[currElem]:
                         if n not in visited:
+                            q.append([n, val * w])
                             visited.add(n)
-                            queue.append((n, w * weight))
+
             return -1
 
+        
         res = []
-        for start, end in queries:
-            res.append(bfs(start, end))
+
+        for q in queries:
+            result = bfs(q[0], q[1])
+            res.append(result)
         return res
+
