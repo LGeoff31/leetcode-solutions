@@ -1,42 +1,23 @@
 class Solution:
     def decodeString(self, s: str) -> str:
-        while s.count("[") != 0:
-            res = ""
-            a = 0
-            while a < len(s):
-                newString = ""
-                if s[a].isdigit():
-                    number = ""
-                    for i in range(a, len(s)):
-                        if s[i].isdigit():
-                            number += s[i]
-                            a = i+2
-                        else:
-                            break
-
-                    number = int(number)
-                    openBracketCount = 1
-                    closeBracketCount = 0
-                    for j in range(a, len(s)):
-                        if s[j] == "]" and openBracketCount - 1 == closeBracketCount:
-                            a = j+1
-                            break
-                        elif s[j] == "]":
-                            closeBracketCount += 1
-                            newString += s[j]
-                        elif s[j] == "[":
-                            openBracketCount += 1
-                            newString += s[j]
-                        else:
-                            newString += s[j]
-                    res += newString * number
-                else:
-                    res += s[a]
-                    a += 1
-            s = res
-        return s 
+        stack = []
+        for i, c in enumerate(s):
+            if c == "]":
+                string = ""
+                while stack[-1] != "[":
+                    string += stack.pop()[::-1]
+                string = string[::-1]
+                stack.pop()
+                num = ""
+                while stack and stack[-1].isdigit():
+                    # print(stack[-1])
+                    num += stack.pop()
+                num = int(num[::-1])
+                # print(string, num)
+                for i in range(num):
+                    stack.append(string)
+            else:
+                stack.append(c)
+            print(stack)
+        return "".join(stack)
                 
-
-
-
-        
