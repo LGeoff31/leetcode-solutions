@@ -13,5 +13,4 @@ class Solution:
             queue.appendleft(rightElement)
             res = max(res, prev + totalSum - n * rightElement)
             prev = prev + totalSum - n * rightElement
-            # print(prev + totalSum - n * rightElement, queue)
         return res
