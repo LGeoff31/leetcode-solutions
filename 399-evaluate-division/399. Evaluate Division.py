@@ -6,7 +6,7 @@ class Solution:
             adj[v].append((u, 1/values[i]))
         
         def bfs(start, end):
-            # if start == end and start in adj: return 1
+            if start == end and start in adj: return 1
             # -1 if start or end do no exist in graph
 
             queue = deque([(start, 1)])
