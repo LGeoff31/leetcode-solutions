@@ -2,13 +2,19 @@ class Solution:
     def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
         n = len(nums)
         lst = []
-        curr = sum(nums[:k])
-        lst.append(curr)
-        
-        for i in range(1, len(nums) - k + 1):
-            curr += nums[i + k - 1] - nums[i - 1]
+        for i in range(len(nums) - k + 1):
+            curr = 0
+            for j in range(i, i+k):
+                curr += nums[j]
             lst.append(curr)
-        print(lst)
+        # lst = []
+        # curr = sum(nums[:k])
+        # lst.append(curr)
+        
+        # for i in range(1, len(nums) - k + 1):
+        #     curr += nums[i + k - 1] - nums[i - 1]
+        #     lst.append(curr)
+        # print(lst)
         # dp[0] = lst[0]
         self.globalMax = 0
         self.res = []
