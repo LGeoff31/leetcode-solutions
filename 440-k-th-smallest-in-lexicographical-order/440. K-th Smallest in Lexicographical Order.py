@@ -1,21 +1,21 @@
 class Solution:
-    def getReqNum(self, a, b, n):
-        gap = 0
-        while a <= n:
-            gap += min(n + 1, b) - a
-            a *= 10
-            b *= 10
-        return gap
-
     def findKthNumber(self, n: int, k: int) -> int:
-        num = 1
-        i = 1
-        while i < k:
-            req = self.getReqNum(num, num + 1, n)
-            if i + req <= k:
-                i += req
-                num += 1
+        curr = 1
+        k -= 1
+        def gap(a,b):
+            res = 0
+            while a <= n:
+                res += min(n+1, b) - a
+                a *= 10
+                b *= 10
+            return res
+        while k > 0:
+            step = gap(curr, curr+1)
+            if step <= k:
+                curr += 1
+                k -= step
             else:
-                i += 1
-                num *= 10
-        return num
+                curr *= 10
+                k -= 1
+
+        return curr
