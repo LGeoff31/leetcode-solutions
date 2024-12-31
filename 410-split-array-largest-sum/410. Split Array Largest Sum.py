@@ -1,26 +1,14 @@
 class Solution:
     def splitArray(self, nums: List[int], k: int) -> int:
-        l, r = max(nums), sum(nums)
-        res = r
-        def canSplit(largest):
-            subarray = 0
-            currSum = 0
-            for i in range(len(nums)):
-                currSum += nums[i]
-                if currSum > largest:
-                    subarray+=1
-                    currSum = nums[i]
+        n = len(nums)
+        prefix = list(accumulate(nums))
+        @cache
+        def dfs(idx, subarrays):
+            if subarrays == 1:
+                return prefix[-1] - (prefix[idx-1] if idx-1 >= 0 else 0)
             
-            return subarray + 1 <= k
-        while l <= r:
-            mid = (l+r) // 2
-            if canSplit(mid):
-                res = mid
-                r = mid - 1
-            else:
-                l = mid + 1
-        
-        return res             
-
-        
-
+            res = 1e9
+            for i in range(idx, n - subarrays + 1):
+                res = min(res, max(prefix[i] - (prefix[idx-1] if idx-1 >= 0 else 0), dfs(i+1, subarrays - 1)))
+            return res
+        return dfs(0, k)
