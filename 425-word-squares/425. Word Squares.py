@@ -5,11 +5,9 @@ class Solution:
         # Brute force; Generate all possibilities of size 4 O(n^4), see if valid word O(4 * 4)
         n = len(words[0])
         def getPrefix(prefix):
-            lst = []
             for word in words:
                 if word.startswith(prefix):
-                    lst.append(word)
-            return lst
+                    yield word
         def backtrack(step, word_squares, res):
             if step == n:
                 res.append(word_squares[:])
