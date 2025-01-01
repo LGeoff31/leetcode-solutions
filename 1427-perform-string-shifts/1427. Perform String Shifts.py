@@ -8,7 +8,7 @@ class Solution:
                 goRight += b
         print(goRight)
         goRight %= len(s)
-        if goRight >= 0:
-            return s[len(s) - goRight:] + s[:len(s) - goRight]
-        else:
-            return s[abs(goRight) : ] + s[ : abs(goRight)]
+        # if goRight >= 0:
+        return s[len(s) - goRight:] + s[:len(s) - goRight]
+        # else:
+        #     return s[abs(goRight) : ] + s[ : abs(goRight)]
