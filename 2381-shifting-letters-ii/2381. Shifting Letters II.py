@@ -6,18 +6,13 @@ class Solution:
             prefix[y] += z
             if x != 0:
                 prefix[x-1] -= z
-
         for i in range(len(prefix) - 2, -1, -1):
             prefix[i] += prefix[i+1]
-        print(prefix)
         lst = [ord(letter) - ord("a") for letter in s]
         for i in range(len(prefix)):
             lst[i] = (lst[i] + prefix[i]) % 26  
 
-        res = ""
-        for i in lst:
-            res += chr(i + 97)
-        return res
+        return "".join(list(chr(i+97) for i in lst))
 
             
         
