@@ -1,12 +1,14 @@
 class Solution:
     def minimumLength(self, s: str) -> int:
-        dic = defaultdict(list)
-        for i, c in enumerate(s):
-            dic[c].append(i)
+        if len(s) <= 2:
+            return len(s)
+        
+        dic = Counter(s)
         res = 0
-        for key in dic:
-            if len(dic[key]) % 2 == 1:
+        freq = dic.values()
+        for val in freq:
+            if val%2:
                 res += 1
             else:
-                res += 2
+                res +=2
         return res
