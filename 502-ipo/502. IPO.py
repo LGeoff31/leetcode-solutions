@@ -1,21 +1,18 @@
 class Solution:
     def findMaximizedCapital(self, k: int, w: int, profits: List[int], capitals: List[int]) -> int:
         minHeap = []
-        n = len(profits)
+        res = w
         lst = [(c, p) for c,p in zip(capitals, profits)]
-        lst.sort()
-        visited = set()
-        print(lst)
-        i = 0
-        for j in range(k): #O(K)
-            while i < n and w >= lst[i][0]: #The i pointer will just to one traversal through the array
-                # if i not in visited: #skip indicies that we already added
-                #     visited.add(i) 
-                heapq.heappush(minHeap, -lst[i][1])
-                i += 1
-            #w should change
-            if not len(minHeap):
-                break
-            w += -heapq.heappop(minHeap)
+        lst.sort() # Sort by capital
+        idx = 0
 
-        return w
+        for i in range(k):
+            while idx < len(lst) and w >= lst[idx][0]:
+                heappush(minHeap, -lst[idx][1]) # If you have enough capital, add to minHeap the profit you'll gain
+                idx += 1
+            if len(minHeap) == 0: # Can't do anything more
+                return res
+            profit = -heappop(minHeap)
+            res += profit
+            w += profit
+        return res
