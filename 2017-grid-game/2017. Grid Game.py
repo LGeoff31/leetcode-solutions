@@ -1,6 +1,6 @@
 class Solution:
     def gridGame(self, grid: List[List[int]]) -> int:
-        res = 10000000000
+        res = float("inf")
         totalSumFirst = sum(grid[0])
         prefix1 = list(accumulate(grid[0]))
         prefix2 = list(accumulate(grid[1]))
