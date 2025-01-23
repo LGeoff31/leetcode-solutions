@@ -19,7 +19,7 @@ class Solution:
                 duplicates.add(i)
                 for k in duplicates:
                     prefix[k] += 1
-                    lst[k] = abbr(words[k], prefix[k])
-                # lst = [abbr(words[i], prefix[i]) for i in range(len(words))]
+                    # lst[k] = abbr(words[k], prefix[k])
+                lst = [abbr(words[i], prefix[i]) for i in range(len(words))]
 
         return lst
