@@ -6,6 +6,8 @@ class Solution:
             indegree[u] += 1
             adj[v].append(u)
         queue = deque([])
+
+
         for i in range(numCourses):
             if indegree[i] == 0:
                 queue.append(i)
@@ -19,7 +21,5 @@ class Solution:
                 if indegree[nei] == 0:
                     res[nei] = True
                     queue.append(nei)
-        a = True
-        for b in res:
-            a = a and b
-        return a
+        check_all_true = lambda res : all(res)
+        return all(res)
