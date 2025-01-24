@@ -1,25 +1,25 @@
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:       
-        def dfs(currCourse, visited):
-            if currCourse in visited:
-                return False
-            if len(graph[currCourse]) == 0:
-                return True
-            
-            visited.add(currCourse)
-            for preq in graph[currCourse]:
-                if dfs(preq, visited) == False: return False 
-                graph[currCourse].remove(preq)
-            visited.remove(currCourse)
-            return True        
-        
-        graph = defaultdict(list)
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool: 
+        indegree = [0] * numCourses  
+        adj = defaultdict(list)
         for u, v in prerequisites:
-            graph[u].append(v)
-            
-        for i in range(numCourses): #run a dfs on each i
-            # print(i, graph, dfs(i, set()))
-            if not dfs(i, set()): 
-                return False
-        return True
+            indegree[u] += 1
+            adj[v].append(u)
+        queue = deque([])
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                queue.append(i)
+        res = [False] * numCourses
+        while queue:
+            node = queue.popleft()
+            res[node] = True
 
+            for nei in adj[node]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    res[nei] = True
+                    queue.append(nei)
+        a = True
+        for b in res:
+            a = a and b
+        return a
