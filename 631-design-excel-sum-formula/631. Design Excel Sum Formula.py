@@ -1,27 +1,19 @@
 class Excel:
     """
     [
-        ["1"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["0"], ["0"], ["0"]
-        ["1"], ["0"], ["0"], ["0], 
-
+        ["2"], ["0"], ["0"]
+        ["0"], ["2"], ["0"]
+        ["0"], ["0"], ["A1", "A1:B2"]
     ]
     """
     def __init__(self, height: int, width: str):
         self.rows = height
         self.cols = ord(width) - ord("A") + 1
         # Each cell contains either ["0"] or expression ["A3:B4", "A1:B2"]
-        self.grid = [[0] * self.cols for _ in range(self.rows)]
+        self.grid = [[["0"]] * self.cols for _ in range(self.rows)]
         
     def set(self, row: int, column: str, val: int) -> None: 
-       self.grid[row-1][ord(column)-ord("A")] = val
+       self.grid[row-1][ord(column)-ord("A")] = [str(val)] 
 
     def get(self, row: int, column: str) -> int: #O(1)
         v = self.grid[row - 1][ord(column) - ord("A")]
@@ -31,22 +23,22 @@ class Excel:
 
     def sum(self, row: int, column: str, numbers: List[str]) -> int:
         self.grid[row-1][ord(column)-ord("A")] = numbers
-        val = self.evaluate(numbers)
-        return val
+        return self.evaluate(numbers)
 
     def evaluate(self, expr):
         res = 0
-        if type(expr) == int:
-            return expr
+        print('evaluating', expr)
         for e in expr:
             if ":" in e: 
-                start, end = e.split(":") 
-                for r in range(int(start[1:]) - 1, int(end[1:])): 
-                    for c in range(ord(start[0])-ord("A"), ord(end[0])-ord("A") + 1):
+                start, end = e.split(":")
+                for r in range(int(start[1:]) - 1, int(end[1:])): # 0 -> 1
+                    for c in range(ord(start[0])-ord("A"), ord(end[0])-ord("A") + 1): # 0 -> 1
                         res += self.evaluate(self.grid[r][c])
-            elif type(e) == int:
-                res += e
+            elif e.isnumeric() or (e[0] == "-" and e[1:].isnumeric()):
+                res += int(e)
             else:
+                print('e', e, type(e))
+                # e -> A1
                 res += self.evaluate(self.grid[int(e[1]) - 1][ord(e[0])-ord("A")])
         return res
 
