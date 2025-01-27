@@ -1,15 +1,21 @@
 class Solution:
     def findLUSlength(self, strs: List[str]) -> int:
         res = 0
-        def isSubsequence(s, t):
-            t = iter(t)
-            return all(c in t for c in s)
+        def subseq(word1, word2):
+            # word1 -> word2
+            l, r = 0, 0
+            while l < len(word1) and r < len(word2):
+                if word2[r] == word1[l]:
+                    l += 1
+                r += 1
+           
+            return l == len(word1) 
             
         for i in range(len(strs)):
             valid = True
             for j in range(len(strs)):
                 if i == j: continue
-                if isSubsequence(strs[i], strs[j]) == True:
+                if subseq(strs[i], strs[j]) == True:
                     valid = False
                     break
             if valid:
