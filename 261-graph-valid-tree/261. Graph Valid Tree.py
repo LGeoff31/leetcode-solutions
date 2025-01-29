@@ -25,6 +25,7 @@ class Solution:
         for u,v in edges:
             if dsu.union(u,v) == False:
                 return False
+
         parent = set()
         for i in range(n):
             parent.add(dsu.find(i))
