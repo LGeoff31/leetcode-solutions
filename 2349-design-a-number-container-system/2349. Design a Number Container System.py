@@ -1,25 +1,17 @@
-from sortedcontainers import SortedList
 class NumberContainers:
-
     def __init__(self):
         self.dic = defaultdict(SortedList)
-        self.dic2 = {}
-        
+        self.index_to_number = {}
 
     def change(self, index: int, number: int) -> None:
-        if index in self.dic2:
-            self.dic[self.dic2[index]].remove(index)
+        if index in self.index_to_number:
+            num = self.index_to_number[index]
+            self.dic[num].remove(index)
+        self.index_to_number[index] = number
         self.dic[number].add(index)
-        self.dic2[index] = number
-        
 
     def find(self, number: int) -> int:
-        if number not in self.dic or not self.dic[number]:
-            return -1
-        return self.dic[number][0]
-
-
-# Your NumberContainers object will be instantiated and called as such:
-# obj = NumberContainers()
-# obj.change(index,number)
-# param_2 = obj.find(number)
+        lst = self.dic[number]
+        if not lst: return -1
+        return lst[0]
+     
