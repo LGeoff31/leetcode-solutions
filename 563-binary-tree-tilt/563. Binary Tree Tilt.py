@@ -14,6 +14,7 @@ class Solution:
             map_id_to_node(node.left)
             map_id_to_node(node.right)
         map_id_to_node(root)
+        @cache
         def val(node_id):
             if node_id not in id_to_node: return 0
             node = id_to_node[node_id]
