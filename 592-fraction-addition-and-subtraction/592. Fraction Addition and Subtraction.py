@@ -1,12 +1,12 @@
 class Solution:
     def fractionAddition(self, expression: str) -> str:
         lst = re.split("[+-]", expression)
-        # def gcd(a,b): 
-        #     if a > b: return gcd(b, a)
-        #     if b % a == 0: return a
-        #     return gcd(b%a, a)
-        # def lcm(a,b):
-        #     return a*b//gcd(a,b)
+        def gcd(a,b): 
+            if b == 0:
+                return a
+            return gcd(b, a % b)
+        def lcm(a,b):
+            return a*b//gcd(a,b)
         def get_num_den(expr):
             num, den = expr.split("/")
             return int(num), int(den)
