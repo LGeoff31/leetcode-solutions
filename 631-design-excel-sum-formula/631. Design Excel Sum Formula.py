@@ -1,46 +1,41 @@
 class Excel:
-    """
-    [
-        ["2"], ["0"], ["0"]
-        ["0"], ["2"], ["0"]
-        ["0"], ["0"], ["A1", "A1:B2"]
-    ]
-    """
     def __init__(self, height: int, width: str):
-        self.rows = height
-        self.cols = ord(width) - ord("A") + 1
-        # Each cell contains either ["0"] or expression ["A3:B4", "A1:B2"]
-        self.grid = [[["0"]] * self.cols for _ in range(self.rows)]
-        
-    def set(self, row: int, column: str, val: int) -> None: 
-       self.grid[row-1][ord(column)-ord("A")] = [str(val)] 
+        width = ord(width) - ord("A") + 1
+        self.spreadsheet = [[0] * width for _ in range(height)]
+        print(self.spreadsheet)
 
-    def get(self, row: int, column: str) -> int: #O(1)
-        v = self.grid[row - 1][ord(column) - ord("A")]
-        if type(v) == int:
-            return int(v)
-        return self.evaluate(v)
+    def set(self, row: int, column: str, val: int) -> None: #O(1)
+        r,c = row - 1, ord(column) - ord("A")
+        self.spreadsheet[r][c] = val
+        print(self.spreadsheet)
+
+    def get(self, row: int, column: str) -> int: #O(1) 
+        r,c = row - 1, ord(column) - ord("A")
+        return self.evaluate(r, c)
 
     def sum(self, row: int, column: str, numbers: List[str]) -> int:
-        self.grid[row-1][ord(column)-ord("A")] = numbers
-        return self.evaluate(numbers)
+        r,c = row - 1, ord(column) - ord("A")
+        self.spreadsheet[r][c] = numbers
+        return self.evaluate(r,c)
 
-    def evaluate(self, expr):
+    def evaluate(self, r, c):
+        if type(self.spreadsheet[r][c]) == int:
+            return self.spreadsheet[r][c]
+        # Otherwise, form: ["A1", "A1:B2"]
         res = 0
-        print('evaluating', expr)
-        for e in expr:
-            if ":" in e: 
-                start, end = e.split(":")
-                for r in range(int(start[1:]) - 1, int(end[1:])): # 0 -> 1
-                    for c in range(ord(start[0])-ord("A"), ord(end[0])-ord("A") + 1): # 0 -> 1
-                        res += self.evaluate(self.grid[r][c])
-            elif e.isnumeric() or (e[0] == "-" and e[1:].isnumeric()):
-                res += int(e)
+        for expr in self.spreadsheet[r][c]:
+            if ":" not in expr:
+                nxt_r, nxt_c = int(expr[1:]) - 1, ord(expr[0]) - ord("A")
+                res += self.evaluate(nxt_r, nxt_c)
             else:
-                print('e', e, type(e))
-                # e -> A1
-                res += self.evaluate(self.grid[int(e[1]) - 1][ord(e[0])-ord("A")])
+                start_coord, end_coord = expr.split(":")
+                start_r, start_c = int(start_coord[1:]) - 1, ord(start_coord[0]) - ord("A") 
+                end_r, end_c = int(end_coord[1:]) - 1, ord(end_coord[0]) - ord("A") 
+                for r_pos in range(start_r, end_r + 1):
+                    for c_pos in range(start_c, end_c + 1):
+                        res += self.evaluate(r_pos, c_pos)
         return res
+      
 
 # Your Excel object will be instantiated and called as such:
 # obj = Excel(height, width)
