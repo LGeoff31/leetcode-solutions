@@ -5,7 +5,7 @@ class MedianFinder:
         self.minHeap = []
         self.maxHeap = []
     
-    def addNum(self, num: int) -> None: 
+    def addNum(self, num: int) -> None: # O(logn)
         # Base case
         if not self.maxHeap:
             heappush(self.maxHeap, -num)
@@ -14,27 +14,27 @@ class MedianFinder:
         if len(self.maxHeap) > len(self.minHeap): # Greater by 1
             heappush(self.minHeap, num)
             if -self.maxHeap[0] > self.minHeap[0]:
-                temp1 = heappop(self.minHeap)
-                temp2 = -heappop(self.maxHeap)
-                heappush(self.maxHeap, -temp1)
-                heappush(self.minHeap, temp2)
+                self.swapValues()
         elif len(self.minHeap) > len(self.maxHeap):
             heappush(self.maxHeap, -num)
             if -self.maxHeap[0] > self.minHeap[0]:
-                temp1 = heappop(self.minHeap)
-                temp2 = -heappop(self.maxHeap)
-                heappush(self.maxHeap, -temp1)
-                heappush(self.minHeap, temp2)
+                self.swapValues()
         else:
             if num <= self.minHeap[0]:
                 heappush(self.maxHeap, -num)
             else:
                 heappush(self.minHeap, num)
 
-    def findMedian(self) -> float:
+    def findMedian(self) -> float: # O(1)
         if (len(self.minHeap) + len(self.maxHeap)) % 2 == 1:
             return self.minHeap[0] if len(self.minHeap) > len(self.maxHeap) else -self.maxHeap[0]
         return (-self.maxHeap[0] + self.minHeap[0]) / 2
+    
+    def swapValues(self):
+        temp1 = heappop(self.minHeap)
+        temp2 = -heappop(self.maxHeap)
+        heappush(self.maxHeap, -temp1)
+        heappush(self.minHeap, temp2)
         
 
 
