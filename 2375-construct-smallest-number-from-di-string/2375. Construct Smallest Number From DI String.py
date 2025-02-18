@@ -1,30 +1,25 @@
 class Solution:
     def smallestNumber(self, pattern: str) -> str:
-        def meet_conditions(string):
-            for i in range(1, len(string)):
-                if pattern[i-1] == "I":
-                    if string[i] <= string[i-1]:
-                        return False 
+        length = len(pattern) + 1
+        a = list(range(1,length+1))
+        lst = list(permutations(a))
+        # print(lst)
+        def valid(arr):
+            idx = 0
+            for i in range(1, len(arr)):
+                if pattern[idx] == "I":
+                    if arr[i] < arr[i-1]:
+                        return False
                 else:
-                    if string[i] >= string[i-1]:
-                        return False 
-            return True
-        res = ""
-        def dfs(string):
-            if len(string) > len(pattern) + 1: return
-            if meet_conditions(string):
-                if len(string) == 1 + len(pattern):
-                    print('reached', string)
-                    # res = string
-                    return string
-            
-                for i in range(1, 10):
-                    if str(i) not in string:
-                        if dfs(string + str(i)):
-                            return dfs(string + str(i))
-            
-        
-        return dfs("")
-        # return res
-
-        
+                    if arr[i] > arr[i-1]:
+                        return False
+                idx += 1
+            return True 
+        for arr in lst:
+            if valid(arr):
+                res = ""
+                for c in arr:
+                    res += str(c)
+                return res
+                # return "".join([c for c in arr])
+        return ""
