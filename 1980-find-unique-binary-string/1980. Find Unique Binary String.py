@@ -1,16 +1,9 @@
 class Solution:
     def findDifferentBinaryString(self, nums: List[str]) -> str:
-        n = len(nums)
-        nums = set(nums)
-        self.res = ""
-        def dfs(string):
-            if len(string) == n:
-                if string not in nums:
-                    self.res = string
-                return
-            
-            dfs(string + "1")
-            dfs(string + "0")
-        dfs("")
-        return self.res
-
+        res = []
+        for i in range(len(nums)):
+            if nums[i][i] == "1":
+                res.append("0")
+            else:
+                res.append("1")
+        return "".join(res)
