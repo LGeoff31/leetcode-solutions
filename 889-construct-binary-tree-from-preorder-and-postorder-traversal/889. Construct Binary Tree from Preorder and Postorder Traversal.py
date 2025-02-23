@@ -21,10 +21,9 @@ class Solution:
                 return TreeNode(arr[0])
             root = TreeNode(arr[0])
             size = lookup2[arr[1]] + 1 - offset
-            root.left = dfs(arr[1 : 1 + size], offset) # dfs([2,4,5])
+            root.left = dfs(arr[1 : 1 + size], offset) 
             offset += size
-            root.right = dfs(arr[1+size : ], offset) # dfs([3,6,7])
+            root.right = dfs(arr[1+size : ], offset) 
             return root
-        #     1
     
         return dfs(preorder, 0)
