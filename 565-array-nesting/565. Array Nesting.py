@@ -10,7 +10,7 @@ class Solution:
         def explore(num):
             if num not in visited:
                 visited.add(num)
-                return 1 + explore(dic[num])
+                return 1 + explore(nums[num])
             return 0
         res = 0
         for num in nums:
