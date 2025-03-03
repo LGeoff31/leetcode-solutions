@@ -1,20 +1,18 @@
 class Solution:
     def arrayNesting(self, nums: List[int]) -> int:
-        visited = set()
-        dic = {}
+        seen = set() # 5, 6, 2, 0, 4, 1, 3
+        max_length = 0 # 4
 
-        for i in range(len(nums)):
-            # if nums[i] == i: continue
-            dic[nums[i]] = nums[nums[i]]
-        print(dic)
-        def explore(num):
-            if num not in visited:
-                visited.add(num)
-                return 1 + explore(nums[num])
-            return 0
-        res = 0
-        for num in nums:
-            if num not in visited:
-                # visited.add(num)
-                res = max(res, explore(num))
-        return res
+        #[5,4,0,3,1,6,2] 
+
+        for n in nums:
+            # 3
+            if n not in seen:
+                length = 0
+                while n not in seen: # length = 1
+                    length += 1
+                    seen.add(n)
+                    n = nums[n]
+                max_length = max(max_length, length)
+
+        return max_length
