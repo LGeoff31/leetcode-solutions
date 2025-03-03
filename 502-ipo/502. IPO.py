@@ -1,18 +1,20 @@
 class Solution:
     def findMaximizedCapital(self, k: int, w: int, profits: List[int], capitals: List[int]) -> int:
-        minHeap = []
-        res = w
         lst = [(c, p) for c,p in zip(capitals, profits)]
-        lst.sort() # Sort by capital
-        idx = 0
+        lst.sort()
+        maxHeap = []
+        i = 0
+        # Initialize the minHeap with all the projects we can complete
 
-        for i in range(k):
-            while idx < len(lst) and w >= lst[idx][0]:
-                heappush(minHeap, -lst[idx][1]) # If you have enough capital, add to minHeap the profit you'll gain
-                idx += 1
-            if len(minHeap) == 0: # Can't do anything more
-                return res
-            profit = -heappop(minHeap)
-            res += profit
-            w += profit
-        return res
+        
+        for _ in range(k):
+            while i < len(capitals) and w >= lst[i][0]:
+                heapq.heappush(maxHeap, (-lst[i][1], lst[i][0]))
+                i += 1
+                
+            if not maxHeap:
+                break
+            p, c = heapq.heappop(maxHeap) #
+            w -= p
+
+        return w
