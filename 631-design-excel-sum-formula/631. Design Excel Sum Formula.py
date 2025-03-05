@@ -1,41 +1,44 @@
 class Excel:
     def __init__(self, height: int, width: str):
-        width = ord(width) - ord("A") + 1
-        self.spreadsheet = [[0] * width for _ in range(height)]
-        print(self.spreadsheet)
+        self.spreadsheet = {} # {(r,c) : value}
+    
+    def set(self, row: int, column: str, val: int) -> None:
+        self.spreadsheet[column + str(row)] = val
 
-    def set(self, row: int, column: str, val: int) -> None: #O(1)
-        r,c = row - 1, ord(column) - ord("A")
-        self.spreadsheet[r][c] = val
-        print(self.spreadsheet)
-
-    def get(self, row: int, column: str) -> int: #O(1) 
-        r,c = row - 1, ord(column) - ord("A")
-        return self.evaluate(r, c)
+    def get(self, row: int, column: str) -> int: 
+        return self.evaluate(column + str(row))
 
     def sum(self, row: int, column: str, numbers: List[str]) -> int:
-        r,c = row - 1, ord(column) - ord("A")
-        self.spreadsheet[r][c] = numbers
-        return self.evaluate(r,c)
-
-    def evaluate(self, r, c):
-        if type(self.spreadsheet[r][c]) == int:
-            return self.spreadsheet[r][c]
-        # Otherwise, form: ["A1", "A1:B2"]
         res = 0
-        for expr in self.spreadsheet[r][c]:
-            if ":" not in expr:
-                nxt_r, nxt_c = int(expr[1:]) - 1, ord(expr[0]) - ord("A")
-                res += self.evaluate(nxt_r, nxt_c)
-            else:
-                start_coord, end_coord = expr.split(":")
-                start_r, start_c = int(start_coord[1:]) - 1, ord(start_coord[0]) - ord("A") 
-                end_r, end_c = int(end_coord[1:]) - 1, ord(end_coord[0]) - ord("A") 
-                for r_pos in range(start_r, end_r + 1):
-                    for c_pos in range(start_c, end_c + 1):
-                        res += self.evaluate(r_pos, c_pos)
+        self.spreadsheet[column + str(row)] = numbers
+        for expr in numbers:
+            res += self.evaluate(expr)
+        print(self.spreadsheet, res)
         return res
-      
+    
+    def evaluate(self, expr):
+        if expr in self.spreadsheet and type(self.spreadsheet[expr]) == int:
+            return self.spreadsheet[expr]
+        if expr in self.spreadsheet and type(self.spreadsheet[expr]) == list:
+            print('reached')
+            res = 0
+            for e in self.spreadsheet[expr]:
+                res += self.evaluate(e)
+            return res
+        if ":" not in expr:
+            column, row = expr[0], expr[1:]
+            if (column + str(row)) not in self.spreadsheet: return 0
+            return self.evaluate(column + str(row))
+        else:
+            res = 0
+            lhs, rhs = expr.split(":")
+            r1, c1 = int(lhs[1:]), lhs[0]
+            r2, c2 = int(rhs[1:]), rhs[0]
+            for r in range(r1, r2+1):
+                for c in range(ord(c1), ord(c2) + 1):
+                    if (chr(c) + str(r)) in self.spreadsheet:
+                        res += self.evaluate(chr(c) + str(r))
+            return res
 
 # Your Excel object will be instantiated and called as such:
 # obj = Excel(height, width)
