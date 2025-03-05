@@ -1,15 +1,10 @@
 class Solution:
     def coloredCells(self, n: int) -> int:
-        dp = [0] * n
-        dp[0] = 1
+        # 1 -> 1  (1 boundary)
+        # 2 -> 5  (4 boundary)
+        # 3 -> 13 (8 boundary)
+        # 4 -> 25 (12 boundary)
+
         if n == 1: return 1
-        dp[1] = 5
-        width = 3
-        for i in range(2, n):
-            dp[i] = dp[i-1] + 4*width-4
-            width += 1
-        # print(dp)
-        return dp[-1]
 
-
-        
+        return self.coloredCells(n-1) + 4 * (n-1)
