@@ -5,16 +5,16 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def constructMaximumBinaryTree(self, nums: List[int]) -> Optional[TreeNode]:
-        def dfs(arr):
-            if not arr:
-                return None
-            maxValue = max(arr)
-            maxValueIdx = arr.index(maxValue)
-            lhs = arr[: maxValueIdx]
-            rhs = arr[maxValueIdx+1 : ]
-            maxNode = TreeNode(maxValue)
-            maxNode.left = dfs(lhs)
-            maxNode.right = dfs(rhs)
-            return maxNode
-        return dfs(nums)
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        nodes = []
+        for num in nums:
+            node = TreeNode(num)
+            while nodes and nodes[-1].val < num:
+                node.left = nodes.pop()
+
+            if nodes:
+                nodes[-1].right = node
+
+            nodes.append(node)
+
+        return nodes[0]
