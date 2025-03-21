@@ -28,8 +28,4 @@ class Solution:
             if dfs(recipes[i], set()):
                 makeable.add(recipes[i])
 
-        res = []
-        for recipe in recipes:
-            if recipe in makeable:
-                res.append(recipe)
-        return res
+        return [r for r in recipes if r in makeable]
