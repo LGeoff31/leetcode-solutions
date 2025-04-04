@@ -1,26 +1,17 @@
-from sortedcontainers import SortedList
 class Solution:
-    def maximumTotalSum(self, maximumHeight: List[int]) -> int:
-        if max(maximumHeight) < len(maximumHeight): return -1
-        maximumHeight.sort()
+    def maximumTotalSum(self, lst: List[int]) -> int:
+        lst.sort(reverse=True)
+        max_reachable = max(lst)
+        i = 0
         res = 0
-        visited = set()
-        a = SortedList()
-        # print(maximumHeight)
-        for i in range(len(maximumHeight) -1, -1, -1):
-            if maximumHeight[i] not in visited:
-                res += maximumHeight[i]
-                visited.add(maximumHeight[i])
-                a.add(maximumHeight[i])
+        while max_reachable != 0:
+            if lst[i] >= max_reachable:
+                res += max_reachable
+                max_reachable -= 1
             else:
-                num = maximumHeight[i]
-                # while num in visited:
-                #     num -= 1
-                num = a[0] - 1
-                if num == 0: return -1
-                res += num
-                visited.add(num)
-                a.add(num)
-            # print(a)
-        return res
-        
+                res += lst[i]
+                max_reachable = lst[i] - 1
+            i += 1
+            if i == len(lst): 
+                return res
+        return -1
