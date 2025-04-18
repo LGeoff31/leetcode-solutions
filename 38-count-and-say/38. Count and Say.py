@@ -1,26 +1,20 @@
 class Solution:
     def countAndSay(self, n: int) -> str:
-        dp = [0] * 30
-        dp[0] = "1"
-        def convert(num):
-            if len(num) == 1: return "1" + num
-            num += "@"
-            res = ""
-            count = 1
-            prevChar = num[0]
-            for i in range(1, len(num)):
-                if num[i] != num[i-1]:
-                    res += str(count) + prevChar
-                    count = 1
+        currString = "1"
+        def convert(string):
+            i = 0
+            new_string = ""
+            while i < len(string):
+                curr_freq = 1
+                curr_char = string[i]
+                while i+1 < len(string) and string[i+1] == string[i]:
+                    curr_freq += 1
+                    i += 1
                 else:
-                    count += 1
-                prevChar = num[i]
-            return res
-
-        for i in range(1, 30):
-            dp[i] = convert(dp[i-1])
-        print(dp)
-        return dp[n-1]
-
-
-        
+                    i += 1
+                new_string += str(curr_freq) + curr_char 
+            return new_string
+        for i in range(n-1):
+            currString = convert(currString)
+            print(currString)
+        return currString
