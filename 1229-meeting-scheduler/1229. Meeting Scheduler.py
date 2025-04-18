@@ -3,18 +3,16 @@ class Solution:
         slots1.sort()
         slots2.sort()
         i,j = 0, 0
+
+        def intersect(s,e):
+            s1,e1 = s
+            s2,e2 = e
+            return (-1, -1) if e1 < s2 or s1 > e2 else (max(s1, s2), min(e1, e2))
         while i < len(slots1) and j < len(slots2):
-            # Check if there is an intersection
-            dur = 0
-            if slots2[j][0] <= slots1[i][1] and slots2[j][0] >= slots1[i][0]:
-                dur = min(slots1[i][1], slots2[j][1]) - slots2[j][0]
-            elif slots2[j][1] >= slots1[i][0] and slots2[j][1] <= slots1[i][1]:
-                dur = slots2[j][1] - max(slots2[j][0], slots1[i][0])
-            elif slots2[j][0] <= slots1[i][0] and slots2[j][1] >= slots1[i][1]:
-                dur = slots1[i][1] - slots1[i][0]
-            print(dur)
-            if dur >= duration:
-                return [max(slots1[i][0], slots2[j][0]), max(slots1[i][0], slots2[j][0]) + duration]
+            s,e = intersect(slots1[i], slots2[j])
+            if s != -1 and e != -1:
+                if e-s >= duration:
+                    return [s, s+duration]
             
             # Which to increment
             if slots1[i][1] > slots2[j][1]:
