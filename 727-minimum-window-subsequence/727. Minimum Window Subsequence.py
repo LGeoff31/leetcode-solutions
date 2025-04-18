@@ -29,11 +29,11 @@ class Solution:
                 else:
                     dp[r][c] = dp[r][c-1]
         # print(dp)
-        res, minLen = "", 1e9
+        start, minLen = 0, 1e9
         for c in range(cols):
             starting_idx = dp[-1][c]
             if starting_idx != -1 and c-starting_idx+1 < minLen:
                 minLen = c-starting_idx+1
-                res = s1[starting_idx: c + 1]
+                start = starting_idx
         # print(res)
-        return res if minLen != 1e9 else ""
+        return s1[start: start+minLen] if minLen != 1e9 else ""
