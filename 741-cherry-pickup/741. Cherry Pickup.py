@@ -11,7 +11,8 @@ class Solution:
         # THis is because perhaps you add more seperation between the next path you run
         n = len(grid)
         @cache
-        def dfs(r1, c1, r2, c2):
+        def dfs(r1, c1, r2):
+            c2 = r1+c1-r2
             if not(0<=r1<n and 0<=c1<n and 0<=r2<n and 0<=c2<n):
                 return -1e9
             if grid[r1][c1] == -1 or grid[r2][c2] == -1:
@@ -24,10 +25,10 @@ class Solution:
                 ans += grid[r2][c2]
             
             return ans + max(
-                dfs(r1+1, c1, r2+1, c2),
-                dfs(r1+1, c1, r2, c2+1),
-                dfs(r1, c1+1, r2+1, c2),
-                dfs(r1, c1+1, r2, c2+1),
+                dfs(r1+1, c1, r2+1),
+                dfs(r1+1, c1, r2),
+                dfs(r1, c1+1, r2+1),
+                dfs(r1, c1+1, r2),
             )
-        ans = dfs(0, 0, 0, 0)
+        ans = dfs(0, 0, 0)
         return ans if ans > -99999999 else 0
