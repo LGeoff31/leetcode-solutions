@@ -9,18 +9,25 @@ class Solution:
         # O(rc)
         # Claim: You'll never have more rectangles than cells on the board NVM
         
-        rows, cols = len(grid), len(grid[0])
-        dic = defaultdict(int)
-        # Auto populate first one
-        for c1 in range(cols):
-            for c2 in range(c1 + 1, cols):
-                if grid[0][c1] == grid[0][c2] == 1:
-                    dic[(c1, c2)] += 1
-        res = 0
-        for r in range(1, rows):
-            for c1 in range(cols):
-                for c2 in range(c1 + 1, cols):
-                    if grid[r][c1] == grid[r][c2] == 1:
-                        res += dic[(c1, c2)]
-                        dic[(c1, c2)] += 1
-        return res
+        rows = [[c for c, val in enumerate(row) if val]
+                for row in grid]
+        print(rows)
+        N = sum(len(row) for row in grid)
+        SQRTN = int(N**.5)
+        print(N)
+        ans = 0
+        count = collections.Counter()
+        for r, row in enumerate(rows):
+            if len(row) >= SQRTN:
+                target = set(row)
+                for r2, row2 in enumerate(rows):
+                    if r2 <= r and len(row2) >= SQRTN:
+                        continue
+                    found = sum(1 for c2 in row2 if c2 in target)
+                    ans += found * (found - 1) / 2
+            else:
+                for pair in itertools.combinations(row, 2):
+                    ans += count[pair]
+                    count[pair] += 1
+
+        return int(ans)
