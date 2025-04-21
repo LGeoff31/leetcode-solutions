@@ -18,6 +18,7 @@ class Solution:
                 left, right = max(node-k+1,0), min(node+k-1, n-1) - (k-1)
                 left = 2 * left + k - 1 - node
                 right = 2 * right + k - 1 - node
+                elements_query = []
 
                 for i in list(buckets[left%2].irange(left, right)):
                     if i in banned_set or i not in buckets[i % 2]:
