@@ -1,7 +1,10 @@
 class Solution:
     def dieSimulator(self, n: int, rollMax: List[int]) -> int:
-        @cache
+        cache = {}
         def dfs(rollsLeft, prevRollNumber, freqRollNumber): # O (n * 6 * max(rollMax))
+            if (rollsLeft, prevRollNumber, freqRollNumber) in cache:
+                return cache[(rollsLeft, prevRollNumber, freqRollNumber)]
+
             if freqRollNumber > rollMax[prevRollNumber - 1]:
                 return 0
 
@@ -13,6 +16,7 @@ class Solution:
                     res += dfs(rollsLeft - 1, i+1, freqRollNumber + 1)
                 else:
                     res += dfs(rollsLeft - 1, i+1, 1)
+            cache[(rollsLeft, prevRollNumber, freqRollNumber)] = res
             return res
             
             
