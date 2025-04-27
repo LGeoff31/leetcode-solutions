@@ -1,6 +1,4 @@
-<p>Given an integer array <code>nums</code>, return the number of subarrays<em> </em>of length 3 such that the sum of the first and third numbers equals <em>exactly</em> half of the second number.</p>
-
-<p>A <strong>subarray</strong> is a contiguous <b>non-empty</b> sequence of elements within an array.</p>
+<p>Given an integer array <code>nums</code>, return the number of <span data-keyword="subarray-nonempty">subarrays</span> of length 3 such that the sum of the first and third numbers equals <em>exactly</em> half of the second number.</p>
 
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
