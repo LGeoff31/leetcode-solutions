@@ -8,8 +8,8 @@ class Solution:
             diff = currSum - target
             if diff % 2 == 1:
                 return False
-            # if diff > currSum:
-            #     return False
+            if diff > 2*currSum:
+                return False
             return True
         for i in range(1, 10 ** 5):
             if valid(i):
