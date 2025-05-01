@@ -1,40 +1,54 @@
 class SnakeGame:
     def __init__(self, width: int, height: int, food: List[List[int]]):
-        self.rows, self.cols = height, width
-        self.occupied_cells = set([(0,0)])
-        self.queue = deque([(0,0)])
+        self.width = width
+        self.height = height
+        self.r = 0
+        self.c = 0
         self.food = food
-        self.food_idx = 0
+        self.score = 0
+        self.idx = 0
+        self.queue = deque([(0,0)])
 
-    def get_new_position(self, direction, old_r, old_c):
-        delta_c, delta_r = {"R": (1, 0), "L": (-1, 0), "U": (0, -1), "D": (0, 1)}[direction]
-        return old_r + delta_r, old_c + delta_c
+    def update_coordinate(self, direction):
+        match direction:
+            case "R":
+                self.c += 1
+            case "L":
+                self.c -= 1
+            case "U":
+                self.r -= 1
+            case default:
+                self.r += 1
+        return [self.r, self.c]
+    def inBounds(self, r,c):
+        return 0 <= r < self.height and 0 <= c < self.width
+
+    def hitSnake(self):
+        return (self.r, self.c) in self.queue
 
     def move(self, direction: str) -> int:
-        old_r, old_c = self.queue[-1]
-        r,c = self.get_new_position(direction, old_r, old_c)
-        food_r, food_c = self.food[self.food_idx] if self.food_idx < len(self.food) else [-1, -1]
-        # Out of bounds
-        if not (0 <= r < self.rows and 0 <= c < self.cols):
+        self.r, self.c = self.update_coordinate(direction)
+        if not self.inBounds(self.r, self.c):
             return -1
-        
-        if not(r == food_r and c == food_c):
-            gone_r, gone_c = self.queue.popleft()
-            self.occupied_cells.remove((gone_r, gone_c))
+        print(self.queue, self.r, self.c)
+        if self.idx >= len(self.food):
+            self.queue.popleft()
+            if self.hitSnake():
+                return -1
+            self.queue.append((self.r,self.c))
+            return self.score
+        if [self.r, self.c] == self.food[self.idx]:
+            self.idx += 1
+            self.score += 1
         else:
-            self.food_idx += 1
-
-        # Collision with tail
-        if (r,c) in self.occupied_cells:
+            self.queue.popleft()
+        if self.hitSnake():
             return -1
+        self.queue.append((self.r,self.c))
+        return self.score
+        
         
 
-        self.queue.append((r,c))
-        self.occupied_cells.add((r,c))
-        print(self.queue)
-
-        return len(self.occupied_cells) -1
-        
 
 
 # Your SnakeGame object will be instantiated and called as such:
