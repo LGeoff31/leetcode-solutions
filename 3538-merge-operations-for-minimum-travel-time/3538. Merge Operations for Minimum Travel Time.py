@@ -1,21 +1,18 @@
 class Solution:
-    def minTravelTime(self, l: int, n: int, k: int, pos: List[int], time: List[int]) -> int:
-        pos.append(l)
+    def minTravelTime(self, l: int, n: int, k: int, position: List[int], time: List[int]) -> int:
         @cache
-        def dp(i, k, t):
-            if i + k >= n:
-                return inf
-            if i == n-1:
-                return 0
-            p = pos[i]
-            ans = t * (pos[i+1] - pos[i]) + dp(i+1, k, time[i+1])
-            cost = 0
-            for m in range(k+1):
-                j = i+m+1
-                if j >= n:
-                    break
-                cost += time[j]
-                ans1 = t * (pos[j] - pos[i]) + dp(j, k-m, cost)
-                ans = min(ans, ans1)
-            return ans
-        return dp(0, k, time[0])
+        def dfs(idx, prev_pos, speed, extra_speed, left):
+            if idx == n - 1:
+                return (position[idx] - prev_pos) * speed if left == 0 else 1e9
+            
+            if left:
+                cost = (position[idx] - prev_pos) * speed
+                take = cost + dfs(idx + 1, position[idx], time[idx] + extra_speed, 0, left)
+                no_take = dfs(idx+1, prev_pos, speed, extra_speed + time[idx], left - 1)
+                return min(take, no_take)
+            cost = (position[idx] - prev_pos) * speed
+            take = cost + dfs(idx + 1, position[idx], time[idx] + extra_speed, 0, left)
+            return take
+
+        return dfs(1, 0, time[0], 0, k)
+            
