@@ -3,26 +3,22 @@ from typing import List, Tuple
 class Solution:
     def minTimeToReach(self, moveTime: List[List[int]]) -> Tuple[int, int]:
         rows, cols = len(moveTime), len(moveTime[0])
-        dp = [[(1e9, 0)] * cols for _ in range(rows)]  # Initialize dp with (time, steps)
-
-        # Fill in initial spot
+        dp = [[(1e9, 0)] * cols for _ in range(rows)] 
         dp[0][0] = (0, 0)
 
-        # Fill in first row
         for c in range(1, cols):
             if dp[0][c - 1][0] < moveTime[0][c]:
-                # Must wait
-                dp[0][c] = (moveTime[0][c] + 1, dp[0][c - 1][1] + 1)  # Update time and steps
+                dp[0][c] = (moveTime[0][c] + 1, dp[0][c - 1][1] + 1) 
             else:
-                dp[0][c] = (dp[0][c - 1][0] + 1, dp[0][c - 1][1] + 1)  # Update time and steps
+                dp[0][c] = (dp[0][c - 1][0] + 1, dp[0][c - 1][1] + 1)  
         
         # Fill in first column
         for r in range(1, rows):
             if dp[r - 1][0][0] < moveTime[r][0]:
                 # Must wait
-                dp[r][0] = (moveTime[r][0] + 1, dp[r - 1][0][1] + 1)  # Update time and steps
+                dp[r][0] = (moveTime[r][0] + 1, dp[r - 1][0][1] + 1) 
             else:
-                dp[r][0] = (dp[r - 1][0][0] + 1, dp[r - 1][0][1] + 1)  # Update time and steps
+                dp[r][0] = (dp[r - 1][0][0] + 1, dp[r - 1][0][1] + 1) 
         # Fill in the rest of the dp grid
         for r in range(1, rows):
             for c in range(1, cols):
