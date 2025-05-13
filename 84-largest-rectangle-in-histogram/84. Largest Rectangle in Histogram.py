@@ -10,7 +10,7 @@ class Solution:
                 start = idx
             
             stack.append((start, h))
-            res = max(res, (i - stack[-1][0]) * stack[0][0])
+            # res = max(res, (i - stack[-1][0]) * stack[0][0])
         
         for i, h in stack:
             res = max(res, h * (len(heights) - i))
