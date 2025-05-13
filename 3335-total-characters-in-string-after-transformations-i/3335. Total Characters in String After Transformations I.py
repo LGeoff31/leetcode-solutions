@@ -1,18 +1,20 @@
 class Solution:
     def lengthAfterTransformations(self, s: str, t: int) -> int:
         MOD = 10 ** 9 + 7
+        count = [0] * 26
+        for i in range(len(s)):
+            count[ord(s[i]) - ord("a")] += 1
 
-        cnt = [0] * 26
-        for c in s:
-            cnt[ord(c) - ord("a")] += 1
-        
-        for _ in range(t):
-            tmp = [0] * 26
-            for i in range(26):
-                if i == 25: #z
-                    tmp[0] = tmp[0] + cnt[i]
-                    tmp[1] = tmp[1] + cnt[i]
-                else:
-                    tmp[i+1] = cnt[i]
-            cnt = tmp
-        return sum(cnt) % MOD
+        for i in range(t):
+            new_count = [0] * 26
+            for i in range(len(count)):
+                if count[i] > 0:
+                    letter = chr(i + 97)
+                    if letter == "z":
+                        new_count[0] = (new_count[0] + count[25]) % MOD
+                        new_count[1] = (new_count[1] + count[25]) % MOD
+                    else:
+                        new_count[i+1] = (new_count[i+1] + count[i]) % MOD
+            count = new_count.copy()
+
+        return sum(count) % MOD
