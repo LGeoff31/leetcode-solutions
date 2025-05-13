@@ -1,12 +1,11 @@
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        minHeap = [] # (freq, num) and maxLength should be k
-        dic = Counter(nums)
-        print(dic)
-        for num, freq in dic.items():
-            heappush(minHeap, ((freq, num)))
-            if len(minHeap) > k:
-                heappop(minHeap)
-            print(minHeap)
-        res = [num for _, num in minHeap]
-        return res
+        freq_map = Counter(nums)
+        bucket = [[] for _ in range(len(nums) + 1)]
+        for num, freq in freq_map.items():
+            bucket[freq].append(num)
+        flat_list = [item for arr in bucket for item in arr]
+        print(bucket)
+        print(flat_list)
+
+        return flat_list[::-1][:k]
