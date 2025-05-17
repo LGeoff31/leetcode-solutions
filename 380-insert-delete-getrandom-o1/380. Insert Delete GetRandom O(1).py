@@ -1,33 +1,37 @@
-import random
-
 class RandomizedSet:
-
     def __init__(self):
-        self.lst = []
-        self.idx_map = {}
+        self.dic = {} # Num : idx
+        self.arr = []
+        
 
-    def search(self, val):
-        return val in self.idx_map
-
-    def insert(self, val):
-        if self.search(val):
-            return False
-
-        self.lst.append(val)
-        self.idx_map[val] = len(self.lst) - 1
+    def insert(self, val: int) -> bool:
+        if val in self.dic:
+            return False 
+        self.arr.append(val)
+        self.dic[val] = len(self.arr) - 1
         return True
 
-    def remove(self, val):
-        if not self.search(val):
+    def remove(self, val: int) -> bool:
+        print()
+        # print(self.arr, self.dic)
+        if val not in self.dic:
             return False
+        idx = self.dic[val]
+        self.arr[idx], self.arr[-1] = self.arr[-1], self.arr[idx]
+        self.arr.pop()
+        if idx < len(self.arr):
+            self.dic[self.arr[idx]] = idx
 
-        idx = self.idx_map[val]
-        self.lst[idx] = self.lst[-1]
-        self.idx_map[self.lst[-1]] = idx
-        self.lst.pop()
-        del self.idx_map[val]
+        del self.dic[val]
         return True
 
-    def getRandom(self):
-        return random.choice(self.lst)
+    def getRandom(self) -> int:
+        # print(self.arr)
+        return self.arr[randint(0, len(self.arr) - 1)]
 
+
+# Your RandomizedSet object will be instantiated and called as such:
+# obj = RandomizedSet()
+# param_1 = obj.insert(val)
+# param_2 = obj.remove(val)
+# param_3 = obj.getRandom()
