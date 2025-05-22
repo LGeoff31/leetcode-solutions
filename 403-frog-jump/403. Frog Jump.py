@@ -1,28 +1,22 @@
 class Solution:
     def canCross(self, stones: List[int]) -> bool:
-        if 1 not in stones: return False
-        indicies = {num: i for i, num in enumerate(stones)}
-        # @cache
-        print(indicies)
-        visited = set()
+        if stones[1] != 1:
+            return False
         @cache
-        def dfs(idx, curr, prevJump):
-            print(idx, curr, prevJump)
+        def dfs(idx, prevJump):
             if idx == len(stones) - 1:
                 return True
-            if prevJump < 0: 
+            if idx >= len(stones):
                 return False
-            if (idx, curr, prevJump) in visited:
-                return False
-            visited.add((idx, curr, prevJump))
-            
-            res = False
-            if curr+prevJump-1 in indicies:
-                res = res or dfs(indicies[curr+prevJump-1], curr+prevJump-1, prevJump-1)
-            if curr+prevJump in indicies:
-                res = res or dfs(indicies[curr+prevJump],curr+prevJump, prevJump)
-            if curr+prevJump+1 in indicies:
-                res = res or dfs(indicies[curr+prevJump+1], curr+prevJump+1, prevJump+1)
+            print(idx, prevJump)
+            current_position = stones[idx]
+            res=False
+            if current_position + prevJump - 1 in stones and bisect_left(stones, current_position+prevJump-1) > idx:
+                res = res or dfs(bisect_left(stones, current_position+prevJump-1), prevJump-1)
+            if current_position + prevJump in stones and bisect_left(stones, current_position+prevJump) > idx:
+                res = res or dfs(bisect_left(stones, current_position+prevJump), prevJump)
+            if current_position + prevJump + 1 in stones and bisect_left(stones, current_position+prevJump+1) > idx:
+                res = res or dfs(bisect_left(stones, current_position+prevJump+1), prevJump+1)
             return res
-            
-        return dfs(1, 1, 1)
+
+        return dfs(1, 1)
