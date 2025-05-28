@@ -37,9 +37,9 @@ class Solution:
         print(precompute2)
 
         res = [0] * n
+        max_reach=max(precompute2.values())
         for i in range(n):
-            for j in range(m):
-                res[i] = max(res[i], precompute1[i] + precompute2[j])
+            res[i] = max(res[i], precompute1[i] + max_reach)
         return res
 
 
