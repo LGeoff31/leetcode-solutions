@@ -1,28 +1,30 @@
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        rows, cols = len(grid), len(grid[0])
-        if rows * cols == 1:
-            return grid[0][0]
-        visited = set()
-        res = 0
-        def bfs(r,c):
-            queue = deque([(r,c)])
-            count = 1
-            while queue:    
-                r, c = queue.popleft()
-                for nei_r, nei_c in [(r-1,c),(r+1,c),(r,c+1), (r,c-1)]:
-                    if 0<=nei_r<rows and 0<=nei_c<cols and grid[nei_r][nei_c] == 1 and (nei_r, nei_c) not in visited:
-                        visited.add((nei_r, nei_c))
-                        count += 1
-                        queue.append((nei_r, nei_c))
-            return count
+        max_size = 0
+        seen = set() #(i, j)
 
-        for r in range(rows):
-            for c in range(cols):
-                if (r,c) in visited:
+        def find_island_size(i: int, j: int) -> int:
+            if i < 0 or j < 0 or i >= len(grid) or j >= len(grid[0]) or (i, j) in seen or grid[i][j] == 0:
+                return 0
+            seen.add((i, j))
+            size = 1
+            size += find_island_size(i + 1, j)
+            size += find_island_size(i - 1, j)
+            size += find_island_size(i, j + 1)
+            size += find_island_size(i, j - 1)
+            return size
+            
+                
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if (i, j) in seen:
                     continue
-                    
-                visited.add((r,c))
-                if grid[r][c] == 1:
-                    res = max(res, bfs(r,c))
-        return res
+                if grid[i][j] == 1: 
+                    size = find_island_size(i, j)
+                    print("Size from "+ str(i) + " " + str(j) + " is: "+ str(size) )
+                    if size > max_size:
+                        max_size = size
+                else:
+                    seen.add((i, j))
+
+        return max_size
