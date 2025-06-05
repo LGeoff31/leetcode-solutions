@@ -1,15 +1,17 @@
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         intervals.sort()
-        i=1
         stack = [intervals[0]]
-        while i < len(intervals):
-            while i < len(intervals) and stack[-1][1] >= intervals[i][0]:
-                s, e = stack.pop()
-                stack.append((s, max(intervals[i][1], e)))
-                i += 1
-            else:
-                if i == len(intervals):break
+
+        for i in range(1, len(intervals)):
+            s, e = intervals[i][0], intervals[i][1]
+
+            if stack[-1][-1] < s:
+                # No overlap
                 stack.append(intervals[i])
-            i += 1
+            else:
+                # Overlap
+                org_s, org_e = stack.pop()
+                stack.append([org_s, max(org_e, e)])
+        
         return stack
