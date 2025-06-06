@@ -8,10 +8,10 @@ class Solution:
         visited = set()
         cycle = set()
         def dfs(course):
-            if course in cycle:
-                return False
             if course in visited:
                 return True
+            if course in cycle:
+                return False
 
             cycle.add(course)
 
