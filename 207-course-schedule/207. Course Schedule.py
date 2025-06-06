@@ -1,25 +1,29 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool: 
-        indegree = [0] * numCourses  
-        adj = defaultdict(list)
+        preq = defaultdict(list)
         for u, v in prerequisites:
-            indegree[u] += 1
-            adj[v].append(u)
-        queue = deque([])
+            preq[u].append(v) # You must take course v to take course u
 
+        cycle = set()
+        visited = set()
+
+        def dfs(course):
+            if course in cycle:
+                return False
+            if course in visited:
+                return True
+            cycle.add(course)
+
+            visited.add(course)
+            
+            for p in preq[course]:
+                if not dfs(p):
+                    return False
+            cycle.remove(course)
+            return True
 
         for i in range(numCourses):
-            if indegree[i] == 0:
-                queue.append(i)
-        res = [False] * numCourses
-        while queue:
-            node = queue.popleft()
-            res[node] = True
-
-            for nei in adj[node]:
-                indegree[nei] -= 1
-                if indegree[nei] == 0:
-                    res[nei] = True
-                    queue.append(nei)
-        check_all_true = lambda res : all(res)
-        return all(res)
+            if not dfs(i):
+                return False
+        print(visited)
+        return numCourses == len(visited)
