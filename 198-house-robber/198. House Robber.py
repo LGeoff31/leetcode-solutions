@@ -1,16 +1,9 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        #[2,7,11,10,12]
-        dp = [0] * len(nums)
-        if len(nums) == 1:
-            return nums[0]
-        dp[0] = nums[0]
-        dp[1] = max(nums[0], nums[1])
-        for i in range(2,len(nums)):
-            dp[i] = max(dp[i-1], nums[i] + dp[i-2])
-        return dp[-1]
-
-
+        dp = [[0, 0] for _ in range(len(nums))] # (taken, not taken)
+        dp[0][0] = nums[0]
         
-
-
+        for i in range(1, len(nums)):
+            dp[i][0] = dp[i-1][1] + nums[i]
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0])
+        return max(dp[-1])
