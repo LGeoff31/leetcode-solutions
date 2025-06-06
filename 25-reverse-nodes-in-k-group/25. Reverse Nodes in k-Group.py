@@ -10,26 +10,20 @@ class Solution:
         while curr:
             lst.append(curr.val)
             curr = curr.next
-        a = []
+        res = []
         for i in range(0, len(lst), k):
-            if (i+1) > k * (len(lst) // k):
-                for j in range(i, len(lst)):
-                    a.append(lst[j])
-                break
-            subarr = lst[i:i+k][::-1] #size k
+            if i+k <= len(lst):
+                for elem in lst[i:i+k][::-1]:
+                    res.append(elem)
+                # res.append(lst[i:k][::-1])
+            else:
+                for elem in lst[i:]:
+                    res.append(elem)
+                # res.append(lst[i:])
+        newHead = ListNode()
+        newCurr = newHead
+        for i in range(len(res)):
+            newCurr.next = ListNode(res[i])
+            newCurr = newCurr.next
 
-            for elem in subarr:
-                a.append(elem)
-
-        res = ListNode()
-        curr = res
-        for i in range(len(a)):
-            newNode = ListNode(a[i])
-            curr.next = newNode
-            curr = curr.next
-        return res.next
-
-
-
-        return None
-        
+        return newHead.next
