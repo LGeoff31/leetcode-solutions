@@ -1,67 +1,53 @@
 class LRUCache:
     class Node:
-        def __init__(self, val=None, key=-1):
-            self.val = val
+        def __init__(self, key, value):
+            self.key = key
+            self.value = value
             self.next = None
             self.prev = None
-            self.key = key
 
     def __init__(self, capacity: int):
-        self.dic = {} # Store a bunch of key : node addresses
-        self.head = None
-        self.tail = None
         self.capacity = capacity
-  
-    def add(self, value, key):    
-        newNode = self.Node(value, key)
-        self.dic[key] = newNode
-        if self.head is None:
-            self.head = newNode
-            self.tail = newNode
-            return
-
-        self.tail.next = newNode
-        copy = self.tail
-        self.tail = self.tail.next
-        self.tail.prev = copy 
+        self.head = self.Node(-1, -1)
+        self.tail = self.Node(-1, -1)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.dictionary = {}
+    
+    def add(self, node):    
+        nextNode = self.head.next
+        node.next = nextNode
+        node.prev = self.head
+        self.head.next = node
+        nextNode.prev = node
 
     def delete(self, node):
-        if node == self.head:
-            self.head = self.head.next
-            if self.head:
-                self.head.prev = None
-            else:
-                self.tail = None
-
-        elif node == self.tail:
-            self.tail = self.tail.prev
-            self.tail.next = None
-        else:
-            prevNode = node.prev
-            nxtNode = node.next
-            prevNode.next = nxtNode
-            nxtNode.prev = prevNode
-        del self.dic[node.key]
-
+        nextNode = node.next
+        prevNode = node.prev
+        prevNode.next = nextNode
+        nextNode.prev = prevNode
 
     def get(self, key: int) -> int: 
-        if key in self.dic:
-            node = self.dic[key]
-            self.delete(node)
-            self.add(node.val, key)
-            return node.val
+        if key in self.dictionary:
+            resNode = self.dictionary[key]
+            ans = resNode.value
+            del self.dictionary[key]
+            self.delete(resNode)
+            self.add(resNode)
+            self.dictionary[key] = self.head.next
+            return ans
         return -1
-
-    def put(self, key: int, value: int) -> None: 
-        if key in self.dic:
-            # Update and place at start
-            node = self.dic[key]
-            self.delete(node)
-            self.add(value, key)
-        else:
-            if self.capacity == len(self.dic):
-                self.delete(self.head)
-                # We need to add to front
-            self.add(value, key)
-
         
+    def put(self, key: int, value: int) -> None: 
+        if key in self.dictionary:
+            node = self.dictionary[key]
+            del self.dictionary[key]
+            self.delete(node)
+
+        if len(self.dictionary) == self.capacity:
+            del self.dictionary[self.tail.prev.key]
+            self.delete(self.tail.prev)
+        self.add(self.Node(key, value))
+        self.dictionary[key] = self.head.next
+
+      
