@@ -1,13 +1,19 @@
 class Solution:
     def clearStars(self, s: str) -> str:
         minHeap = []
-        for i,c in enumerate(s):
-            if c == "*":
-                heappop(minHeap)
+        lst = set()
+        for i in range(len(s)):
+            if s[i] == "*":
+                val, idx = heappop(minHeap)
+                lst.add(-idx)
             else:
-                heappush(minHeap, (c, -i)) #it will pop up lowest character and index will be negative
-        ans = [""]* len(s)
-        while minHeap:
-            ordChar, i = heappop(minHeap)
-            ans[-i] = ordChar
-        return "".join(ans)
+                heappush(minHeap, (s[i],-i))
+        res = ""
+        idx = 0
+        for i in range(len(s)):
+            if i in lst or s[i] == "*":
+                continue
+            else:
+                res += s[i]
+        return res
+            
