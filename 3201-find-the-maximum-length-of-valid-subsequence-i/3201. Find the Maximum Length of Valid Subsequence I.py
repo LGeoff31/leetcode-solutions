@@ -1,40 +1,34 @@
 class Solution:
     def maximumLength(self, nums: List[int]) -> int:
-        # In the subsequence, it must follow all pairs have odd sum or even sum
-        # For all odd sum, must be odd + even or even + odd
-        # For all even sum, must be even + even or odd + odd
-        for i in range(len(nums)):
-            nums[i] = nums[i] % 2
-        res = 0 
-        # Consider all even numbers
-        even = sum([num%2==0 for num in nums])
-
-        # Consider all odd numbers
-        odd = sum([num%2 for num in nums])
-
-        # Consider odd then even, alternating
-        odd_then_even = 0
-        odd_turn = True
-        for i in range(len(nums)):        
-            if odd_turn:
-                if nums[i] % 2:
-                    odd_then_even += 1
-                    odd_turn = not odd_turn
+        a,b,c,d = 0, 0, 0, 0
+        # 1: all even
+        for n in nums:
+            if n % 2 == 0:
+                a += 1
+        # 2: all odd
+        for n in nums:
+            if n % 2 == 1:
+                b += 1
+        # 3: even odd even odd
+        even = True
+        for n in nums:
+            if even:
+                if n%2 == 0:
+                    c += 1
+                    even = not even
             else:
-                if nums[i]%2 == 0:
-                    odd_then_even += 1
-                    odd_turn = not odd_turn
-        # Consider even then odd, alternating
-        even_then_odd = 0
-        even_turn = True
-        for i in range(len(nums)):
-            if even_turn:
-                if nums[i] % 2 == 0:
-                    even_then_odd += 1
-                    even_turn = not even_turn
+                if n%2 == 1:
+                    c += 1
+                    even = not even
+        # 4: odd even
+        even = False
+        for n in nums:
+            if even:
+                if n%2 == 0:
+                    d += 1
+                    even = not even
             else:
-                if nums[i] % 2:
-                    even_then_odd += 1
-                    even_turn = not even_turn
-        return max(even,odd, odd_then_even, even_then_odd)
-
+                if n%2 == 1:
+                    d += 1
+                    even = not even
+        return max(a,b,c,d)
