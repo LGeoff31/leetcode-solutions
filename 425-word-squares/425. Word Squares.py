@@ -8,16 +8,16 @@ class Solution:
             for word in words:
                 if word.startswith(prefix):
                     yield word
-        def backtrack(step, word_squares, res):
+        def backtrack(step, word_squares):
             if step == n:
                 res.append(word_squares[:])
                 return
             prefix = "".join(word[step] for word in word_squares)
             for candidate in getPrefix(prefix):
                 word_squares.append(candidate)
-                backtrack(step + 1, word_squares, res)
+                backtrack(step + 1, word_squares)
                 word_squares.pop()
         for word in words:
             word_squares = [word]
-            backtrack(1, word_squares, res)
+            backtrack(1, word_squares)
         return res
