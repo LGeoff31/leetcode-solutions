@@ -1,15 +1,12 @@
 class Solution:
     def longestSubarray(self, nums: List[int]) -> int:
-        a = max(nums)
-        res = 0
+        max_ans = max(nums)
         count = 0
-        for i in range(len(nums)):
-            if nums[i] == a:
+        res = 0
+        for n in nums:
+            if n == max_ans:
                 count += 1
-                res = max(res, count)
             else:
                 count = 0
+            res = max(res, count)
         return res
-
-        # return nums.count(max(nums))
-        
