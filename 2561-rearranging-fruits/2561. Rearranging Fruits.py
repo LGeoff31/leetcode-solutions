@@ -3,8 +3,6 @@ class Solution:
         """
         Each element must appear even amount times, then answer is findable
         """
-        if basket1[0] == 521138: return 228799
-        if basket1 == [2,2,9,8,8,5,6,7,7]: return 9
         dic = defaultdict(int)
         for num in basket1:
             dic[num] += 1
@@ -49,7 +47,9 @@ class Solution:
             res += min(extra1[i], extra2[j])
             i += 1
             j -= 1
-        m = min(min(basket1), min(basket2))
-        print('nigger', res)
-        return min(res, m * 2 * len(extra1) - (max(extra1.count(m), extra2.count(m)) * m))
+        res = 0
+        global_min = min(min(basket1), min(basket2))
+        for i in range(len(extra1)):
+            res += min(min(extra1[i], extra2[len(extra2)-i-1]), 2*global_min)
+        return res
         
