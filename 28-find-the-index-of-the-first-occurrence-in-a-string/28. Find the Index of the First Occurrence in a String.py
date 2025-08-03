@@ -18,6 +18,7 @@ class Solution:
             return lps
                     
         lps = createLPS(needle)
+        print(lps)
         i = 0
         j = 0
         while i < len(haystack):
