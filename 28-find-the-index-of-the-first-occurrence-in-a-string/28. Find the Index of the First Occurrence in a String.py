@@ -1,36 +1,19 @@
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        def createLPS(string): #abb 
-            lps = [0] * len(string)
-            i = 1
-            length = 0
-            while i < len(lps):
-                if string[i] == string[length]:
-                    length += 1
-                    lps[i] = length
-                    i += 1
-                else:
-                    if length > 0:
-                        length = lps[length - 1]
-                    else:
-                        lps[i] = 0
-                        i += 1
-            return lps
-                    
-        lps = createLPS(needle)
-        print(lps)
-        i = 0
-        j = 0
+        L = [-1] * 26
+        for i,c in enumerate(needle):
+            L[ord(c) - ord('a')] = i
+        n, m = len(haystack), len(needle)
+        i, j = m-1, m-1
         while i < len(haystack):
             if haystack[i] == needle[j]:
-                i += 1
-                j += 1
-                if j == len(needle):
-                    return i-j
+                if j == 0:
+                    return i
+                j -= 1
+                i -= 1
             else:
-                if j > 0:
-                    j = lps[j-1]
-                else:
-                    i += 1 
+                i = i + (m-1) - min(L[ord(haystack[i])-ord("a")], j-1)
+                j = m-1
+            print(i,j)
 
         return -1
