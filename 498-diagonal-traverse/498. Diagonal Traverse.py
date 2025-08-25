@@ -1,40 +1,50 @@
+from typing import List
+
 class Solution:
     def findDiagonalOrder(self, grid: List[List[int]]) -> List[int]:
         rows, cols = len(grid), len(grid[0])
-        # (0,0)
-        # (0,1), (1,0)
-        # (0, 2), (1,1), (2, 0)
-        # (0, 3), (1,2), (2,1), (3,0)
         res = []
+
         up = True
-        maxSum = rows - 1 + cols - 1
-        curr = 0
-        print(maxSum)
-        while True:
+        up_start = (0, 0)       # start of the next upward diagonal
+        down_start = (0, 1)     # start of the next downward diagonal (right of (0,0) if exists)
+
+        while len(res) < rows * cols:
             if up:
-                # Start maximum row
-                    
-                r, c = curr, 0
-                if curr > rows - 1:
-                    r = rows -1 # 4 - 2-1 = 1
-                    c = curr - rows + 1
+                r, c = up_start
+                # traverse up-right
                 while 0 <= r < rows and 0 <= c < cols:
                     res.append(grid[r][c])
                     r -= 1
                     c += 1
+                # step back to last valid cell
+                r += 1
+                c -= 1
+                # choose next start for DOWN:
+                # if we ended at the right edge, go down one row;
+                # otherwise (we ended at the top), go right one col
+                if c == cols - 1:
+                    down_start = (r + 1, c) if r + 1 < rows else (rows - 1, cols - 1)
+                else:
+                    down_start = (r, c + 1)
             else:
-                r,c = 0, curr
-                if curr > cols - 1:
-                    c = cols -1
-                    r = curr - cols + 1
+                r, c = down_start
+                # traverse down-left
                 while 0 <= r < rows and 0 <= c < cols:
                     res.append(grid[r][c])
                     r += 1
                     c -= 1
-            up = not up
-            # print(res, curr)
-            curr += 1
-            if curr == maxSum + 1:
-                break
-        return res
+                # step back to last valid cell
+                r -= 1
+                c += 1
+                # choose next start for UP:
+                # if we ended at the bottom edge, go right one col;
+                # otherwise (we ended at the left), go down one row
+                if r == rows - 1 and c + 1 < cols:
+                    up_start = (r, c + 1)
+                else:
+                    up_start = (r + 1, c) if r + 1 < rows else (rows - 1, cols - 1)
 
+            up = not up
+
+        return res
