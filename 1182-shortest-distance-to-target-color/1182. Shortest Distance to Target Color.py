@@ -4,10 +4,10 @@ class Solution:
         # dp[i][x] = closest distance to x starting at i
         dp = [[1e9, 1e9, 1e9] for _ in range(len(colors))]
         # FORWARD
-        dp[0][0] = 0 if colors[0] == 1 else 1e9
-        dp[0][1] = 0 if colors[0] == 2 else 1e9
-        dp[0][2] = 0 if colors[0] == 3 else 1e9
-        for i in range(1, len(colors)):
+        # dp[0][0] = 0 if colors[0] == 1 else 1e9
+        # dp[0][1] = 0 if colors[0] == 2 else 1e9
+        # dp[0][2] = 0 if colors[0] == 3 else 1e9
+        for i in range(len(colors)):
             dp[i][0] = 0 if colors[i] == 1 else 1e9
             dp[i][1] = 0 if colors[i] == 2 else 1e9
             dp[i][2] = 0 if colors[i] == 3 else 1e9
