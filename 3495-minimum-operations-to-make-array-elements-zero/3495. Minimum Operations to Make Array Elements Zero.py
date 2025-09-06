@@ -1,19 +1,23 @@
 class Solution:
     def minOperations(self, queries: List[List[int]]) -> int:
-        ans = 0
-        for query in queries:
-            start, end = query
-            ops = 0
-            prev = 1
+        res = 0
+        lst = [4**i for i in range(100)]
+        # print(lst)
+        def calc(l, r):
+            total = 0
+            for i in range(1, len(lst)):
+                if lst[i-1] <= l <= lst[i]: # 16 (i=1) <= 16 <= 64
+                    if r < lst[i]:
+                        total += (r-l+1) * (ceil(log(lst[i], 4)))
+                        break
+                    else:
+                        total += (lst[i] - l) * (ceil(log(lst[i], 4)))
+                        l = lst[i]
+                # print('total', total)
+            return ceil(total / 2)
 
-            for d in range(1, 17):
-                cur = prev * 4
-                # Find the intersection between [start, end] and [prev, cur - 1]
-                l = max(start, prev)
-                r = min(end, cur - 1)
-                if r >= l:
-                    ops += (r - l + 1) * d
-                prev = cur
-            # Since each operation can reduce two division steps, we need ceil(ops / 2) operations.
-            ans += (ops + 1) // 2
-        return ans
+            
+        for l, r in queries:
+            res += calc(l, r)
+            # print('res', res)
+        return res
