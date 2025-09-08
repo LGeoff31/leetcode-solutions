@@ -1,7 +1,7 @@
 class DSU:
     def __init__(self,n):
         self.parent = {}
-        self.size = {i : 1 for i in range(n)}
+        self.size = defaultdict(int)
 
     def union(self, x, y):
         x_parent = self.find(x)
