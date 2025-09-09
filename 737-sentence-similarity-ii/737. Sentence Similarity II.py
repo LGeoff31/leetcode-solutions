@@ -27,9 +27,6 @@ class Solution:
             return False
 
         for a,b in similarPairs:
-            union_find.union(a,a)
-            union_find.union(b,b)
-
             union_find.union(a,b)
         
         def similar(a,b):
