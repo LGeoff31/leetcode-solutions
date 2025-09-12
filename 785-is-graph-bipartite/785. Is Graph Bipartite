@@ -1,0 +1,46 @@
+class UnionFind:
+    def __init__(self):
+        self.parent = {}
+        self.size = {}
+
+    def find(self, x):
+        self.parent.setdefault(x,x)
+        self.size.setdefault(x,1)
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        parent_x = self.find(x)
+        parent_y = self.find(y)
+        if parent_x != parent_y:
+            if self.size[parent_x] < self.size[parent_y]:
+                parent_x, parent_y = parent_y, parent_x
+            self.size[parent_x] += self.size[parent_y]
+            self.parent[parent_y] = parent_x
+
+class Solution:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        """
+        Bipartite IFF no odd cycles
+        """
+        uf = UnionFind()
+        for i in range(len(graph)):
+            if not graph[i]:
+                continue
+            firstNei = graph[i][0]
+            for v in graph[i][1:]:
+                if uf.find(i) == uf.find(v):
+                    return False
+                uf.union(firstNei, v)
+            # for j in graph[i]:
+                # uf.union(i, j)
+        return True
+        # dic = defaultdict(int)
+        # for key in uf.parent:
+        #     dic[uf.find(key)] += 1
+        # for key in dic:
+        #     if dic[key] % 2 == 1:
+        #         return False
+        # return True
+
