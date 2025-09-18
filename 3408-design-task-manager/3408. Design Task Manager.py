@@ -12,6 +12,7 @@ class TaskManager:
         self.lst.add((priority, taskId, userId))
 
     def modifiedBinarySearch(self, priority, taskId, userId):
+        # DOUUBLE BS
         l, r = 0, len(self.lst) - 1
         while l <= r:
             mid = (l + r) // 2
