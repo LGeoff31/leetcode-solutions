@@ -1,47 +1,51 @@
 class Router:
-
     def __init__(self, memoryLimit: int):
-        self.memoryLimit = memoryLimit
-        self.seen = set()
-        self.queue = deque([])
-        self.dic = defaultdict(SortedList) # destination : SortedList([95, 100, 105])
-        
+        self.size = memoryLimit
+        self.packets = {}  # key -> [source, destination, timestamp]
+        self.counts = defaultdict(list)  # destination -> sorted list of timestamps
+        self.queue = deque()  # FIFO order of packets
 
-    def addPacket(self, source: int, destination: int, timestamp: int) -> bool: # O(1)
-        if (source, destination, timestamp) in self.seen:
+    def addPacket(self, source: int, destination: int, timestamp: int) -> bool:
+        key = self._encode(source, destination, timestamp)
+
+        # Duplicate check
+        if key in self.packets:
             return False
-        if len(self.queue) == self.memoryLimit:
-            a,b,c = self.queue.popleft()
-            self.seen.remove((a,b,c))
-            self.dic[b].remove(c)
-            
-        self.seen.add((source, destination, timestamp))
-        self.queue.append((source, destination, timestamp))
-        self.dic[destination].add(timestamp)
+
+        # If memory full, forward oldest packet
+        if len(self.packets) >= self.size:
+            self.forwardPacket()
+
+        # Add packet
+        self.packets[key] = [source, destination, timestamp]
+        self.queue.append(key)
+        self.counts[destination].append(timestamp)
 
         return True
 
-    def forwardPacket(self) -> List[int]: #O(1)
-        if not self.queue: return []
-        a,b,c = self.queue.popleft()
-        self.seen.remove((a,b,c))
-        self.dic[b].remove(c)
-        return [a,b,c]
-        
+    def forwardPacket(self):
+        if not self.packets:
+            return []
 
-    def getCount(self, destination: int, startTime: int, endTime: int) -> int: #O(n) we need to implement BS
-        count = 0
-        sorted_arr = self.dic[destination]
-        left_idx = bisect_left(sorted_arr, startTime)
-        right_idx = bisect_right(sorted_arr, endTime)
-        # print(sorted_arr)
-        return right_idx - left_idx 
-      
-        
+        key = self.queue.popleft()
+        packet = self.packets.pop(key)
 
+        dest = packet[1]
+        self.counts[dest].pop(0)  # remove the earliest timestamp
 
-# Your Router object will be instantiated and called as such:
-# obj = Router(memoryLimit)
-# param_1 = obj.addPacket(source,destination,timestamp)
-# param_2 = obj.forwardPacket()
-# param_3 = obj.getCount(destination,startTime,endTime)
+        return packet
+
+    def getCount(self, destination: int, startTime: int, endTime: int) -> int:
+        timestamps = self.counts.get(destination, [])
+        if not timestamps:
+            return 0
+
+        # Binary search for range
+        left = bisect.bisect_left(timestamps, startTime)
+        right = bisect.bisect_right(timestamps, endTime)
+
+        return right - left
+
+    def _encode(self, source: int, destination: int, timestamp: int) -> int:
+        # Encode uniquely into 1 number
+        return (source << 40) | (destination << 20) | timestamp
