@@ -1,17 +1,14 @@
 class Solution:
     def findXSum(self, nums: List[int], k: int, x: int) -> List[int]:
-        ans = [0] * (len(nums) - k + 1)
-        def eval(nums):
-            a = Counter(nums)
-            if len(a) <= x:
-                return sum(nums)
-            b = sorted([(a[key], key) for key in a], reverse=True, key=lambda x: (x[0], x[1]))
-            ans = 0
+        res = []
+        def calc(subarr):
+            dic = Counter(subarr)
+            res = 0
+            lst = sorted([(b,a) for a,b in dic.items()], reverse=True)
             for i in range(x):
-                ans += b[i][1] * b[i][0]
-            return ans
-        
-        for i in range(len(nums) - k + 1):
-            ans[i] = eval(nums[i:i+k])
-
-        return ans
+                if i >= len(lst): break
+                res += lst[i][0] * lst[i][1]
+            return res
+        for i in range(len(nums) - k+1):
+            res.append(calc(nums[i:i+k]))
+        return res
