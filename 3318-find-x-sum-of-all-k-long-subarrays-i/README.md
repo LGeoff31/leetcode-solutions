@@ -12,8 +12,6 @@
 
 <p>Return an integer array <code>answer</code> of length <code>n - k + 1</code> where <code>answer[i]</code> is the <strong>x-sum</strong> of the <span data-keyword="subarray-nonempty">subarray</span> <code>nums[i..i + k - 1]</code>.</p>
 
-<p>A <strong>subarray</strong> is a contiguous <b>non-empty</b> sequence of elements within an array.</p>
-
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
 
