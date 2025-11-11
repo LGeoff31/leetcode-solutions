@@ -1,14 +1,12 @@
 class Solution:
     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
-        lst = [[a.count("0"), a.count("1")] for a in strs]
         @cache
-        def dfs(zeros, ones, idx):
-            if zeros < 0 or ones < 0:
+        def dfs(i, zeros, ones):
+            if not (zeros <= m and ones <= n):
                 return -1e9
-            if idx == len(strs):
-                return 0
             
-            # Take or don't take situation
-            return max(1 + dfs(zeros - lst[idx][0], ones - lst[idx][1], idx+1), dfs(zeros, ones, idx+1))
-        
-        return dfs(m, n, 0)
+            if i == len(strs):
+                return 0
+            s = strs[i]
+            return max(1 + dfs(i+1, zeros + s.count("0"), ones + s.count("1")), dfs(i+1, zeros, ones))
+        return dfs(0, 0, 0)
