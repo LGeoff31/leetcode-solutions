@@ -1,16 +1,16 @@
 class Solution:
     def countPalindromicSubsequence(self, s: str) -> int:
-        dic = Counter(s)
-        res = 0
-        palindromes = set()
+        dic = defaultdict(list)
+        for i, letter in enumerate(s):
+            dic[letter].append(i)
+        res=0
+        seen = set()
         for letter in dic:
-            if dic[letter] >= 2:
-                first_idx = s.index(letter)
-                last_idx = s.rindex(letter)
-                for i in range(first_idx+1, last_idx):
-                    if letter + s[i] + letter not in palindromes:
-                        res += 1
-                        # print()
-                        palindromes.add(letter + s[i] + letter)
-                # res += last_idx - first_idx - 1 # bazab
-        return res
+            if len(dic[letter]) >= 2:
+                first_idx = dic[letter][0]
+                last_idx = dic[letter][-1]
+                for i in range(first_idx + 1, last_idx):
+                    if letter + s[i] + letter not in seen:
+                        seen.add(letter + s[i] + letter)
+        return len(seen)
+
