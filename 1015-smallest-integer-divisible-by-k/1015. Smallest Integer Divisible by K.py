@@ -1,12 +1,9 @@
 class Solution:
     def smallestRepunitDivByK(self, k: int) -> int:
-        curr = 1
-        a = 1
-        if k == 49993: return 49992
-        for i in range(20000):
-            a = ((curr * 10) + 1) % k
-            if curr % k == 0:
-                return i+1
-            curr = curr*10 + 1
-            
+        
+        rem = 0
+        for i in range(1, k+1):
+            rem = (rem * 10 + 1) % k
+            if rem == 0:
+                return i
         return -1
