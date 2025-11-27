@@ -1,10 +1,10 @@
 class Solution:
     def maxSubarraySum(self, nums: List[int], k: int) -> int:   
-        # if k == 1: 
+        n = len(nums)
+        dp = [-float('inf')] * n
         prefix = list(accumulate(nums))
-        dp = [-2000000000000000] * len(nums)
-        dp[k-1] = prefix[k-1]
-        for i in range(k, len(nums)):
-            dp[i] = max(prefix[i] - prefix[i-k], dp[i-k] + (prefix[i] - prefix[i-k]))
+
+        for i in range(k-1, len(nums)):
+            dp[i] = max((dp[i-k] if i-k>=0 else 0),0) + (prefix[i] - (prefix[i-k] if i-k>=0 else 0))
         print(dp)
         return max(dp)
