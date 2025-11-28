@@ -1,5 +1,10 @@
 class Solution:
     def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
+        """ 
+        to achieve max number components, we want sum of each component to be minimized
+        bfs, as soon as we reach that, we split
+
+        """
         res = 0
         adj = defaultdict(list)
         for u,v in edges:
