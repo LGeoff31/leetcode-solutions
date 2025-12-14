@@ -11,7 +11,7 @@ class Solution:
             if cnt == 2:
                 res += dfs(idx + 1, 0 + int(corridor[idx] == "S"))
             res += dfs(idx + 1, cnt + int(corridor[idx] == "S"))
-            return res % MOD
-        res = dfs(0, 0) % MOD
+            return res
+        res = dfs(0, 0)
         dfs.cache_clear()
-        return res
+        return res % MOD
