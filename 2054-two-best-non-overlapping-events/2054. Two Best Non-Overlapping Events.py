@@ -1,30 +1,25 @@
-from sortedcontainers import SortedList
 class Solution:
     def maxTwoEvents(self, events: List[List[int]]) -> int:
-        # events.sort()
-        events = sorted(events, key = lambda x: x[1])
-
-        prefix = []
-        prefix_values = []
-        res = max([v for s,e,v in events]) # Picking singular event
-        for start, end, value in events:
+        events.sort(key=lambda x: x[0])
+        start_times = [s for s, _, _ in events]
+        print(events)
+        print(start_times)
+        @cache
+        def dfs(idx, taken):
+            if idx == len(events):
+                return 0 if taken <= 2 else -1e9
             
-            if not prefix:
-                prefix_values.append(end)
-                prefix.append([start, end, value])
-            else:
-                # Binary search for the valid index in prefix
-        
-                idx = bisect_left(prefix_values, start) - 1
-                if idx == -1:
-                    prefix.append([start, end, max(value, prefix[-1][2])])
-                    prefix_values.append(end)
-                    continue
-                # print('idx', idx, start, end, prefix_values)
-                # if len(prefix_values) == idx + 1: idx += 1 
-                prefix_value = prefix[idx][2]
-                res = max(res, value + prefix_value)
-                prefix.append([start, end, max(value, prefix_value, prefix[-1][2])])
-                prefix_values.append(end)
-
-        return res
+            if taken > 2:
+                return -1e9
+            
+            res = 0
+            # TAKE
+            end = events[idx][1]
+            value = events[idx][2]
+            nxt_available_idx = bisect_right(start_times, end)
+            print('geo', nxt_available_idx)
+            res = max(res, value + dfs(nxt_available_idx, taken+1))
+            # DONT TAKE
+            res = max(res, dfs(idx + 1, taken))
+            return res
+        return dfs(0, 0)
