@@ -1,29 +1,42 @@
 class MinStack:
-
     def __init__(self):
         self.stack = []
-        self.minStack = []
-        
+        self.minValue = float('inf')
 
     def push(self, val: int) -> None:
-        self.stack.append(val)
-        val = min(val, self.minStack[-1] if self.minStack else val)
-        self.minStack.append(val)
+        if val < self.minValue:
+            self.stack.append((val, self.minValue))
+            self.minValue = val
+        else:
+            self.stack.append((val, val))
 
     def pop(self) -> None:
-        self.stack.pop()
-        self.minStack.pop()
+        a,b = self.stack.pop()
+        if a == self.minValue:
+            self.minValue = b
 
-        
-
-    def top(self) -> int:
-        return self.stack[-1]
-        
+    def top(self) -> int:   
+        return self.stack[-1][0]     
 
     def getMin(self) -> int:
-        return self.minStack[-1]
+        return self.minValue
         
+"""
+Node
+value
+pointer to prev & next
+next smaller number
 
+linkedlist is head -> tail in order of the simulated stack
+min variable ; Node
+
+[-2, -8, -3, 12, 17, 0, -100]
+
+
+getMin -> -100
+pop 
+getMin -> -8
+"""
 
 # Your MinStack object will be instantiated and called as such:
 # obj = MinStack()
