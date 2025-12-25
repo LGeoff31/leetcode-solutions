@@ -4,8 +4,9 @@ class MinStack:
 
     def push(self, val: int) -> None:
         if not self.stack:
-            self.stack.append((val, val+1))
-        self.stack.append((val, min(val, self.getMin())))
+            self.stack.append((val, val))
+        else:
+            self.stack.append((val, min(val, self.getMin())))
 
     def pop(self) -> None:
         self.stack.pop()
@@ -26,6 +27,7 @@ linkedlist is head -> tail in order of the simulated stack
 min variable ; Node
 
 [-2, -8, -3, 12, 17, 0, -100]
+[-2, -8, -8, -8, -8, -8, -100]
 
 
 getMin -> -100
