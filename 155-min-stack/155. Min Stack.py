@@ -1,23 +1,33 @@
+class Node:
+    def __init__(self, value, prev, minElem):
+        self.prev = prev
+        self.val = (value, minElem)
+
 class MinStack:
     def __init__(self):
-        self.stack = []
+        self.tail = None
 
     def push(self, val: int) -> None:
-        if not self.stack:
-            self.stack.append((val, val))
+        if self.tail is None:
+            self.tail = Node(val, None, val)
         else:
-            self.stack.append((val, min(val, self.getMin())))
+            newNode = Node(val, self.tail, min(val, self.getMin()))
+            newNode.prev = self.tail
+            self.tail = newNode
 
     def pop(self) -> None:
-        self.stack.pop()
+        self.tail = self.tail.prev
 
     def top(self) -> int:   
-        return self.stack[-1][0]     
+        return self.tail.val[0]    
 
     def getMin(self) -> int:
-        return self.stack[-1][1]
+        if self.tail:
+            return self.tail.val[1]
+        return None
         
 """
+0, 1, -2, -1
 Node
 value
 pointer to prev & next
