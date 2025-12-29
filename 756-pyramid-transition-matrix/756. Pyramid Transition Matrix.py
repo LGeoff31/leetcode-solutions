@@ -1,21 +1,26 @@
 class Solution:
     def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
-        dic = defaultdict(list)
-        for word in allowed:
-            dic[word[:2]].append(word[2])
-        def dfs(string):
-            if len(string) == 1:
+        allowed_dic = defaultdict(list)
+        for allow in allowed:
+            allowed_dic[allow[:2]].append(allow[2])
+
+        def dfs(layer):
+            # print('calling', layer)
+            if len(layer) == 1:
                 return True
-            next_level = []
-            for i in range(len(string) - 1):
-                pair = string[i:i+2]
-                if pair in dic:
-                    next_level.append(dic[pair])
-                else:
-                    return False 
-            for combination in product(*next_level):
-                if dfs("".join(combination)):
-                    return True
+            
+            # For the current layer, try every possibility
+            tmp = []
+            for i in range(len(layer) - 1):
+                key = layer[i: i+2]
+                if key not in allowed_dic: return False
+                options = allowed_dic[key]
+                tmp.append(options)
+            lst = [''.join(p) for p in product(*tmp)]
+            # print('lst', lst)
+            for lst_option in lst:
+                if dfs(lst_option):
+                    return True 
             return False
+
         return dfs(bottom)
-          
