@@ -23,13 +23,10 @@ class Solution:
                     visited.add((new_r, new_c))
                     queue.append((new_r, new_c))
             return False
-        res = -1e9
         while l <= r:
             mid = (l + r) // 2
-            # print(mid, possible(mid))
             if possible(mid):
-                res = max(res, mid)
                 l = mid + 1
             else:
                 r = mid - 1
-        return res
+        return r
