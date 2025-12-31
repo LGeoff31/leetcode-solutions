@@ -8,9 +8,11 @@ class Solution:
     def maxProduct(self, root: Optional[TreeNode]) -> int:
         res = 0
         MOD = 10 ** 9 + 7
+        lst = []
         def prefix_tree(node):
             # LEAF NODE
             if node.right is None and node.left is None:
+                lst.append(node.val)
                 return node.val
             
             if node.right:
@@ -18,27 +20,13 @@ class Solution:
             if node.left:
                 node.val += prefix_tree(node.left)
             
+            lst.append(node.val)
             return node.val
         
-        def get_max_product(node):
-            nonlocal res
-            # BREAK LEFT EDGE
-            if node.left:
-                left_subtree_sum = node.left.val
-                right_subtree_sum = total_sum - left_subtree_sum
-                print(left_subtree_sum, right_subtree_sum)
-                res = max(res, left_subtree_sum * right_subtree_sum)
-                get_max_product(node.left)
-            # BREAK RIGHT EDGE
-            if node.right:
-                right_subtree_sum = node.right.val
-                left_subtree_sum = total_sum - right_subtree_sum
-                res = max(res, left_subtree_sum * right_subtree_sum)
-                get_max_product(node.right)
-
         prefix_tree(root)
-        total_sum = root.val
-        get_max_product(root)
+        total_sum = max(lst)
+        for n in lst:
+            res = max(res, n * (total_sum - n))
         return res % MOD
 
         
