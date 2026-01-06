@@ -4,34 +4,23 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-from collections import deque
 class Solution:
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
-        maxSum = root.val
-        maxLevel = 1
-        level = 1
-
         queue = deque([root])
-
+        row_level = 0
+        row_summ = -1e9
+        cnt = 1
         while queue:
-            lst = []
+            row_sum = 0
             for i in range(len(queue)):
                 node = queue.popleft()
-                if node.left: 
-                    lst.append(node.left.val)
+                row_sum += node.val
+                if node.left:
                     queue.append(node.left)
-                if node.right: 
+                if node.right:
                     queue.append(node.right)
-                    lst.append(node.right.val)
-            level += 1
-            print(lst)
-
-            if lst and sum(lst) > maxSum:
-                maxSum = sum(lst)
-                maxLevel = level
-
-        return maxLevel
-
-
-
-        
+            if row_sum > row_summ:
+                row_summ = row_sum
+                row_level = cnt
+            cnt += 1
+        return row_level
