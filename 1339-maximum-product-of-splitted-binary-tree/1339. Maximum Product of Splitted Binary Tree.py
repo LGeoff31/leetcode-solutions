@@ -6,28 +6,27 @@
 #         self.right = right
 class Solution:
     def maxProduct(self, root: Optional[TreeNode]) -> int:
+        res = 0
         MOD = 10 ** 9 + 7
         lst = []
-
-        def dfs(node):
-            nonlocal lst
-            if node.left is None and node.right is None:
+        def prefix_tree(node):
+            # LEAF NODE
+            if node.right is None and node.left is None:
                 lst.append(node.val)
                 return node.val
             
-            if node.left:
-                node.val += dfs(node.left)
             if node.right:
-                node.val += dfs(node.right)
+                node.val += prefix_tree(node.right)
+            if node.left:
+                node.val += prefix_tree(node.left)
+            
             lst.append(node.val)
             return node.val
-
-        dfs(root)
-        print(lst)
-        res = 0
+        
+        prefix_tree(root)
         total_sum = max(lst)
-        for subtree_sum in lst:
-            counter = total_sum - subtree_sum
-            res = max(res, subtree_sum * counter)
-
+        for n in lst:
+            res = max(res, n * (total_sum - n))
         return res % MOD
+
+        
