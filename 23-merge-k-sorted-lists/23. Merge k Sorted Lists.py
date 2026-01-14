@@ -8,7 +8,6 @@ class Solution:
         minHeap = []
         c = count()
         for list_head in lists:
-            # print(type(list_head), list_head.val)
             if list_head:
                 heappush(minHeap, (list_head.val, next(c), list_head))
         
@@ -20,8 +19,7 @@ class Solution:
             merged_list = merged_list.next
 
             if node.next:
-                node = node.next
-                heappush(minHeap, (node.val, next(c), node))
+                heappush(minHeap, (node.next.val, next(c), node.next))
 
         return head_list.next
         
