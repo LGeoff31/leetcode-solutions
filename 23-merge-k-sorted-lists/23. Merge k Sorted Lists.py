@@ -6,22 +6,24 @@
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         minHeap = []
-        root = ListNode()
-        k = len(lists)
-        curr = root
-
-        # Initialize the heap
-        for i in range(k):
-            if lists[i]:
-                heappush(minHeap, (lists[i].val, i, lists[i]))
-
-        # All the pointers must reach the end, all become null
+        c = count()
+        for list_head in lists:
+            # print(type(list_head), list_head.val)
+            if list_head:
+                heappush(minHeap, (list_head.val, next(c), list_head))
+        
+        merged_list = ListNode()
+        head_list = merged_list
         while minHeap:
-            val, idx, node = heappop(minHeap)
-            curr.next = node
-            curr = curr.next
+            val, _, node = heappop(minHeap)
+            merged_list.next = node
+            merged_list = merged_list.next
 
             if node.next:
-                heappush(minHeap, (node.next.val, idx, node.next))
-           
-        return root.next
+                node = node.next
+                heappush(minHeap, (node.val, next(c), node))
+
+        return head_list.next
+        
+
+        
