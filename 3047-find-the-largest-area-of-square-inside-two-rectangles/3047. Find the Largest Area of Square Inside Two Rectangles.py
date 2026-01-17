@@ -9,8 +9,9 @@ class Solution:
             e,f = bottomLeft[j]
             g,h = topRight[j]
 
-            width_overlap = max(0, min(c, g) - max(a, e))
             height_overlap = max(0, min(d, h) - max(b, f))
+            width_overlap = max(0, min(c, g) - max(a, e))
+
 
             return min(height_overlap, width_overlap) ** 2
 
