@@ -1,7 +1,8 @@
 class Solution:
     def fib(self, n: int) -> int:
-        if n == 0:
-            return 0
-        if n == 1:
-            return 1
-        return self.fib(n-1) + self.fib(n-2)
+        """
+        fib(n) = golden_ratio^n - complement_golden_ratio^n
+        """
+        golden_ratio = (1 + sqrt(5)) / 2
+
+        return round((golden_ratio ** n - ((1-sqrt(5)) / 2) ** n) / sqrt(5))
