@@ -7,7 +7,6 @@ class Solution:
 
         for i in range(n):
             dist[i] = float('inf')
-        dist[0] = 0
 
         for u,v,w in _edges:
             edges[u].append((v, w))
