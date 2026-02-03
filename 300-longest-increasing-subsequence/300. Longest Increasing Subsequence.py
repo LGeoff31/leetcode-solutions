@@ -1,10 +1,12 @@
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        stack = [nums[0]]
-        for i in range(1, len(nums)):
-            if nums[i] > stack[-1]:
-                stack.append(nums[i])
+        lst = [nums[0]]
+
+        for i, n in enumerate(nums[1:]):
+            if n > lst[-1]:
+                lst.append(n)
             else:
-                idx = bisect_left(stack, nums[i])
-                stack[idx] = nums[i]
-        return len(stack)
+                idx = bisect_left(lst, n)
+                lst[idx] = n
+
+        return len(lst)
