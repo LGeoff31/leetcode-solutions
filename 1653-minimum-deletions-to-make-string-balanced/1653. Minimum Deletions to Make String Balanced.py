@@ -1,21 +1,27 @@
 class Solution:
     def minimumDeletions(self, s: str) -> int:
-        if len(s) == 1: return 0
-        if s == "bbbbbbbaabbbbbaaabbbabbbbaabbbbbbaabbaaabaabbbaaaabaaababbbabbabbaaaabbbabbbbbaabbababbbaaaaaababaaababaabbabbbaaaabbbbbabbabaaaabbbaba": return 60
-        if s == "bbbabbbbbabbbbbbbaabbbaabbbbbbaababaaabbbaaaabbabaabbaabaaabababababbaaabbaabbabbaabaabbabbbabaabaabbabbaaaababaaaabaabbbaaababaabbbabbababbabbbbaabaaabbabbbabaabaabbabaabaaaaabbbababbbabaabbbbaababbaabbbbbbbaabaaaabbbaaabaaabaabbabbbbabbbaabbaaababbbaaabbbababaaababaaabbbaabbbabaababbabaabbabaaaaabaaababbaaaaabbbbbbabaababbbbbaaabbbabaaabbbaaaaaababbbbabaabbbbaaabbbbabbbbaaabaaababababbbbbbbbaaaabbabbabaaaabbabbaabbbbbbabbabbbaababbbbaaabaaababbbababbaaaabbbaaababbaabbbbaabaabbbaaabaaabbaababbbabbbababbbbbbbbbbbbbaaaaabbabbaaaabbbabaabababababaabbabbbbbbaababbbbabbbabbbbaaababbaabaaabaabaaaaabaabbaaabaabbbabaabbbabbbaabbaabbaaabbaababaabbbbbaaaaaaaababababaaaaaabaabbbabababaabbaaaabbbabbabbbbbbbabaabbababbabaabbbaaaaabaababbabbbbaabbaabbbbbbaaaababaaababaaabbbbaabbaaaaaababbbbbaaabaaababbaaabaaabaaaaaaabbbabbababaabaaaaabaaabaababaaabbabaababaaabbbaabaaaaabbabbaabaabbbbaabaaabaaabbabbaabbbaabbbbbbbababbabaaaababbabbaabbbbbaabbaababbbaabbabaabaaaabbabbbbabbbaaaababaabaaabaaabbabababbbabaabbbaaaabbabbbbaaababbbbababbbbbaabaabbbbabaababbbbabbbaaabbbbbbaaaabababbbbbbaaabbababaaabbbabbbbbbbabaaaaaaabaabbbabbbabaababbabbabaaabaaabaa": return 556
-        res = 1e9
-        a_count = s.count("a")
-        if a_count == 0 or a_count == len(s):
+        if "a" not in s or "b" not in s:
             return 0
-        prefix = [0] * len(s)
-        if s[0] == "a": prefix[0] = 1
+        lst = [[0, 0] for _ in range(len(s))]
+
+        if s[0] == "a":
+            lst[0][0] = 1
+        else:
+            lst[0][1] = 1
+
         for i in range(1, len(s)):
             if s[i] == "a":
-                prefix[i] = 1 + prefix[i-1] 
+                lst[i][1] = lst[i-1][1]
+                lst[i][0] = 1 + lst[i-1][0]
             else:
-                prefix[i] = prefix[i-1]
-        for i in range(len(prefix)):
-            res = min(res, (i+1) - prefix[i] + (prefix[-1] - prefix[i]) )
-        return res
+                lst[i][1] = 1 + lst[i-1][1]
+                lst[i][0] = lst[i-1][0]
 
-        
+        res = 1e9
+        total_a, total_b = s.count("a"), s.count("b")
+        for i in range(len(lst)):
+            a_before, b_before = lst[i]
+            a_after = total_a - a_before
+            res = min(res, b_before + a_after)
+            
+        return min(res, s.count("a"), s.count("b"))
