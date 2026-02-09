@@ -1,19 +1,12 @@
 class Solution:
     def addBinary(self, a: str, b: str) -> str:
-        i=len(a)-1
-        j=len(b)-1
-        carry=0
-        s=""
-        while(i>=0 or j>=0):
-            sum1=carry
-            if(i>=0):
-                sum1=sum1+(ord(a[i])-ord('0'))
-                i-=1
-            if(j>=0):
-                sum1=sum1+(ord(b[j])-ord('0'))
-                j-=1
-            s=str(sum1%2)+s
-            carry=sum1//2
-        if(carry>0):
-            s=str(carry)+s
-        return s
+        def val(bin_str):
+            res = 0
+            for i in range(len(bin_str)):
+                if bin_str[i] == "1":
+                    res += 2 ** (len(bin_str) - i - 1)
+            return res
+        print(val(a))
+        print(val(b))
+
+        return bin(val(a) + val(b))[2:]
