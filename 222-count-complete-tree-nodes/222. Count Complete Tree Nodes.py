@@ -7,8 +7,9 @@
 class Solution:
     def countNodes(self, root: Optional[TreeNode]) -> int:
         def dfs(node):
-            if node is None: return 0
-            return 1 + dfs(node.left) + dfs(node.right)
+            if not node:
+                return 0
+            if node:
+                return 1 + dfs(node.left) + dfs(node.right)
         
         return dfs(root)
-        
