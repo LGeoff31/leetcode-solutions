@@ -7,22 +7,23 @@
 class Solution:
     def balanceBST(self, root: TreeNode) -> TreeNode:
         lst = []
-        
-        def traverse(node):
-            if node:
-                traverse(node.left)
-                lst.append(node.val)
-                traverse(node.right)
-        traverse(root)
-        #[1,2,3,4]
-        def bst(l, r):
-            if l > r:
-                return
-            mid = (l + r) // 2
-            node = TreeNode(lst[mid])
-            node.left = bst(l, mid-1) #0, 1
-            node.right = bst(mid+1, r)
-            return node
 
-        return bst(0, len(lst) - 1)
-        
+        def dfs(node):
+            if node:
+                lst.append(node.val)
+                dfs(node.left)
+                dfs(node.right)
+        dfs(root)
+        lst.sort()
+        print(lst)
+        def build_bst(lst):
+            if not lst:
+                return None
+            if len(lst) == 1:
+                return TreeNode(lst[0])
+            node = TreeNode(lst[len(lst) // 2])
+
+            node.left = build_bst(lst[:len(lst)//2])
+            node.right = build_bst(lst[len(lst)//2 + 1:])
+            return node
+        return build_bst(lst)
