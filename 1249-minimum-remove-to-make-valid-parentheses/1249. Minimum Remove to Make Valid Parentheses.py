@@ -1,30 +1,22 @@
 class Solution:
     def minRemoveToMakeValid(self, s: str) -> str:
-        res = ""
+        res = ["1"] * len(s)
         stack = []
-        bad_indicies = []
-        lastest_open_bracket_indicies = []
 
         for i in range(len(s)):
             if s[i] == ")":
                 if not stack:
-                    bad_indicies.append(i)
-                else:
-                    stack.pop() #stack will only be popping a (
+                    continue
+                idx = stack.pop()
+                res[idx] = "("
+                res[i] = ")"
             elif s[i] == "(":
-                stack.append("(")
-                lastest_open_bracket_indicies.append(i)
-        print("bad", bad_indicies)
-        print(stack, lastest_open_bracket_indicies)
-        if stack:
-            iters = len(stack)
-            backwards = lastest_open_bracket_indicies[::-1]
-            for i in range(iters):
-                bad_indicies.append(backwards[i])
-
-        bad_indicies = set(bad_indicies)
-        print(bad_indicies)
-        for i in range(len(s)):
-            if i not in bad_indicies:
-                res+=s[i]
-        return res
+                stack.append(i)
+            else:
+                res[i] = s[i]
+        print(res)
+        final_res = ""
+        for c in res:
+            if c != "1":
+                final_res += c
+        return final_res
