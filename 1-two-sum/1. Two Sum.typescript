@@ -1,0 +1,10 @@
+function twoSum(nums: number[], target: number): number[] {
+    const freq = new Map<number, number>;
+    for (let i = 0; i < nums.length; i++) {
+        if (freq.has(nums[i])) {
+            return [i, freq.get(nums[i])];
+        }
+        freq.set(target - nums[i], i);
+    }
+    return [];
+};
