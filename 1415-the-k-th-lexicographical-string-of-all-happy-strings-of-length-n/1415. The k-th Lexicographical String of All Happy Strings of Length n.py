@@ -1,18 +1,20 @@
 class Solution:
     def getHappyString(self, n: int, k: int) -> str:
-        self.lst = []
-
-        def dfs(string):
-            if len(string) == n:
-                self.lst.append(string)
+        self.res = []
+        def dfs(currString):
+            if len(currString) == n:
+                self.res.append(currString)
                 return
-            for c in ["a", "b", "c"]:
-                if not string:
-                    dfs(c)
-                else:
-                    if c != string[-1]:
-                        dfs(string + c)
+            
+            for option in ["a", "b", "c"]:
+                if not currString:
+                    dfs(currString + option)
+                elif option != currString[-1]:
+                    dfs(currString + option)
+        
         dfs("")
-        print(self.lst)
-        if k-1 >= len(self.lst): return ""
-        return sorted(self.lst)[k-1]
+        self.res.sort()
+        print(self.res)
+        if k-1 < len(self.res):
+            return self.res[k-1]
+        return ""
