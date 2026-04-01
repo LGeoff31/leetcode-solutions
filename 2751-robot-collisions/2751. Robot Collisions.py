@@ -1,30 +1,34 @@
 class Solution:
     def survivedRobotsHealths(self, positions: List[int], healths: List[int], directions: str) -> List[int]:
+        lst = [[positions[i], i+1, healths[i], directions[i]] for i in range(len(positions))]
+        lst.sort()
         stack = []
-        n = len(positions)
-        indicies = list(range(n))
-        indicies.sort(key=lambda x: positions[x])
-
-
-        for idx in indicies:
-            if directions[idx] == "R":
-                stack.append(idx)
+        print(lst)
+        for i in range(len(lst)):
+            if not stack:
+                stack.append(lst[i])
             else:
-                while stack and healths[idx] > 0:
-                    top = stack.pop()
-                    if healths[top] > healths[idx]:
-                        healths[top] -= 1
-                        healths[idx] = 0
-                        stack.append(top)
-                    elif healths[top] < healths[idx]:
-                        healths[idx] -= 1
-                        healths[top] = 0
+                if lst[i][3] == "L":
+                    if stack[-1][3] != "R":
+                        stack.append(lst[i])
                     else:
-                        healths[idx] = 0
-                        healths[top] = 0
-        # Suriving left sliders
-        res = []
-        for idx in range(n):
-            if healths[idx] > 0:
-                res.append(healths[idx])
-        return res
+                        found = False
+                        while stack and stack[-1][3] == "R":
+                            if stack[-1][2] == lst[i][2]:
+                                stack.pop()
+                                found = True
+                                break 
+                            elif stack[-1][2] > lst[i][2]:
+                                stack[-1][2] -= 1
+                                found = True
+                                break 
+                            else:
+                                lst[i][2] -= 1
+                                stack.pop()
+                        if not found:
+                            stack.append(lst[i])
+                else:
+                    stack.append(lst[i])
+        if not stack: return []
+        stack.sort(key=lambda x: x[1])
+        return [x[2] for x in stack]
