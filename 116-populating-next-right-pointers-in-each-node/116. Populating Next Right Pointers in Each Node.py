@@ -10,7 +10,7 @@ class Node:
 
 class Solution:
     def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
-        if not root: return None
+        if not root: return
         queue = deque([root])
         while queue:
             for i in range(len(queue) - 1):
