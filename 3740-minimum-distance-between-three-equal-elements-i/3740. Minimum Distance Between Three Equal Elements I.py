@@ -1,9 +1,12 @@
 class Solution:
     def minimumDistance(self, nums: List[int]) -> int:
+        dic = defaultdict(list)
+        for i, n in enumerate(nums):
+            dic[n].append(i)
         res = 1e9
-        for i in range(len(nums)):
-            for j in range(i+1, len(nums)):
-                for k in range(j+1, len(nums)):
-                    if nums[i] == nums[j] == nums[k]:
-                        res = min(res, j-i + k-i + k-j)
+        for num in dic:
+            indicies = dic[num]
+            for i in range(2, len(indicies)):
+                a,b,c = indicies[i-2], indicies[i-1], indicies[i]
+                res = min(res, c-b + b-a + c-a)
         return res if res != 1e9 else -1
