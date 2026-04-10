@@ -1,20 +1,22 @@
 class Solution:
-    def networkDelayTime(self, edges: List[List[int]], n: int, k: int) -> int:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        res = 0
+        dist = {i+1 : 1e9 for i in range(n)}
+        dist[k] = 0
         adj = defaultdict(list)
-        for u,v,w in edges:
-            adj[u].append((v,w))
-            
-        minHeap = [(0, k)] # (weight, node)
-        dist = {k: 0}
-            
-        while minHeap:
-            weight, node = heappop(minHeap)
+        for u,v,t in times:
+            adj[u].append((v, t))
+
+        queue = deque([(k, 0)]) 
+        while queue:
+            node, weight = queue.popleft()
+
             for nei, nei_weight in adj[node]:
-                print(nei)
-                if nei in dist and dist[nei] <= weight + nei_weight:
-                    continue 
-                dist[nei] = weight + nei_weight 
-                heappush(minHeap, (weight + nei_weight, nei))
-        print(dist)
-        return max(dist.values()) if len(dist) == n else -1
-        
+                if weight + nei_weight < dist[nei]:
+                    dist[nei] = weight + nei_weight
+                    queue.append((nei, weight+nei_weight))
+        res = max(dist.values()) if max(dist.values()) != 1e9 else -1
+        return res
+
+
+            
