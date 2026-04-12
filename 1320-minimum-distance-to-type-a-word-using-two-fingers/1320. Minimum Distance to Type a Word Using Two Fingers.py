@@ -2,21 +2,34 @@
 # 26 denotes hovering
 class Solution:
     def minimumDistance(self, word: str) -> int:
-        def dist(x, y):
-            if x==26 or y==26: return 0
-            return abs(x//6-y//6)+abs(x%6-y%6)
-        # setting for dp
-        n=len(word)
-        INF=1<<30
-        dp=[[INF]*27 for _ in range(n)]
-        dp[0][26]=0
-        prev=ord(word[0])-65
-        for i, c in enumerate(word[1:], start=1):
-            x=ord(c)-65
-            for j in range(27):
-                dp[i][j]=min(dp[i][j], dp[i-1][j]+dist(prev, x))
-                dp[i][prev]=min(dp[i][prev], dp[i-1][j]+dist(j, x))
-            prev=x
-        return min(dp[-1])
-        
-        
+        dic = {
+            "A": (0, 0), "B": (0,1), "C": (0, 2), "D": (0, 3), "E": (0, 4), "F": (0, 5),
+            "G": (1, 0), "H": (1,1), "I": (1, 2), "J": (1, 3), "K": (1, 4), "L": (1, 5),
+            "M": (2, 0), "N": (2,1), "O": (2, 2), "P": (2, 3), "Q": (2, 4), "R": (2, 5),
+            "S": (3, 0), "T": (3,1), "U": (3, 2), "V": (3, 3), "W": (3, 4), "X": (3, 5),
+            "Y": (4, 0), "Z": (4,1)
+        }
+
+        def dist(letter1, letter2):
+            return abs(dic[letter1][0] - dic[letter2][0]) + abs(dic[letter1][1] - dic[letter2][1])
+        @cache
+        def dfs(i, prev1, prev2):
+            if i == len(word):
+                return 0
+
+            res = 1e9
+            # put prev1
+            if not prev1:
+                res = min(res, dfs(i+1, word[i], prev2))
+            else:
+                res = min(res, dist(prev1, word[i]) + dfs(i+1, word[i], prev2))
+            
+            # put prev2
+            if not prev2:
+                res = min(res, dfs(i+1, prev1, word[i]))
+            else:
+                res = min(res, dfs(i+1, prev1, word[i]) + dist(prev2, word[i]))
+            return res
+
+
+        return dfs(0, None, None)
