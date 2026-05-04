@@ -1,6 +1,6 @@
 class RandomizedCollection:
     def __init__(self):
-        self.dic = defaultdict(SortedList)
+        self.dic = defaultdict(set)
         self.lst = []
 
     def insert(self, val: int) -> bool:
@@ -10,17 +10,19 @@ class RandomizedCollection:
         return not_present
 
     def remove(self, val: int) -> bool:
-        if not self.dic[val]:
+        if len(self.dic[val]) == 0:
             return False 
-        idx = self.dic[val][-1]
+
+        idx = next(iter(self.dic[val]))
         last_val = self.lst[-1]
         self.lst[idx], self.lst[-1] = self.lst[-1], self.lst[idx]
+        self.dic[val].remove(idx)
+        
         if idx != len(self.lst) - 1:
-            self.dic[last_val].pop()
+            self.dic[last_val].remove(len(self.lst) - 1)
             self.dic[last_val].add(idx)
 
         self.lst.pop()
-        self.dic[val].pop()
         return True
 
     def getRandom(self) -> int:
