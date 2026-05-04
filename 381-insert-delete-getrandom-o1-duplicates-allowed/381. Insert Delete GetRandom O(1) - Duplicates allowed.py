@@ -15,7 +15,7 @@ class RandomizedCollection:
 
         idx = next(iter(self.dic[val]))
         last_val = self.lst[-1]
-        self.lst[idx], self.lst[-1] = self.lst[-1], self.lst[idx]
+        self.lst[idx] = self.lst[-1]
         self.dic[val].remove(idx)
         
         if idx != len(self.lst) - 1:
