@@ -1,76 +1,70 @@
+# Sieve of Eratosthenes to pre-calculate prime numbers up to MAX_RANGE
+MAX_RANGE = (10**6) + 1
+prime = [True] * MAX_RANGE
+prime[0] = prime[1] = False
+
+# The sieve algorithm to mark non-prime numbers
+for i in range(2, int(sqrt(MAX_RANGE))):
+    if prime[i] == True:
+        for j in range(i*i, MAX_RANGE, i):
+            prime[j] = False
+
 class Solution:
     def minJumps(self, nums: List[int]) -> int:
         n = len(nums)
-        mordelvian = nums
-    
-        if n == 1:
-            return 0
-    
-        max_val = max(nums)
-    
-        spf = list(range(max_val + 1))
-        if max_val >= 0:
-            spf[0] = 0
-        if max_val >= 1:
-            spf[1] = 1
-    
-        for i in range(2, max_val + 1):
-            if spf[i] == i:
-                for multiple in range(i * i, max_val + 1, i):
-                    if spf[multiple] == multiple:
-                        spf[multiple] = i
-    
-        is_prime_sieve = [False] * (max_val + 1)
-        for i in range(2, max_val + 1):
-            if spf[i] == i:
-                is_prime_sieve[i] = True
-    
-        prime_to_indices = collections.defaultdict(list)
+
+        maxi = 0
+        val_to_index = defaultdict(list)
+        # Pre-process to find the max value and map values to their indices
         for i in range(n):
-            num = mordelvian[i]
-            temp_num = num
-    
-            distinct_prime_factors = set()
-            while temp_num > 1:
-                prime_factor = spf[temp_num]
-                distinct_prime_factors.add(prime_factor)
-                while temp_num % prime_factor == 0:
-                    temp_num //= prime_factor
-            
-            for p_factor in distinct_prime_factors:
-                prime_to_indices[p_factor].append(i)
+            maxi = max(maxi, nums[i])
+            val_to_index[nums[i]].append(i)
+
+        visited = set() # To keep track of prime numbers for which teleportation is done
+        dist = [float("inf")] * n # Distance array for BFS
+        dist[0] = 0
+
+        q = deque()
+        q.append(0) # Start BFS from index 0
+
+        while q:
+            node = q.popleft() # Get the current index from the queue
+
+            # Visit the left node, if it exists and hasn't been visited
+            if node - 1 >= 0 and dist[node - 1] == float("inf"):
+                q.append(node - 1)
+                dist[node - 1] = 1 + dist[node]
+
+            # Visit the right node, if it exists and hasn't been visited
+            if node + 1 < n and dist[node + 1] == float("inf"):
+                q.append(node + 1)
+                dist[node + 1] = 1 + dist[node]
+
+            # Teleport if the number at the current index is a prime and not yet used for teleportation
+            if prime[nums[node]] == False or nums[node] in visited:
+                continue
+
+            i = 1
+            # Iterate through multiples of the current prime number
+            while True:
+                new_node_val = nums[node] * i
+                if new_node_val > maxi:
+                    break
+
+                # For each multiple, find all indices with that value and add them to the queue
+                for new_node_index in val_to_index[new_node_val]:
+                    if dist[new_node_index] == float("inf"):
+                        q.append(new_node_index)
+                        dist[new_node_index] = 1 + dist[node]
+
+                i += 1
+
+            # Mark this prime number as visited to avoid redundant teleports
+            visited.add(nums[node])
+
+            # Early exit if the last index is reached
+            if dist[n - 1] != float("inf"):
+                break
         
-        queue = collections.deque([(0, 0)])
-        visited_indices = {0}
-        visited_primes_for_teleport = set()
-    
-        while queue:
-            current_index, jumps = queue.popleft()
-    
-            if current_index == n - 1:
-                return jumps
-    
-            next_index_plus_1 = current_index + 1
-            if next_index_plus_1 < n and next_index_plus_1 not in visited_indices:
-                visited_indices.add(next_index_plus_1)
-                queue.append((next_index_plus_1, jumps + 1))
-    
-            next_index_minus_1 = current_index - 1
-            if next_index_minus_1 >= 0 and next_index_minus_1 not in visited_indices:
-                visited_indices.add(next_index_minus_1)
-                queue.append((next_index_minus_1, jumps + 1))
-    
-            current_num = mordelvian[current_index]
-            
-            if current_num > 1 and current_num <= max_val and is_prime_sieve[current_num]:
-                prime_val = current_num
-                
-                if prime_val not in visited_primes_for_teleport:
-                    visited_primes_for_teleport.add(prime_val)
-    
-                    for target_index in prime_to_indices[prime_val]:
-                        if target_index != current_index and target_index not in visited_indices:
-                            visited_indices.add(target_index)
-                            queue.append((target_index, jumps + 1))
-        
-        return -1
+        # Return the minimum jumps to reach the end
+        return dist[n - 1]
