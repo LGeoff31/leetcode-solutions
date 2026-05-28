@@ -3,7 +3,6 @@ class TrieNode():
         self.children = {}
         self.word = False
         self.indexes = []
-
     def addWord(self, word, i): #hghghg
         curr = self
         for c in word:
@@ -13,12 +12,8 @@ class TrieNode():
             curr = curr.children[c]
         curr.indexes.append(i)
         curr.word = True
-
-
 class Solution:
     def stringIndices(self, wordsContainer: List[str], wordsQuery: List[str]) -> List[int]:
-        # print(wordsContainer[1667], wordsContainer[1839], wordsQuery[0])
-
         a = set()
         b = []
         idxSmallest = -1
@@ -33,31 +28,18 @@ class Solution:
                 b.append(word)
             else:
                 b.append("zzzzzzzz")
-
         wordsContainer = b
-      
-        # print(wordsContainer)
         for i in range(len(wordsContainer)):
             wordsContainer[i] = wordsContainer[i][::-1]
         for i in range(len(wordsQuery)):
             wordsQuery[i] = wordsQuery[i][::-1]
-
-        
         dic = {}
         for i, word in enumerate(wordsContainer):
             dic[word] = i
-        
-        
         wordsContainer = sorted(wordsContainer, key=len)
-
-
         newDic = {}
         for i in range(len(wordsContainer)):
             newDic[i] = dic[wordsContainer[i]]
-        
-        # print(wordsContainer[newDic[1667]], wordsContainer[newDic[1839]])
-
-
         def findBestIdx(index):
             res = index[0]
             i = 1
@@ -84,7 +66,6 @@ class Solution:
                 else:
                     if word[i] not in curr.children:
                         valid=False
-                        # print('indexes', curr.indexes, curr.children)
                         z = findBestIdx(curr.indexes)
                         res[k] = newDic[z]
                         break
@@ -93,7 +74,5 @@ class Solution:
             if valid: 
                 z = findBestIdx(curr.indexes)
                 res[k] = newDic[z]
-        print(wordsContainer)
-        print(wordsQuery)
         return res
        
