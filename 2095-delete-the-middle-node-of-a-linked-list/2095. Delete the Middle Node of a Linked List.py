@@ -4,19 +4,19 @@
 #         self.val = val
 #         self.next = next
 
+def get_size(head):
+    if head is None:
+        return 0
+    return 1 + get_size(head.next)
+
 class Solution:
     def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head.next is None: return None
         curr = head
-        slow, fast = curr, curr
-
-        prev = slow
-        while fast and fast.next:
-            prev = slow
-            slow = slow.next
-            fast = fast.next.next
-        prev.next = slow.next
-
-
+        prev = None
+        for i in range(get_size(head) // 2):
+            prev = curr
+            curr = curr.next
+        if prev is None:
+            return None
+        prev.next = curr.next
         return head
-        
