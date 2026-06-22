@@ -1,10 +1,19 @@
 class Solution:
     def maxNumberOfBalloons(self, text: str) -> int:
-        freq = Counter(text)
-        res = 1e9
-        res = min(res, freq["b"] // 1)
-        res = min(res, freq["a"] // 1)
-        res = min(res, freq["l"] // 2)
-        res = min(res, freq["o"] // 2)
-        res = min(res, freq["n"] // 1)
-        return res
+        a = Counter(text)
+        print(a)
+        # b a l l o o n
+        b = [0] * 5
+        for key in text:
+            if key == "b":
+                b[0] = a[key]
+            elif key == "a":
+                b[1] = a[key]
+            elif key == "l":
+                b[2] = a[key] // 2
+            elif key == "o":
+                b[3] = a[key] // 2
+            elif key=="n":
+                b[4] = a[key]
+        print(b)
+        return min(b)
