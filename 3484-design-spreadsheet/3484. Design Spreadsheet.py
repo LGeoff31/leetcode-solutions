@@ -1,30 +1,25 @@
 class Spreadsheet:
     def __init__(self, rows: int):
-        self.rows = rows
-        self.spreadsheet = [[0] * 26 for _ in range(rows)]
+        self.cells = defaultdict(int)
 
     def setCell(self, cell: str, value: int) -> None:
-        r,c = int(cell[1:]) - 1, ord(cell[0]) - ord("A")
-        self.spreadsheet[r][c] = value
+        self.cells[cell] = value
 
     def resetCell(self, cell: str) -> None:
-        r,c = int(cell[1:]) - 1, ord(cell[0]) - ord("A")
-        self.spreadsheet[r][c] = 0
+        self.cells[cell] = 0
 
     def getValue(self, formula: str) -> int:
-        print('formula', formula)
-        operands = formula[1:].split("+")
-        print(operands, formula)
-        x,y = operands[0], operands[1]
-        return self.evaluate(x) + self.evaluate(y)
-
-    def evaluate(self, val):
-        print('val', val, val[0], val[0].isdigit(), type(val[0]), len(val[0]))
-        if val[0].isdigit() or val[0] == 0:
-            return int(val)
-        print('nigg', val[0], val[0] == "0")
-        r,c = int(val[1:]) - 1, ord(val[0]) - ord("A")
-        return self.spreadsheet[r][c]
+        a,b = formula[1:].split("+")
+        if a.isnumeric():
+            a = int(a)
+        else:
+            a = self.cells[a]
+        if b.isnumeric():
+            b = int(b)
+        else:
+            b = self.cells[b]
+        
+        return a+b
 
 
 # Your Spreadsheet object will be instantiated and called as such:
