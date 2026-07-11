@@ -1,20 +1,23 @@
 class Solution:
     def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
-        indegree = [0] * n
         adj = defaultdict(list)
+        indegree = [0] * n
+        min_dist = defaultdict(int)
         for u,v in relations:
+            adj[u-1].append(v-1)
             indegree[v-1] += 1
-            adj[u].append(v)
-        @cache
-        def dfs(node):
-            if len(adj[node]) == 0:
-                return time[node - 1]
-            res = 0
+        
+        queue = deque([])
+        for i in range(len(indegree)):
+            if indegree[i] == 0:
+                queue.append(i)
+                min_dist[i] = time[i]
+
+        while queue:
+            node = queue.popleft()
             for nei in adj[node]:
-                res = max(res, time[node - 1] + dfs(nei))
-            return res
-        res = 0
-        starting_nodes = [i+1 for i in range(len(indegree)) if indegree[i] == 0]
-        for starting_node in starting_nodes:
-            res = max(res, dfs(starting_node))
-        return res
+                indegree[nei] -= 1
+                min_dist[nei] = max(min_dist[nei], min_dist[node] + time[nei])
+                if indegree[nei] == 0:
+                    queue.append(nei)
+        return max(min_dist.values())
