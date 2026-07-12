@@ -1,24 +1,15 @@
 class Solution:
     def arrayRankTransform(self, arr: List[int]) -> List[int]:
+        a = sorted(arr)
+        rank = 1
         if not arr: return []
-        a = arr.copy()
-        a.sort()
-        dic = {a[0]: 1}
-        prevNum = a[0]
-        rank = 2
-        i = 1
-        while i < len(a):
-            while i < len(a) and a[i] == prevNum:
-                i += 1
-            if i == len(a): break
-            prevNum = a[i]
-            dic[a[i]] = rank
-            i += 1
-            rank += 1
-        res = []
-        print(dic)
-        print(arr)
-        for i in arr:
-            res.append(dic[i])
-        return res
-                
+        dist = {a[0]: 1}
+        prev = a[0]
+        for i in range(1, len(a)):
+            if a[i] != prev:
+                rank += 1
+                dist[a[i]] = rank
+                prev = a[i]
+        if a[-1] not in dist:
+            dist[a[-1]] = rank+1
+        return [dist[n] for n in arr]
