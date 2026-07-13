@@ -8,7 +8,7 @@ class Solution:
         for i in range(len(searchWord)):
             curr += searchWord[i]
             leftIdx = bisect_left(products, curr)
-            rightIdx = bisect_right(products, curr + '{')
+            rightIdx = bisect_right(products, curr + 'z' * 1000)
             print(leftIdx, rightIdx)
             lst = [products[i] for i in range(leftIdx, min(rightIdx, len(products)))]
             lst = sorted(lst)[:3]
