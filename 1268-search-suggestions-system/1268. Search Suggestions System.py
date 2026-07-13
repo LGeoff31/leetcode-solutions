@@ -1,17 +1,40 @@
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.suggestions = []
+
 class Solution:
     def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
-        products.sort()
-        res = []
-        min_length, max_length = min(len(a) for a in products), max(len(a) for a in products)
-        curr = ""
-        print(min_length, max_length)
-        for i in range(len(searchWord)):
-            curr += searchWord[i]
-            leftIdx = bisect_left(products, curr)
-            rightIdx = bisect_right(products, curr + '{')
-            print(leftIdx, rightIdx)
-            lst = [products[i] for i in range(leftIdx, min(rightIdx, len(products)))]
-            lst = sorted(lst)[:3]
-            res.append(lst)
+        root = TrieNode()
 
-        return res
+        for product in products:
+            curr = root
+
+            for c in product:
+                if c not in curr.children:
+                    curr.children[c] = TrieNode()
+
+                curr = curr.children[c]
+
+                curr.suggestions.append(product)
+                curr.suggestions.sort()
+                if len(curr.suggestions) > 3:
+                    curr.suggestions.pop()
+
+        curr = root
+        suggested = []
+        
+        for c in searchWord:
+            if c in curr.children:
+                curr = curr.children[c]
+                suggested.append(curr.suggestions)
+
+            else:
+                curr.children = {}
+                suggested.append([])
+
+        return suggested
+
+
+            
+
