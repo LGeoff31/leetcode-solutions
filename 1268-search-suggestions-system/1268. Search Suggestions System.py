@@ -1,22 +1,17 @@
 class Solution:
     def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
         products.sort()
-        l, r = 0, len(products)-1
-        idx = 0
         res = []
-        
+        min_length, max_length = min(len(a) for a in products), max(len(a) for a in products)
+        curr = ""
+        print(min_length, max_length)
         for i in range(len(searchWord)):
-            c = searchWord[i]
+            curr += searchWord[i]
+            leftIdx = bisect_left(products, curr)
+            rightIdx = bisect_right(products, curr + '{')
+            print(leftIdx, rightIdx)
+            lst = [products[i] for i in range(leftIdx, min(rightIdx, len(products)))]
+            lst = sorted(lst)[:3]
+            res.append(lst)
 
-            while l<=r and (len(products[l]) <= i or products[l][i] != c):
-                l += 1
-            
-            while l<=r and (len(products[r]) <= i or products[r][i] != c):
-                r-=1
-            
-            remain = r - l + 1
-            res.append([])
-            for j in range(min(remain, 3)):
-                res[-1].append(products[j+l])
         return res
-
