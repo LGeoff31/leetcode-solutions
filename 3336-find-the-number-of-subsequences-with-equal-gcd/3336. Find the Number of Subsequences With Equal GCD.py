@@ -1,17 +1,17 @@
 class Solution:
     def subsequencePairCount(self, nums: List[int]) -> int:
         MOD = 10 ** 9 + 7
+        n = len(nums)
 
         @cache
-        def dfs(i, a, b):
-            if i == len(nums):
-                return a == b
-            res = 0
-            res += dfs(i+1, gcd(a, nums[i]), b)
-            res += dfs(i+1, a, gcd(b, nums[i]))
-            res += dfs(i+1, a,b)
-            return res % MOD
+        def dfs(idx, g1, g2):
+            if idx == n:
+                return 1 if g1 != 0 and g1 == g2 else 0
+            
+            res = dfs(idx+1, g1, g2)
 
-
+            res += dfs(idx+1, gcd(g1, nums[idx]), g2)
+            res += dfs(idx+1, g1, gcd(g2, nums[idx]))
+            return res
         
-        return dfs(0, 0, 0) - 1 # case taking nothing
+        return dfs(0, 0, 0) % MOD
