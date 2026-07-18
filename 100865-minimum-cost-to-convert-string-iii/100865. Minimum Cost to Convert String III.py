@@ -1,31 +1,35 @@
 class Solution:
     def minCost(self, source: str, target: str, rules: list[list[str]], costs: list[int]) -> int:
-        n = len(source)
-        dp = [float('inf')] * (n+1)
-        dp[0] = 0
-        
-        for i in range(n):
-            if dp[i] == float('inf'): continue
-            if source[i] == target[i]:
-                dp[i+1] = min(dp[i], dp[i+1])
+        @cache
+        def dfs(i): # returns the cost of 
+            if i == len(source):
+                return 0
 
-            # otherwise try applying a rule
+            res = 1e9
+
+            if source[i] == target[i]:
+                res = min(res, dfs(i+1))
+
             for (pattern, replacement), cost in zip(rules, costs):
-                idx = 0
-                if i + len(pattern) >= n+1:
-                    continue
-                if target[i: i + len(pattern)] != replacement:
+                m = len(pattern)
+                if i + m > len(source):
                     continue 
-                
-                valid = True 
-                cnt = 0
-                for j in range(len(pattern)):
-                    if pattern[j] == "*": cnt += 1
-                    elif pattern[j] != source[i+j]:
+
+                if target[i: i+m] != replacement:
+                    continue 
+
+                wild_cards = 0
+                valid = True
+                for j,c in enumerate(pattern):
+                    if c == "*":
+                        wild_cards += 1
+                    elif c != source[i+j]:
                         valid = False 
                         break 
-                    
                 if valid:
-                    dp[i+len(pattern)] = min(dp[i+len(pattern)], dp[i] + cost + cnt)
-        return dp[len(source)] if dp[n] != float('inf') else -1
+                    res = min(res, dfs(i+m) + cost + wild_cards)
                     
+            return res
+
+        final_result = dfs(0)
+        return final_result if final_result != 1e9 else -1
