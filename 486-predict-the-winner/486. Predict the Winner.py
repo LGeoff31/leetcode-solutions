@@ -1,12 +1,26 @@
 class Solution:
     def predictTheWinner(self, nums: List[int]) -> bool:
-        @cache
-        def dfs(i, j):
-            if i > j: 
-                return 0
-            a = nums[i] + min(dfs(i+1, j-1), dfs(i+2, j))
-            b = nums[j] + min(dfs(i+1, j-1), dfs(i, j-2))
-            return max(a,b)
-    
-        p1 = dfs(0, len(nums) - 1)
-        return p1 >= sum(nums) - p1
+        def dfs(l, r, isPlayerOne, currentScore):
+            if r < l:
+                return currentScore >= 0
+
+            if isPlayerOne:
+                res = False
+                # CONSUME LEFT NUMBER
+                res = res or dfs(l+1, r, not isPlayerOne, currentScore + nums[l] * (1 if isPlayerOne else -1))
+
+                # CONSUMER RIGHT NUMBER
+                res = res or dfs(l, r-1, not isPlayerOne, currentScore + nums[r] * (1 if isPlayerOne else -1))
+                return res
+            
+            else:
+                res = True 
+                res = res and dfs(l+1, r, not isPlayerOne, currentScore + nums[l] * (1 if isPlayerOne else -1))
+
+                # CONSUMER RIGHT NUMBER
+                res = res and dfs(l, r-1, not isPlayerOne, currentScore + nums[r] * (1 if isPlayerOne else -1))
+                return res 
+        
+        return dfs(0, len(nums) - 1, True, 0)
+
+
