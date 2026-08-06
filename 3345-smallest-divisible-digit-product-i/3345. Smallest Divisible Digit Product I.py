@@ -1,13 +1,13 @@
 class Solution:
     def smallestNumber(self, n: int, t: int) -> int:
+        def valid(num):
+            b = 1
+            for n in str(num):
+                b *= int(n)
+            
+            return b % t == 0
         a = n
         while True:
-            p = [int(p) for p in str(a)]
-            b = 1
-            print(p)
-            for n in p:
-                b *= n
-            if b % t == 0:
+            if valid(a):
                 return a
             a += 1
-        
