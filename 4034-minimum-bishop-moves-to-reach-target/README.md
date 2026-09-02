@@ -16,7 +16,7 @@
 
 <p><strong>Explanation:</strong></p>
 
-<p><strong>​​​​​​​</strong><img src="https://assets.leetcode.com/uploads/2026/07/22/image.png" style="width: 300px; height: 307px;" /></p>
+<p><strong>​​​​​​​<img alt="" src="https://assets.leetcode.com/uploads/2026/08/31/111.png" style="width: 300px; height: 303px;" />​​​​​​​</strong></p>
 
 <p>A single diagonal move takes the bishop straight from <code>(8, 1)</code> to <code>(1, 8)</code>.</p>
 </div>
@@ -30,7 +30,7 @@
 
 <p><strong>Explanation:</strong></p>
 
-<p><img src="https://assets.leetcode.com/uploads/2026/07/22/screenshot-2026-07-23-at-23625am.png" style="width: 300px; height: 305px;" /></p>
+<p><img alt="" src="https://assets.leetcode.com/uploads/2026/08/31/22-ezgifcom-invert-colors.png" style="width: 300px; height: 305px;" /></p>
 
 <p>The bishop moves from <code>(4, 2)</code> to <code>(3, 1)</code>, then from <code>(3, 1)</code> to <code>(1, 3)</code>, reaching the target in 2 moves.</p>
 </div>
