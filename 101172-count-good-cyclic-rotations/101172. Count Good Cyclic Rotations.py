@@ -9,11 +9,11 @@ class Solution:
         for i in range(len(nums)):
             if leftSum > rightSum:
                 res += 1
-            leftSum -= queue[0]
-            rightSum += queue[0]
+            leftSum -= nums[i]
+            rightSum += nums[i]
 
-            leftSum += queue[n//2]
-            rightSum -= queue[n//2]
+            leftSum += nums[(i + n//2) % n]
+            rightSum -= nums[(i + n//2) % n]
             
             queue.append(queue.popleft())
             
