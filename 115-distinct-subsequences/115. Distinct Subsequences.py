@@ -1,18 +1,16 @@
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
-        memo = {}
-        def dfs(i,j):
-            if j == len(t): return 1
-            elif i == len(s): return 0
-            elif (i,j) in memo:
-                return memo[(i,j)]
-            elif s[i] == t[j]:
-                memo[(i+1, j+1)] = dfs(i+1, j+1)
-                memo[(i+1, j)] = dfs(i+1, j)
-                return memo[(i+1, j+1)] + memo[(i+1, j)]
-            else:
-                memo[(i+1, j)] = dfs(i+1, j)
-                return memo[(i+1, j)]
+        @cache
+        def dfs(i, currString): #O(N * 2^N)
+            if currString == t:
+                return 1
+            
+            if i >= len(s):
+                return 0
 
-        return dfs(0,0)
-        
+            res = dfs(i+1, currString)
+            if len(currString) < len(t) and t[len(currString)] == s[i]:
+                res += dfs(i+1, currString + s[i]) 
+            
+            return res
+        return dfs(0, "")
