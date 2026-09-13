@@ -1,30 +1,46 @@
 class Solution:
     def largestOverlap(self, img1: List[List[int]], img2: List[List[int]]) -> int:
-        img1_ones = set()
-        img2_ones = set()
-        n = len(img1)
-
-        for r in range(n):
-            for c in range(n):
-                if img1[r][c] == 1:
-                    img1_ones.add((r,c))
-                if img2[r][c] == 1:
-                    img2_ones.add((r,c))
-
-        res = 0
-        cache = set()
-        for r1, c1 in img1_ones:
-            for r2, c2 in img2_ones:
-                dr = r2 - r1
-                dc = c2 - c1
-                if (dr, dc) in cache:
+        # had to define before using lol
+        def get_1_coords(lst: List[List[int]]):
+            coords = []
+            for i in range(len(lst)):
+                for j in range(len(lst[i])):
+                    if lst[i][j] == 1:
+                        coords.append([i, j])
                     continue
-                cache.add((dr, dc))
+            return coords
+        
+        # collect all the 1s in each img as coordinates
+        coords1 = get_1_coords(img1)
+        coords2 = get_1_coords(img2)
 
-                cnt = 0
-                for r2, c2 in img2_ones:
-                    cnt += (r2-dr, c2-dc) in img1_ones
-                res = max(res, cnt)
-        return res
-                        
+        diffCounts = {}
+        ref = []
+        target = []
+        # grab the shorter list as the ref
+        if len(coords1) <= len(coords2):
+            ref = coords1
+            target = coords2
+        else:
+            ref = coords2
+            target = coords1
+        print(ref)
+        print(target)
 
+        # compute differences and add to hashmap
+        for r in ref:
+            for t in target:
+                dr = t[0] - r[0]
+                dc = t[1] - r[1]
+                if (dr, dc) not in diffCounts.keys():
+                    diffCounts[(dr, dc)] = 1
+                else:
+                    diffCounts[(dr, dc)] += 1
+        print(diffCounts)
+
+        # result is the max occurrences
+        # return max(diffCounts.values())
+        return max(diffCounts.values(), default=0)
+
+
+        
