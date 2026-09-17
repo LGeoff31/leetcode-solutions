@@ -1,33 +1,58 @@
 class Solution:
     def minSumOfLengths(self, arr: List[int], target: int) -> int:
-        min_length_sum = float('inf')
+        # subarrays: sliding window
+        # non overlapping is a bitch 
+            # had to check discussion for hint about prefix/suffix
+            # each prefix[i] and suffix[i] will be non-overlapping pairs
 
-        prefix = []
-        ending = []
+        prefix = [0] * len(arr)
+        suffix = [0] * len(arr)
 
+        # prefix
         l = 0
-        curr = 0
-        for r in range(len(arr)):
-            curr += arr[r]
-            while curr > target:
-                curr -= arr[l]
+        r = 0
+        r_sum = 0
+        smallest = float('inf')
+
+        while r < len(arr):
+            r_sum += arr[r]
+            while r_sum > target:
+                r_sum -= arr[l]
                 l += 1
-            # print(l, r, curr, ending, prefix)
-            if curr == target:
-                # Check if there's an ending less than l
-                idx = bisect_left(ending, l) - 1
-                # print('idx', idx, ending)
-                if ending and 0 <= idx < len(ending):
-                    min_length_sum = min(min_length_sum, prefix[idx] + r-l+1)
+            if r_sum == target:
+                smallest = min(smallest, r - l + 1)
+            prefix[r] = smallest
+            r += 1
+            # print(prefix)
+        
 
-                ending.append(r)
-                prefix.append(r-l+1)
-                if len(prefix) >= 2: prefix[-1] = min(prefix[-1], prefix[-2])
+        # suffix - just mirror prefix lol
+        r = len(arr) - 1
+        l = len(arr) - 1
+        r_sum = 0
+        smallest = float('inf')
+        
+        while l >= 0:
+            r_sum += arr[l]
+            while r_sum > target:
+                r_sum -= arr[r]
+                r -= 1
+            if r_sum == target:
+                smallest = min(smallest, r - l + 1)
+            suffix[l] = smallest
+            l -= 1
+            # print(suffix)
+        
+        # bam
+        res = float('inf')
+        for i in range(len(arr) - 1):
+            res = min(res, prefix[i] + suffix[i + 1])
+        if res == float('inf'):
+            return -1
+        else:
+            return res
 
-        #     # print(l, r, curr)
-        # if curr == target:
-        #     idx = bisect_left(ending, l) - 1
-        #     if ending and idx < len(ending):
-        #         min_length_sum = min(min_length_sum, prefix[idx] + r-l+1)
-        # print(prefix)
-        return min_length_sum if min_length_sum != float('inf') else -1
+        
+
+        
+
