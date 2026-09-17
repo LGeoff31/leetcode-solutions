@@ -1,12 +1,19 @@
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        stack = []
-        i = 0
+        # similar to next greater elem I ?
+        # decreasing stack of temps
+        # GL HINT: Store tuples in stack
+
         res = [0] * len(temperatures)
-        while i < len(temperatures):
-            while stack and stack[-1][1] < temperatures[i]:
-                idx, val = stack.pop()
-                res[idx] = i - idx
-            stack.append((i, temperatures[i]))
-            i += 1
+        stack = []
+
+        for i, t in enumerate(temperatures):
+            while len(stack) >= 1 and t > stack[-1][1]:
+                x = stack.pop()
+                res[x[0]] = i - x[0]
+                # print('pop', x)
+            else:
+                stack.append((i, t))
+                # print(stack)
+
         return res
