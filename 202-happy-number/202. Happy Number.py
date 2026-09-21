@@ -1,19 +1,16 @@
 class Solution:
     def isHappy(self, n: int) -> bool:
-        if n == 1:
-            return True
-        visited = set()
-        
-        while True:
-            if n in visited:
-                return False
-            visited.add(n)
-            a = list(str(n))
-            total = 0
-            for char in a:
-                total += int(char) * int(char)
-            n = total
-            if n == 1:
-                return True
+        seen = set()
 
-        
+        def get_digit_square_sum(num):
+            res = 0
+            for c in str(num):
+                res += int(c)**2
+            return res
+
+        while n != 1:
+            if n in seen:
+                return False
+            seen.add(n)
+            n = get_digit_square_sum(n)
+        return True
