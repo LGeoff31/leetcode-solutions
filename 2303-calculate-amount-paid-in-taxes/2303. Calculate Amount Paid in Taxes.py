@@ -1,17 +1,19 @@
 class Solution:
-    def calculateTax(self, brackets: List[List[int]], income: int) -> float:
-        i = 0
+    def calculateTax(self, brackets: list[list[int]], income: int) -> float:
+        brackets.sort()
+
+        total = 0
         prev = 0
-        res = 0
-        while i < len(brackets) and income > 0:
-            amount, percentage = brackets[i]
-            net_amount = amount - prev
-            if net_amount >= income:
-                res += income * percentage / 100
-                income = 0
+        for upper_bracket, percent in brackets:
+            if income >= upper_bracket:
+                total += (upper_bracket - prev) * percent/100
+                prev = upper_bracket
             else:
-                res += net_amount * percentage / 100
-                prev = amount
-                income -= net_amount
-            i += 1
-        return res
+                diff = income - prev
+                print('diff', diff, percent, total, )
+                total += diff * (percent / 100)
+                break
+            print(total)
+            
+
+        return total
