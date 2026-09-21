@@ -1,23 +1,26 @@
 class Solution:
-    def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
-        adj = defaultdict(list)
+    def minimumTime(self, n: int, relations: list[list[int]], time: list[int]) -> int:
         indegree = [0] * n
-        min_dist = defaultdict(int)
+        graph = defaultdict(list) # directed graph preq -> real course
+
         for u,v in relations:
-            adj[u-1].append(v-1)
-            indegree[v-1] += 1
+            graph[u - 1].append(v - 1)
+            indegree[v - 1] += 1
         
         queue = deque([])
-        for i in range(len(indegree)):
+        dist = defaultdict(int)
+        
+        for i in range(n):
             if indegree[i] == 0:
                 queue.append(i)
-                min_dist[i] = time[i]
-
+                dist[i] = time[i]
         while queue:
             node = queue.popleft()
-            for nei in adj[node]:
+            for nei in graph[node]:
                 indegree[nei] -= 1
-                min_dist[nei] = max(min_dist[nei], min_dist[node] + time[nei])
+                dist[nei] = max(dist[nei], time[nei] + dist[node])
+
                 if indegree[nei] == 0:
                     queue.append(nei)
-        return max(min_dist.values())
+        return max(dist.values())
+        
