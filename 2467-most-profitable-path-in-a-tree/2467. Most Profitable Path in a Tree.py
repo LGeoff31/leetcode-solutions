@@ -1,44 +1,53 @@
 class Solution:
-    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
-        adj = defaultdict(list)
-        for u,v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        
-        bob_hashmap = {bob:0}
-        def dfs(node, prev, time):
-            if node == 0:
-                bob_hashmap[node] = time
-                return True
-            for nei in adj[node]:
-                if nei == prev:
-                    continue
-                if dfs(nei, node, time + 1):
-                    bob_hashmap[node] = time
-                    return True
-            return False
+    def mostProfitablePath(self, edges: list[list[int]], bob: int, amount: list[int]) -> int:
+        # bfs?
+        # dp on every node.
 
-        dfs(bob, -1, 0)
-        queue = deque([[0, amount[0]]])
-        visited = {0}
-        time = 1
-        res = -1e9
-        print(bob_hashmap)
-        print('fuck')
-        while queue:
-            for i in range(len(queue)):
-                node = queue.popleft()
-                if len(adj[node[0]]) == 1 and node[0] != 0:
-                    res = max(res, node[1])
-                for nei in adj[node[0]]:
-                    if nei not in visited:
-                        visited.add(nei)
-                        if nei not in bob_hashmap or time < bob_hashmap[nei]:
-                            queue.append([nei, node[1] + amount[nei]])
-                        elif time == bob_hashmap[nei]:
-                            queue.append([nei, node[1] + amount[nei]//2])
-                        else:
-                            queue.append([nei, node[1]])
-            time += 1
-            print(queue)
-        return res
+        # every node with no neighbors is leaf, except 0. Update max score from that node.
+        #initially, alice opens door 0
+        # bob opens door bob. Sets amount[bob] = 0.
+        # then bfs. Keep in mind bob's next node.
+        graph = defaultdict(list)
+        for a, b in edges:
+            graph[a].append(b)
+            graph[b].append(a)
+
+        # first, bfs to find Bob's path?
+        bobPath = [bob]
+        def findBobPath(prev, root):
+            if root == 0:
+                return True
+            for neighbor in graph[root]:
+                if neighbor == prev:
+                    continue
+                bobPath.append(neighbor)
+                if findBobPath(root, neighbor):
+                    return True
+                bobPath.pop()
+            return False
+        findBobPath(None, bob)
+        bobIndex = 0
+        print(bobPath)
+
+        q = deque([(0, 0)])
+        visited = set([0])
+        maxProfit = float("-inf")
+        while q:
+            for _ in range(len(q)):
+                node, money = q.popleft()
+                visited.add(node)
+                if bobIndex < len(bobPath) and bobPath[bobIndex] == node:
+                    money += int(amount[node] / 2)
+                else:
+                    money += amount[node]
+                if len(graph[node]) == 1 and node != 0:
+                    maxProfit = max(maxProfit, money)
+                for neighbor in graph[node]:
+                    if neighbor in visited:
+                        continue
+                    q.append((neighbor, money))
+            if bobIndex < len(bobPath):
+                amount[bobPath[bobIndex]] = 0
+            bobIndex += 1
+        return maxProfit
+
