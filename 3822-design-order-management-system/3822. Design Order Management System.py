@@ -1,38 +1,25 @@
 class OrderManagementSystem:
     def __init__(self):
-        self.buy_active_orders = {} # order_id: price
-        self.sell_active_orders = {} # order_id: price
+        self.order_dic = {} # order_id: (price, type)
+        self.orders_with_price = defaultdict(set) # (price, type): [order_id's]
 
-        
     def addOrder(self, orderId: int, orderType: str, price: int) -> None:
-        if orderType=="buy":
-            self.buy_active_orders[orderId] = price
-        else:
-            self.sell_active_orders[orderId] = price
+        self.order_dic[orderId] = (price, orderType)
+        self.orders_with_price[(price, orderType)].add(orderId)
 
     def modifyOrder(self, orderId: int, newPrice: int) -> None:
-        if orderId in self.buy_active_orders:
-            self.buy_active_orders[orderId] = newPrice
-        else:
-            self.sell_active_orders[orderId] = newPrice
+        price, _type = self.order_dic[orderId]
+        self.order_dic[orderId] = (newPrice, _type)
+        self.orders_with_price[(price, _type)].remove(orderId)
+        self.orders_with_price[(newPrice, _type)].add(orderId)
 
     def cancelOrder(self, orderId: int) -> None:
-        if orderId in self.buy_active_orders:
-            del self.buy_active_orders[orderId]
-        else:
-            del self.sell_active_orders[orderId]
+        price, _type = self.order_dic[orderId]
+        del self.order_dic[orderId]
+        self.orders_with_price[(price, _type)].remove(orderId)
 
     def getOrdersAtPrice(self, orderType: str, price: int) -> List[int]:
-        res = []
-        if orderType == "buy":
-            for order_id, p in self.buy_active_orders.items():
-                if p == price:
-                    res.append(order_id)
-        else:
-            for order_id, p in self.sell_active_orders.items():
-                if p == price:
-                    res.append(order_id)
-        return res
+        return list(self.orders_with_price[(price, orderType)])
 
 
 # Your OrderManagementSystem object will be instantiated and called as such:
