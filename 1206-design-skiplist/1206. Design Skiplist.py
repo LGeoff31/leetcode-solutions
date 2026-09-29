@@ -1,77 +1,73 @@
+"""
+-1e9 -> 5
+-1e9 -> 5 
+-1e9 -> 5 -> 20
+"""
+
 class Node:
-    def __init__(self, val=-1e9):
+    def __init__(self, val, next=None, down=None):
         self.val = val
-        self.next = [None] * 20
+        self.next = next
+        self.down = down
 
 class Skiplist:
     def __init__(self):
-        self.head = Node()
+        self.head = Node(-1e9)
 
     def search(self, target: int) -> bool:
         curr = self.head
-        for i in range(19, -1, -1):
-            while curr.next[i] and curr.next[i].val <= target:
-                curr = curr.next[i]
-        return curr.val == target
+        while curr:
+            while curr.next and curr.next.val < target:
+                curr = curr.next 
+            
+            if curr.next and curr.next.val == target:
+                return True 
+
+            curr = curr.down
+        return False
 
     def coin_flip(self):
         return random.choice(["heads", "tails"])
 
     def add(self, num: int) -> None:
         curr = self.head
-        new_node = Node(num)
-        update = [None] * 20
+        stack = []
 
-        # Get to position where it should be inserted
-        for i in range(19, -1, -1):
-            while curr.next[i] and curr.next[i].val <= num:
-                curr = curr.next[i]
-            update[i] = curr
-        
-        # Insert the node
+        while curr:
+            while curr.next and curr.next.val < num:
+                curr = curr.next 
 
-        next_level = 1
-        next_node = curr.next[0]
-        curr.next[0] = new_node
-        new_node.next[0] = next_node
+            stack.append(curr) # these are nodes, where we have to update the next poiniter to num
+            curr = curr.down
 
-        while self.coin_flip() == "heads":
-            curr = update[next_level]
+        # Update all the nodes in our stack
+        should_promote = True
+        down_node = None
+        while stack and should_promote:
+            node = stack.pop()
+            next_node = node.next
+            new_node = Node(num, next_node, down_node)
 
-            new_node.next[next_level] = curr.next[next_level]
-            curr.next[next_level] = new_node
-            next_level += 1
+            new_node.next = next_node
+            node.next = new_node
+
+            down_node = node
+            should_promote = self.coin_flip() == "heads"
+
+        if should_promote:
+            new_node = Node(num, None, down_node)
+            self.head = Node(-1e9, new_node, self.head)
 
     def erase(self, num: int) -> bool:
         curr = self.head
-        update = [None] * 20
-
-        if self.search(num) == False:
-            return False
-
-        # Get to its prev node
-        for i in range(19, -1, -1):
-            while curr.next[i] and curr.next[i].val < num:
-                curr = curr.next[i]
-            update[i] = curr
-        
-        # Delete the node
-        next_level = 0
-        delete_node = curr.next[0]
-        while True:
-            curr = update[next_level]
-
-            next_node = curr.next[next_level]
-            if next_node == delete_node:
-                curr.next[next_level] = next_node.next[next_level]
-                next_level += 1
-            else:
-                break
-        return True
-
-
-# Your Skiplist object will be instantiated and called as such:
-# obj = Skiplist()
-# param_1 = obj.search(target)
-# obj.add(num)
-# param_3 = obj.erase(num)
+        found = False
+        while curr:
+            while curr.next and curr.next.val < num:
+                curr = curr.next
+            
+            if curr.next and curr.next.val == num:
+                curr.next = curr.next.next
+                found = True
+            
+            curr = curr.down
+        return found
