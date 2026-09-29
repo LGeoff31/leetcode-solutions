@@ -1,22 +1,30 @@
 class Solution:
     def evaluate(self, s: str, knowledge: list[list[str]]) -> str:
-        res = ""
-        curr = ""
-        dic = {key: value for key, value in knowledge}
+        # for faster knowledge lookups, make it a hashmap
+        know = {}
+        for k in knowledge:
+            know[k[0]] = k[1]
 
-        open_brace = False 
-        for i in range(len(s)):
-            if s[i] == "(":
-                open_brace = True
-                continue 
+        # sliding window? can grab indices for substrings
+        res = []
+        isKey = False
+        key_l = 0
 
-            if s[i] == ")":
-                open_brace = False
-                res += dic[curr] if curr in dic else "?"
-                curr = ""
-            elif open_brace:
-                curr += s[i]
-            else:
-                res += s[i]
+        # substrings before first ( ?
+        # how to flag after seeing a (
 
-        return res
+        for i, c in enumerate(s):
+            if c == "(":
+                isKey = True
+                key_l = i + 1
+            elif c == ")":
+                isKey = False
+                key = s[key_l:i]
+                if key in know.keys():
+                    res.append(know[key])
+                else:
+                    res.append("?")
+            elif isKey == False:
+                res.append(c)
+
+        return "".join(res)
