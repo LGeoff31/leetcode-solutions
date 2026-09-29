@@ -4,15 +4,19 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        minHeap = [(linked_list.val, i, linked_list) for i, linked_list in enumerate(lists) if linked_list is not None]
-        heapify(minHeap)
+    def mergeKLists(self, _lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        minHeap = []
+        for i, head in enumerate(_lists):
+            if head:
+                heappush(minHeap, (head.val, i))
         head = ListNode()
         curr = head
         while minHeap:
-            node_val, _, node = heappop(minHeap)
-            curr.next = node
+            node_val, idx = heappop(minHeap)
+            curr.next = _lists[idx]
+            _lists[idx] = _lists[idx].next
+            if _lists[idx]: 
+                heappush(minHeap, (_lists[idx].val, idx))
             curr = curr.next
-            if node.next:
-                heappush(minHeap, (node.next.val, _, node.next))
+
         return head.next
