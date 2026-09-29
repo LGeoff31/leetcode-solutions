@@ -46,7 +46,7 @@ class Skiplist:
         while stack and should_promote:
             node = stack.pop()
             next_node = node.next
-            new_node = Node(num, next_node, down_node.next if down_node else None)
+            new_node = Node(num, next_node, down_node)
 
             new_node.next = next_node
             node.next = new_node
