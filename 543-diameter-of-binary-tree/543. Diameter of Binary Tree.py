@@ -8,11 +8,17 @@ class Solution:
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         longest_diameter = 0
 
+        cache = {}
         def get_longest_length_down(node): # O(T)
             if not node:
                 return 0
             
-            return 1 + max(get_longest_length_down(node.left), get_longest_length_down(node.right))
+            if id(node) in cache:
+                return cache[id(node)]
+            
+            res = 1 + max(get_longest_length_down(node.left), get_longest_length_down(node.right))
+            cache[id(node)] = res
+            return res
 
         def explore_nodes(node):
             nonlocal longest_diameter
