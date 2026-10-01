@@ -1,12 +1,10 @@
 class Solution:
     def lengthOfLIS(self, nums: list[int]) -> int:
-        lst = [nums[0]]
+        n = len(nums)
+        dp = [1] * n
 
-        for n in nums[1:]:
-            if n > lst[-1]:
-                lst.append(n)
-            else:
-                idx = bisect_left(lst, n)
-                lst[idx] = n
-
-        return len(lst)
+        for i in range(1, len(nums)):
+            for j in range(i):
+                if nums[i] > nums[j]:
+                    dp[i] = max(dp[i], 1 + dp[j])
+        return max(dp)
