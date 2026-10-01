@@ -1,17 +1,12 @@
 class Solution:
-    def lengthOfLIS(self, nums: List[int]) -> int:
-        """
-        [2,5,6]
-        """
+    def lengthOfLIS(self, nums: list[int]) -> int:
         lst = [nums[0]]
 
-        for i in range(1, len(nums)):
-            if nums[i] > lst[-1]:
-                lst.append(nums[i])
+        for n in nums[1:]:
+            if n > lst[-1]:
+                lst.append(n)
             else:
-                idx = bisect_left(lst, nums[i])
-                lst[idx] = nums[i]
+                idx = bisect_left(lst, n)
+                lst[idx] = n
 
         return len(lst)
-
-        
