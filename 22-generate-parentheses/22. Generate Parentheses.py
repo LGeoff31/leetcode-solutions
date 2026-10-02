@@ -1,18 +1,26 @@
 class Solution:
-    def generateParenthesis(self, n: int) -> List[str]:
-        self.res = []
-        def dfs(open, close, curr):
-            if open == close == n:
-                self.res.append(curr)
-                return
-            if open > n:
-                return
+    def generateParenthesis(self, n: int) -> list[str]:
+        res = []
+        def valid(expr):
+            stack = []
+            for c in expr:
+                if c == "(":
+                    stack.append("(")
+                else:
+                    if stack: stack.pop()
+                    else: return False
+            return len(stack) == 0
 
-            if open == close:
-                dfs(open+1, close, curr + "(")
-            else:
-                dfs(open, close+1, curr + ")")
-                dfs(open+1, close, curr + "(")
+        def dfs(_in, out, expr):
+            nonlocal res
+            if _in == n and out == n:
+                if valid(expr):
+                    res.append(expr)
+            if _in > n or out > n:
+                return 
+            
+            dfs(_in+1, out, expr + "(")
+            dfs(_in, out+1, expr + ")")
+        
         dfs(0, 0, "")
-        return self.res
-
+        return res
