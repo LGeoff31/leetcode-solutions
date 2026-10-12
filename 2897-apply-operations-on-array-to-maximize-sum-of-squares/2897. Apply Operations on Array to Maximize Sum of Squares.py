@@ -89,11 +89,12 @@ class Solution:
             biggest_num = 0
             for key in dic: #O(32)
                 if dic[key] > 0:
-                    biggest_num += pow(2, key, 10 ** 9 + 7) #O(log(32))
+                    biggest_num += 2 ** key #O(32)
                     dic[key] -= 1
 
-            res += pow(biggest_num, 2, 10 ** 9 + 7)
+            res += biggest_num ** 2
 
+        # O(32N + 32K) = O(N + K)
         return res % (10 ** 9 + 7)
 
 """
