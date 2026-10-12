@@ -76,25 +76,36 @@ class Solution:
         BUILD BIGGESt 4th number: 4
         """
         dic = defaultdict(int)
-        for n in nums:
+        for n in nums: #O(N)
             bin_rep = bin(n)[2:] 
             length = len(bin_rep)
 
-            for i in range(len(bin_rep)):
-                if bin_rep[i] == "1": # bin_rep = 1101
+            for i in range(len(bin_rep)): #O(32)
+                if bin_rep[i] == "1":
                     dic[length - i - 1] += 1
 
         res = 0
-        for _ in range(k):
+        for _ in range(k): #O(K)
             biggest_num = 0
-            for key in dic:
+            for key in dic: #O(32)
                 if dic[key] > 0:
-                    biggest_num += 2 ** key
+                    biggest_num += pow(2, key) #O(log(32))
                     dic[key] -= 1
-                    
+
             res += biggest_num ** 2
 
+        # O(32N + 32K) = O(N + K)
         return res % (10 ** 9 + 7)
 
+"""
+2^32 = ?
+
+2^32 = 4^16 = 8^8 = 16
+
+for _ in range(32): 
+
+for _ in range(log(32)):
+
+"""
 
 
