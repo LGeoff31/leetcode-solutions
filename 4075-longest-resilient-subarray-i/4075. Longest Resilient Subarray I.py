@@ -33,8 +33,8 @@ class Solution:
         for i in range(1, len(nums)):
             if nums[i] == nums[i-1]:
                 curr += 1
-                if (curr - 1) % k == 0:
-                    res = max(res, curr)
+                # if (curr - 1) % k == 0:
+                #     res = max(res, curr)
                 if nums[i] > 0 and (nums[i] * (curr - 1)) % k == 0:
                     res = max(res, curr)
             else:
