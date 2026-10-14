@@ -2,13 +2,13 @@ class Solution:
     def maxSumOfSquares(self, num: int, _sum: int) -> str:
         res = [0] * num
 
-        i = 0
-        while _sum > 0 and i < len(res):
-            res[i] = min(_sum, 9)
-            _sum -= min(_sum, 9)
-            i += 1
-        
-        if _sum > 0:
-            return ""
-        
+        full_nines = _sum // 9
+        remainder = _sum % 9
+
+        res = [9] * full_nines
+        if remainder:
+            res.append(remainder)
+        remaining_length = num - len(res)
+        res = res + [0] * remaining_length
+        if len(res) > num: return ""
         return "".join(str(c) for c in res)
