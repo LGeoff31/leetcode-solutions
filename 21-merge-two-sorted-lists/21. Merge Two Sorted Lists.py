@@ -19,14 +19,10 @@ class Solution:
             curr.next = nxt_node
             curr = curr.next
 
-        while list1:
-            curr.next = ListNode(list1.val)
-            curr = curr.next
-            list1 = list1.next
+        if list1:
+            curr.next = list1
 
-        while list2:
-            curr.next = ListNode(list2.val)
-            curr = curr.next
-            list2 = list2.next
+        if list2:
+            curr.next = list2
 
         return head.next
