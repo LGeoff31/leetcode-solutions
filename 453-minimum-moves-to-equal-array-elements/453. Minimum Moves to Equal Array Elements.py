@@ -1,6 +1,7 @@
-from sortedcontainers import SortedList
 class Solution:
-    def minMoves(self, nums: List[int]) -> int: 
-        n = len(nums)
-        nums.sort()
-        return sum(nums) - n * nums[0]
+    def minMoves(self, nums: list[int]) -> int:
+        a = min(nums)
+        res = 0
+        for n in nums:
+            res += n - a
+        return res
