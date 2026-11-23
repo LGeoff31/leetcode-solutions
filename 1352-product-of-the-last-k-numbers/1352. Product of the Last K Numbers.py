@@ -29,7 +29,7 @@ class ProductOfNumbers:
         length = len(self.stream_prefix)
         l, r = length - k, length - 1
 
-        if bisect_left(self.zero_indexes, l) != bisect_right(self.zero_indexes, r):
+        if bisect_left(self.zero_indexes, l) != bisect_left(self.zero_indexes, r):
             return 0
 
         if k == len(self.stream_prefix):
