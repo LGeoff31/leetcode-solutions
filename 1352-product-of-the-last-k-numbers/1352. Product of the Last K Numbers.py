@@ -1,30 +1,44 @@
+"""
+[3, 0, 2, 5, 4]
+getProduct(2) -> 20
+getProduct(3) -> 40
+getProduct(4) -> 
+
+
+[0, 0, 9]
+getProduct(3) -> 0
+"""
+
 class ProductOfNumbers:
-
     def __init__(self):
-        self.prefix = []
-        self.last_zero_dis = 0
+        self.stream_prefix = []
+        self.zero_indexes = []
 
-    def add(self, num: int) -> None: # O(1)
-        if not self.prefix:
-            self.prefix.append(num)
-            self.last_zero_dis += num != 0
-            return
+    def add(self, num: int) -> None:
         if num == 0:
-            self.prefix.append(0)
-            self.last_zero_dis = 0
-        else:
-            if self.prefix[-1] == 0:
-                self.prefix.append(num)
-            else:
-                self.prefix.append(num * self.prefix[-1])
-            self.last_zero_dis += 1
-    def getProduct(self, k: int) -> int: # O(k)
-        if k > self.last_zero_dis: return 0
-        n = len(self.prefix)
-        if len(self.prefix) == k: return self.prefix[-1]
-        if self.prefix[n-k-1] == 0:
-            return self.prefix[-1]
-        return self.prefix[-1] // self.prefix[n-k-1]
+            self.zero_indexes.append(len(self.stream_prefix))
+
+        if not self.stream_prefix or self.stream_prefix[-1] == 0:
+            self.stream_prefix.append(num)
+            return
+        
+        self.stream_prefix.append(num * self.stream_prefix[-1])
+
+    def getProduct(self, k: int) -> int:
+        
+        length = len(self.stream_prefix)
+        l, r = length - k, length - 1
+
+        if bisect_left(self.zero_indexes, l) != bisect_right(self.zero_indexes, r):
+            return 0
+
+        if k == len(self.stream_prefix):
+            return self.stream_prefix[-1]
+
+        if self.stream_prefix[length - k - 1] == 0:
+            return self.stream_prefix[-1]
+
+        return int(self.stream_prefix[-1] / self.stream_prefix[length - k - 1])
         
 
 
