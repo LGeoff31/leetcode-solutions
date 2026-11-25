@@ -1,21 +1,26 @@
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
-        dp = [[1e9] * (len(word2)+1) for i in range(len(word1) + 1)]
+        @cache
+        def dfs(i, j):
+            if i == len(word1) and j == len(word2):
+                return 0
+            
+            if i >= len(word1) or j >= len(word2):
+                return max(len(word1) - i, len(word2) - j)
+            
+            moves = float('inf')
+            # INSERT
+            moves = min(moves, 1 + dfs(i, j+1))
 
-        for r in range(len(word1)+1):
-            dp[r][len(word2)] = len(word1) - r
+            # DELETE
+            moves = min(moves, 1 + dfs(i+1, j))
 
-        for c in range(len(word2)+1):
-            dp[len(word1)][c] = len(word2) - c
+            # REPLACE
+            moves = min(moves, 1 + dfs(i+1, j+1))
+
+            if word1[i] == word2[j]:
+                moves = min(moves, dfs(i+1, j+1))
+            
+            return moves
         
-        for r in range(len(word1)-1, -1, -1):
-            for c in range(len(word2)-1, -1, -1):
-                if word1[r] == word2[c]:
-                    dp[r][c] = dp[r+1][c+1]
-                else:
-                    dp[r][c] = 1 + min(dp[r+1][c+1], dp[r][c+1], dp[r+1][c])
-        return dp[0][0]
-
-
-        return -1
-        
+        return dfs(0, 0)
