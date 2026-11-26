@@ -1,11 +1,7 @@
 class Solution:
     def canAliceWin(self, n: int) -> bool:
-        a = 10
-        alice = True
-        while True:
-            if n - a < 0:
-                return not alice
-            n -= a
-            a -= 1
-            alice = not alice
-        
+        for stone_removal in range(10, -1, -1):
+            if n - stone_removal < 0:
+                return stone_removal % 2 != 0
+            
+            n -= stone_removal
